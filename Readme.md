@@ -57,6 +57,8 @@ An Offline first Android app to consume the SpaceX Backend API [`https://github.
 - Dependency Injection
 - Declarative UI
 - Navigation with args
+- Cacheing
+- Delegation
 
 ## Project Requirements
 
