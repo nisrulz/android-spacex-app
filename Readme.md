@@ -1,8 +1,8 @@
 # SpaceX API Android App
 
-![Logo](./repo_assets/logo.png)
-
 An Offline first Android app to consume the SpaceX Backend API [`https://github.com/r-spacex/SpaceX-API`](https://github.com/r-spacex/SpaceX-API).
+
+![Screenshot](./repo_assets/screenshot.png)
 
 ## Tech Stack
 
