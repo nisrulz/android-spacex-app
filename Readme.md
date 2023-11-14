@@ -47,6 +47,7 @@ An Offline first Android app to consume the SpaceX Backend API [`https://github.
 - [Junit](https://junit.org/junit4/) (Unit tests)
 - [Turbine](https://github.com/cashapp/turbine) (A small testing library for kotlinx.coroutines Flow)
 - [MockWebserver](https://github.com/square/okhttp/tree/master/mockwebserver) (A scriptable web server for testing HTTP clients)
+- [MockK](https://mockk.io/) (mocking library for Kotlin)
 
 ## App pattern highlights
 
