@@ -2,9 +2,9 @@ package com.nisrulz.example.spacexapi.presentation.features.list_of_launches
 
 import app.cash.turbine.test
 import com.google.common.truth.Truth.assertThat
-import com.nisrulz.example.spacexapi.domain.usecase.ToggleBookmarkLaunchInfo
 import com.nisrulz.example.spacexapi.domain.usecase.GetAllBookmarkedLaunches
 import com.nisrulz.example.spacexapi.domain.usecase.GetAllLaunches
+import com.nisrulz.example.spacexapi.domain.usecase.ToggleBookmarkLaunchInfo
 import com.nisrulz.example.spacexapi.presentation.features.list_of_launches.ListOfLaunchesViewModel.ListOfLaunchesUiEvent.NavigateToDetails
 import com.nisrulz.example.spacexapi.presentation.features.list_of_launches.ListOfLaunchesViewModel.ListOfLaunchesUiEvent.ShowSnackBar
 import com.nisrulz.example.spacexapi.presentation.features.list_of_launches.ListOfLaunchesViewModel.ListOfLaunchesUiState.Loading

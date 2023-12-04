@@ -11,7 +11,6 @@ import com.nisrulz.example.spacexapi.presentation.features.components.LoadingCom
 import com.nisrulz.example.spacexapi.presentation.features.launch_detail.LaunchDetailViewModel.LaunchDetailUiEvent
 import com.nisrulz.example.spacexapi.presentation.features.launch_detail.LaunchDetailViewModel.LaunchDetailUiState
 import kotlinx.coroutines.flow.collectLatest
-import kotlinx.coroutines.flow.consumeAsFlow
 import kotlinx.coroutines.flow.receiveAsFlow
 
 @Composable

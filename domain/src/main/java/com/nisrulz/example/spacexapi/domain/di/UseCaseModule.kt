@@ -1,10 +1,10 @@
 package com.nisrulz.example.spacexapi.domain.di
 
 import com.nisrulz.example.spacexapi.domain.repository.LaunchesRepository
-import com.nisrulz.example.spacexapi.domain.usecase.ToggleBookmarkLaunchInfo
 import com.nisrulz.example.spacexapi.domain.usecase.GetAllBookmarkedLaunches
 import com.nisrulz.example.spacexapi.domain.usecase.GetAllLaunches
 import com.nisrulz.example.spacexapi.domain.usecase.GetLaunchDetail
+import com.nisrulz.example.spacexapi.domain.usecase.ToggleBookmarkLaunchInfo
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn

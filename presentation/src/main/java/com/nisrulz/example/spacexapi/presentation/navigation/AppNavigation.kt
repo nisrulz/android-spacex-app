@@ -4,10 +4,10 @@ import androidx.compose.runtime.Composable
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
-import com.nisrulz.example.spacexapi.presentation.navigation.NavigationRoute.LaunchDetail
-import com.nisrulz.example.spacexapi.presentation.navigation.NavigationRoute.ListOfLaunches
 import com.nisrulz.example.spacexapi.presentation.features.launch_detail.LaunchDetailScreen
 import com.nisrulz.example.spacexapi.presentation.features.list_of_launches.ListOfLaunchesScreen
+import com.nisrulz.example.spacexapi.presentation.navigation.NavigationRoute.LaunchDetail
+import com.nisrulz.example.spacexapi.presentation.navigation.NavigationRoute.ListOfLaunches
 
 
 @Composable

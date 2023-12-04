@@ -2,8 +2,8 @@ package com.nisrulz.example.spacexapi.presentation.features.launch_detail
 
 import app.cash.turbine.test
 import com.google.common.truth.Truth.assertThat
-import com.nisrulz.example.spacexapi.domain.usecase.ToggleBookmarkLaunchInfo
 import com.nisrulz.example.spacexapi.domain.usecase.GetLaunchDetail
+import com.nisrulz.example.spacexapi.domain.usecase.ToggleBookmarkLaunchInfo
 import com.nisrulz.example.spacexapi.presentation.features.launch_detail.LaunchDetailViewModel.LaunchDetailUiEvent.ShowSnackBar
 import com.nisrulz.example.spacexapi.presentation.features.launch_detail.LaunchDetailViewModel.LaunchDetailUiState.Loading
 import com.nisrulz.example.spacexapi.presentation.features.launch_detail.LaunchDetailViewModel.LaunchDetailUiState.Success
