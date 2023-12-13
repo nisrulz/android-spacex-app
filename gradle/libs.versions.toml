@@ -10,9 +10,10 @@ appcompat = "1.6.1"
 material3 = "1.10.0"
 
 # Kotlin
-org-jetbrains-kotlin-android = "1.9.10"
+org-jetbrains-kotlin-android = "1.9.21"
 kotlinxCoroutines = "1.7.3"
 ksp = "1.9.10-1.0.13"
+kotlinxSerializationJson = "1.6.2"
 
 # Jetpack Compose
 activity-compose = "1.8.1"
@@ -31,6 +32,7 @@ okhttp = "4.11.0"
 retrofit = "2.9.0"
 
 # Room
+retrofit2KotlinxSerializationConverter = "1.0.0"
 room = "2.6.1"
 
 # Coil
@@ -88,7 +90,10 @@ navigation-compose = { group = "androidx.navigation", name = "navigation-compose
 
 # Retrofit
 retrofit-core = { group = "com.squareup.retrofit2", name = "retrofit", version.ref = "retrofit" }
-retrofit-gson = { group = "com.squareup.retrofit2", name = "converter-gson", version.ref = "retrofit" }
+
+# Serialization
+kotlinx-serialization-json = { module = "org.jetbrains.kotlinx:kotlinx-serialization-json", version.ref = "kotlinxSerializationJson" }
+retrofit2-kotlinx-serialization-converter = { module = "com.jakewharton.retrofit:retrofit2-kotlinx-serialization-converter", version.ref = "retrofit2KotlinxSerializationConverter" }
 
 # Okhttp
 okhttp-bom = { group = "com.squareup.okhttp3", name = "okhttp-bom", version.ref = "okhttp" }
@@ -117,6 +122,8 @@ com-android-application = { id = "com.android.application", version.ref = "agp" 
 com-android-library = { id = "com.android.library", version.ref = "agp" }
 org-jetbrains-kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "org-jetbrains-kotlin-android" }
 ksp = { id = "com.google.devtools.ksp", version.ref = "ksp" }
+kotlin-serialization = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "org-jetbrains-kotlin-android" }
+
 
 # Hilt
 hilt = { id = "com.google.dagger.hilt.android", version.ref = "hilt" }
@@ -129,7 +136,7 @@ core = ["appcompat"]
 compose = ["activity-compose", "ui", "ui-graphics", "ui-tooling-preview", "material3", "navigation-compose"]
 hilt = ["hilt-android", "hilt-navigation"]
 room = ["room-ktx", "room-runtime"]
-retrofit = ["retrofit-core", "retrofit-gson", "okhttp-logging"]
+retrofit = ["retrofit-core", "kotlinx-serialization-json", "retrofit2-kotlinx-serialization-converter", "okhttp-logging"]
 coil = ["coil-kt", "coil-kt-compose"]
 compose-debug = ["ui-tooling", "ui-test-manifest"]
 mockk = ["mockk-android", "mockk-agent"]
