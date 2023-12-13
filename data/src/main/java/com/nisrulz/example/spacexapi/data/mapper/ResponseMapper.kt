@@ -8,7 +8,7 @@ fun LaunchInfoResponse.toEntity() = LaunchInfoEntity(
     details = details,
     flight_number = flight_number,
     id = id,
-    logo = links.patch.small,
+    logo = links.patch?.small,
     name = name,
     success = success
 )

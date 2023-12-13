@@ -31,7 +31,7 @@ An Offline first Android app to consume the SpaceX Backend API [`https://github.
 
 - [Retrofit](https://square.github.io/retrofit/) (REST client)
 - [OkHttp](https://square.github.io/okhttp/) (Networking client)
-- [Gson](https://github.com/google/gson) (JSON serialization)
+- [KotlinX Serialization](https://github.com/Kotlin/kotlinx.serialization/tree/master) (JSON serialization)
 
 ### Local Persistence
 

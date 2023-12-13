@@ -1,18 +1,20 @@
 package com.nisrulz.example.spacexapi.data.di
 
 import android.app.Application
+import com.jakewharton.retrofit2.converter.kotlinx.serialization.asConverterFactory
 import com.nisrulz.example.spacexapi.data.remote.SpaceXLaunchesApi
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
+import kotlinx.serialization.json.Json
 import okhttp3.Cache
 import okhttp3.Interceptor
+import okhttp3.MediaType.Companion.toMediaType
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Converter
 import retrofit2.Retrofit
-import retrofit2.converter.gson.GsonConverterFactory
 import java.io.File
 import java.util.concurrent.TimeUnit
 import javax.inject.Singleton
@@ -42,7 +44,12 @@ class NetworkModule {
 
     @Provides
     @Singleton
-    fun provideConvertorFactory(): Converter.Factory = GsonConverterFactory.create()
+    fun provideConvertorFactory(): Converter.Factory {
+        val json = Json {
+            coerceInputValues = true
+        }
+        return json.asConverterFactory("application/json".toMediaType())
+    }
 
     @Provides
     @Singleton
