@@ -4,6 +4,17 @@ An Offline first Android app to consume the SpaceX Backend API [`https://github.
 
 ![Screenshot](./repo_assets/screenshot.png)
 
+> \[!IMPORTANT]
+>
+> **Star the Repository**: You will receive all update notifications from GitHub without any delay \~ ⭐️
+
+<details>
+  <summary><kbd>Star History</kbd></summary>
+  <picture>
+    <img width="100%" src="https://api.star-history.com/svg?repos=nisrulz/android-spacex-app&type=Timeline">
+  </picture>
+</details>
+
 ## Tech Stack
 
 ### Core
@@ -73,6 +84,5 @@ An Offline first Android app to consume the SpaceX Backend API [`https://github.
 3. Everything should sync and build automatically
 
 ## License
-
-- Released under Apache License 2.0
-- See [LICENSE](LICENSE) for details.
+Copyright © 2023 [Nishant Srivastava](https://github.com/nisrulz). <br />
+This project is [Apache License 2.0](./LICENSE) licensed.
