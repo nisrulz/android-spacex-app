@@ -1,9 +1,51 @@
 package com.nisrulz.example.spacexapi.presentation.navigation
 
-sealed class NavigationRoute(val route: String) {
-    data object ListOfLaunches : NavigationRoute("list_of_launches")
-    data object LaunchDetail : NavigationRoute("launch_detail/{launchId}") {
-        fun build(id: String): String = route
-            .replace("{launchId}", id)
+import androidx.navigation.NavBackStackEntry
+import androidx.navigation.NavController
+import androidx.navigation.NavGraphBuilder
+import androidx.navigation.compose.composable
+import com.nisrulz.example.spacexapi.presentation.features.launch_detail.LaunchDetailScreen
+import com.nisrulz.example.spacexapi.presentation.features.list_of_launches.ListOfLaunchesScreen
+
+
+/*
+Read about Type safety in Navigation Compose:
+https://developer.android.com/guide/navigation/design/type-safety
+ */
+internal object NavigationRoute {
+
+    // Home
+    const val HomeRoute = "list_of_launches"
+
+    // Details
+    private const val navArgLaunchId = "launchId"
+    private const val DetailsRoute = "launch_detail/{$navArgLaunchId}"
+    private fun buildDetailsRouteWithLaunchId(launchId: String) = DetailsRoute
+        .replace("{$navArgLaunchId}", launchId)
+
+    // Functions
+    private fun NavBackStackEntry.getArgLaunchId(): String = arguments
+        ?.getString(navArgLaunchId) ?: ""
+
+
+    fun NavGraphBuilder.homeScreen(onNavigateToDetails: (launchId: String) -> Unit) {
+        composable(HomeRoute) {
+            ListOfLaunchesScreen(navigateToDetails = { launchId ->
+                onNavigateToDetails(launchId)
+            })
+        }
+    }
+
+    fun NavGraphBuilder.detailsScreen() {
+        composable(DetailsRoute) { backStackEntry ->
+            val id = backStackEntry.getArgLaunchId()
+            if (id.isNotEmpty()) {
+                LaunchDetailScreen(launchId = id)
+            }
+        }
+    }
+
+    fun NavController.navigateToLaunchDetail(launchId: String) {
+        this.navigate(buildDetailsRouteWithLaunchId(launchId))
     }
 }
