@@ -1,5 +1,11 @@
 [versions]
 
+# SDK
+compileSdk = "34"
+targetSdk = "34"
+minSdk = "21"
+composeCompiler = "1.5.6"
+
 # Android Core
 agp = "8.2.0"
 core-ktx = "1.12.0"
