@@ -15,6 +15,7 @@ dependencyResolutionManagement {
 
 rootProject.name = "Spacex API"
 include(":app")
+include(":common")
 include(":data")
 include(":domain")
 include(":presentation")

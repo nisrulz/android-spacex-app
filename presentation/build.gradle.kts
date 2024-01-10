@@ -38,6 +38,7 @@ android {
 
 dependencies {
     // Module Dependency
+    implementation(project(":common"))
     implementation(project(":domain"))
     implementation(project(":data"))
 
