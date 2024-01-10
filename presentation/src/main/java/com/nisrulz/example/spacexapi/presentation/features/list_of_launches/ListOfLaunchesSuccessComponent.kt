@@ -44,14 +44,16 @@ fun ListOfLaunchesSuccessComponent(
     var isShowingBookmarks by remember { mutableStateOf(false) }
 
     Box(
-        modifier = modifier
-            .fillMaxSize()
-            .background(Color.Black)
+        modifier =
+            modifier
+                .fillMaxSize()
+                .background(Color.Black),
     ) {
         Column {
             Row(
-                modifier = Modifier
-                    .fillMaxWidth(),
+                modifier =
+                    Modifier
+                        .fillMaxWidth(),
             ) {
                 Image(
                     modifier = Modifier.weight(0.8f, true),
@@ -60,45 +62,50 @@ fun ListOfLaunchesSuccessComponent(
                 )
 
                 val drawableIdForBookmark =
-                    if (isShowingBookmarks) R.drawable.list_all
-                    else R.drawable.bookmarks
+                    if (isShowingBookmarks) {
+                        R.drawable.list_all
+                    } else {
+                        R.drawable.bookmarks
+                    }
                 Image(
                     painter = painterResource(id = drawableIdForBookmark),
                     contentDescription = stringResource(id = R.string.title_bookmarks),
-                    modifier = Modifier
-                        .weight(0.2f, true)
-                        .padding(top = MaterialTheme.dimens.large)
-                        .clickable {
-                            isShowingBookmarks = !isShowingBookmarks
-                            toggleBookmarkList(isShowingBookmarks)
-                        }
+                    modifier =
+                        Modifier
+                            .weight(0.2f, true)
+                            .padding(top = MaterialTheme.dimens.large)
+                            .clickable {
+                                isShowingBookmarks = !isShowingBookmarks
+                                toggleBookmarkList(isShowingBookmarks)
+                            },
                 )
             }
-
 
             LazyColumn(modifier = Modifier.fillMaxSize()) {
                 itemsIndexed(state.data) { index, item ->
                     if (index == 0) {
                         Spacer(modifier = Modifier.height(MaterialTheme.dimens.small))
                     }
-                    LaunchInfoItem(launchInfo = item,
+                    LaunchInfoItem(
+                        launchInfo = item,
                         onClick = {
                             navigateToDetails(it)
                         },
                         onBookmark = {
                             bookmark(it)
-                        })
+                        },
+                    )
                 }
             }
-
         }
 
         // Wire in Snackbar Widget
         SnackbarHost(
             hostState = snackbarHostState,
-            modifier = Modifier
-                .fillMaxWidth()
-                .align(Alignment.BottomCenter)
+            modifier =
+                Modifier
+                    .fillMaxWidth()
+                    .align(Alignment.BottomCenter),
         )
     }
 }
@@ -106,28 +113,31 @@ fun ListOfLaunchesSuccessComponent(
 @Preview
 @Composable
 private fun Preview() {
-    val testLaunchInfo = LaunchInfo(
-        date_local = "",
-        details = "",
-        flight_number = 1,
-        id = "1",
-        logo = "",
-        name = "Name 1",
-        success = false,
-        isBookmarked = false
-    )
+    val testLaunchInfo =
+        LaunchInfo(
+            date_local = "",
+            details = "",
+            flight_number = 1,
+            id = "1",
+            logo = "",
+            name = "Name 1",
+            success = false,
+            isBookmarked = false,
+        )
     SpacexAPITheme {
         ListOfLaunchesSuccessComponent(
-            state = ListOfLaunchesViewModel.ListOfLaunchesUiState.Success(
-                data = listOf(
-                    testLaunchInfo,
-                    testLaunchInfo.copy(name = "Name 2")
-                )
-            ),
+            state =
+                ListOfLaunchesViewModel.ListOfLaunchesUiState.Success(
+                    data =
+                        listOf(
+                            testLaunchInfo,
+                            testLaunchInfo.copy(name = "Name 2"),
+                        ),
+                ),
             snackbarHostState = SnackbarHostState(),
             navigateToDetails = {},
             bookmark = { },
-            toggleBookmarkList = {}
+            toggleBookmarkList = {},
         )
     }
 }

@@ -14,17 +14,22 @@ import com.nisrulz.example.spacexapi.presentation.theme.SpacexAPITheme
 import com.nisrulz.example.spacexapi.presentation.theme.dimens
 
 @Composable
-fun EmptyComponent(modifier: Modifier = Modifier, msg: String) {
+fun EmptyComponent(
+    modifier: Modifier = Modifier,
+    msg: String,
+) {
     Box(
-        modifier = modifier
-            .fillMaxSize()
-            .padding(MaterialTheme.dimens.small)
-            .background(MaterialTheme.colorScheme.background)
+        modifier =
+            modifier
+                .fillMaxSize()
+                .padding(MaterialTheme.dimens.small)
+                .background(MaterialTheme.colorScheme.background),
     ) {
         Text(
-            modifier = Modifier
-                .align(Alignment.Center),
-            text = msg
+            modifier =
+                Modifier
+                    .align(Alignment.Center),
+            text = msg,
         )
     }
 }

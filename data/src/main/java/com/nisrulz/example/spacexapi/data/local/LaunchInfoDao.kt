@@ -11,7 +11,6 @@ import kotlinx.coroutines.flow.Flow
 
 @Dao
 interface LaunchInfoDao : LocalDataSource {
-
     @Query("SELECT * from LaunchInfoEntity")
     override fun getAll(): Flow<List<LaunchInfoEntity>>
 
@@ -35,6 +34,4 @@ interface LaunchInfoDao : LocalDataSource {
 
     @Query("DELETE FROM LaunchInfoEntity")
     override suspend fun deleteAll()
-
-
 }

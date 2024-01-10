@@ -8,7 +8,6 @@ import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import java.io.File
 
-
 object MockWebServerHelper {
     /**
      * Create an instance of the Retrofit class
@@ -23,11 +22,14 @@ object MockWebServerHelper {
     /**
      * Sets which response the [MockWebServer] should return when a request is made
      */
-    internal fun MockWebServer.setResponse(fileName: String, responseCode: Int = 200) {
+    internal fun MockWebServer.setResponse(
+        fileName: String,
+        responseCode: Int = 200,
+    ) {
         enqueue(
             MockResponse()
                 .setResponseCode(responseCode)
-                .setBody(getFileAsString(fileName))
+                .setBody(getFileAsString(fileName)),
         )
     }
 
@@ -38,7 +40,7 @@ object MockWebServerHelper {
         enqueue(
             MockResponse()
                 .setBody(Buffer().write(ByteArray(4096)))
-                .setSocketPolicy(SocketPolicy.DISCONNECT_DURING_RESPONSE_BODY)
+                .setSocketPolicy(SocketPolicy.DISCONNECT_DURING_RESPONSE_BODY),
         )
     }
 

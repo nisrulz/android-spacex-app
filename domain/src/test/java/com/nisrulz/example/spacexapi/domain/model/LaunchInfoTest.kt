@@ -7,7 +7,6 @@ import org.junit.Before
 import org.junit.Test
 
 class LaunchInfoTest {
-
     private lateinit var launchInfo: LaunchInfo
 
     @Before
@@ -94,5 +93,4 @@ class LaunchInfoTest {
         // Then
         assertThat(result).isEqualTo(expected)
     }
-
 }

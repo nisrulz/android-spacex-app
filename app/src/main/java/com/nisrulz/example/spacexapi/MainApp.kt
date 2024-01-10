@@ -8,10 +8,10 @@ import com.nisrulz.example.spacexapi.utils.DefaultCoilCache
 import dagger.hilt.android.HiltAndroidApp
 
 @HiltAndroidApp
-class MainApp : Application(),
+class MainApp :
+    Application(),
     AnrDetector by DefaultAnrDetector(),
     CoilCache by DefaultCoilCache() {
-
     override fun onCreate() {
         super.onCreate()
         setupAnrDetector()

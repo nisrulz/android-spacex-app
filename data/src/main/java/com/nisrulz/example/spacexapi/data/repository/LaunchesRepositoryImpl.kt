@@ -45,7 +45,10 @@ class LaunchesRepositoryImpl(
         return localDataSource.getAllBookmarked().map { it.mapToDomainModelList() }
     }
 
-    override suspend fun setBookmark(id: String, value: Boolean) {
+    override suspend fun setBookmark(
+        id: String,
+        value: Boolean,
+    ) {
         val launch = localDataSource.getById(id)
         launch?.copy(isBookmarked = value)?.let {
             localDataSource.update(it)

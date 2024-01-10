@@ -16,14 +16,16 @@ import com.nisrulz.example.spacexapi.presentation.theme.dimens
 @Composable
 fun LoadingComponent(modifier: Modifier = Modifier) {
     Box(
-        modifier = modifier
-            .fillMaxSize()
-            .padding(MaterialTheme.dimens.small)
-            .background(MaterialTheme.colorScheme.background)
+        modifier =
+            modifier
+                .fillMaxSize()
+                .padding(MaterialTheme.dimens.small)
+                .background(MaterialTheme.colorScheme.background),
     ) {
         CircularProgressIndicator(
-            modifier = Modifier
-                .align(Alignment.Center)
+            modifier =
+                Modifier
+                    .align(Alignment.Center),
         )
     }
 }

@@ -12,7 +12,7 @@ fun LaunchInfo.mapFromDomainModel(): LaunchInfoEntity {
         logo = logo,
         name = name,
         success = success,
-        isBookmarked = isBookmarked
+        isBookmarked = isBookmarked,
     )
 }
 
@@ -25,9 +25,8 @@ fun LaunchInfoEntity.mapToDomainModel(): LaunchInfo {
         logo = logo,
         name = name,
         success = success,
-        isBookmarked = isBookmarked
+        isBookmarked = isBookmarked,
     )
 }
 
-fun List<LaunchInfoEntity>.mapToDomainModelList(): List<LaunchInfo> =
-    this.map { it.mapToDomainModel() }
+fun List<LaunchInfoEntity>.mapToDomainModelList(): List<LaunchInfo> = this.map { it.mapToDomainModel() }

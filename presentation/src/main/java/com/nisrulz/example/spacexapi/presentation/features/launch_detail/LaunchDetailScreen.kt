@@ -38,9 +38,10 @@ fun LaunchDetailScreen(
     when (state) {
         LaunchDetailUiState.Loading -> LoadingComponent()
         is LaunchDetailUiState.Error -> viewModel.showError((state as LaunchDetailUiState.Error).message)
-        is LaunchDetailUiState.Success -> LaunchDetailSuccessComponent(
-            state = state as LaunchDetailUiState.Success,
-            snackbarHostState = snackbarHostState
-        )
+        is LaunchDetailUiState.Success ->
+            LaunchDetailSuccessComponent(
+                state = state as LaunchDetailUiState.Success,
+                snackbarHostState = snackbarHostState,
+            )
     }
 }

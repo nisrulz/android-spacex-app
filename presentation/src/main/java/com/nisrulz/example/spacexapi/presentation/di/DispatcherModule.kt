@@ -10,7 +10,6 @@ import javax.inject.Singleton
 @Module
 @InstallIn(SingletonComponent::class)
 class DispatcherModule {
-
     @Provides
     @Singleton
     fun providesDispatcher() = Dispatchers.IO

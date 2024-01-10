@@ -7,26 +7,26 @@ import androidx.navigation.compose.composable
 import com.nisrulz.example.spacexapi.presentation.features.launch_detail.LaunchDetailScreen
 import com.nisrulz.example.spacexapi.presentation.features.list_of_launches.ListOfLaunchesScreen
 
-
 /*
 Read about Type safety in Navigation Compose:
 https://developer.android.com/guide/navigation/design/type-safety
  */
 internal object NavigationRoute {
-
     // Home
     const val HomeRoute = "list_of_launches"
 
     // Details
     private const val navArgLaunchId = "launchId"
     private const val DetailsRoute = "launch_detail/{$navArgLaunchId}"
-    private fun buildDetailsRouteWithLaunchId(launchId: String) = DetailsRoute
-        .replace("{$navArgLaunchId}", launchId)
+
+    private fun buildDetailsRouteWithLaunchId(launchId: String) =
+        DetailsRoute
+            .replace("{$navArgLaunchId}", launchId)
 
     // Functions
-    private fun NavBackStackEntry.getArgLaunchId(): String = arguments
-        ?.getString(navArgLaunchId) ?: ""
-
+    private fun NavBackStackEntry.getArgLaunchId(): String =
+        arguments
+            ?.getString(navArgLaunchId) ?: ""
 
     fun NavGraphBuilder.homeScreen(onNavigateToDetails: (launchId: String) -> Unit) {
         composable(HomeRoute) {

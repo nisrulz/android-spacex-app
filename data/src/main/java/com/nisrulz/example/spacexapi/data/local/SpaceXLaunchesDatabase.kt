@@ -7,10 +7,9 @@ import com.nisrulz.example.spacexapi.data.local.entity.LaunchInfoEntity
 @Database(
     entities = [LaunchInfoEntity::class],
     version = 1,
-    exportSchema = false
+    exportSchema = false,
 )
 abstract class SpaceXLaunchesDatabase : RoomDatabase() {
-
     abstract val dao: LaunchInfoDao
 
     companion object {

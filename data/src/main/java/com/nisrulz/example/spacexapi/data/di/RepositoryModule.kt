@@ -22,5 +22,3 @@ class RepositoryModule {
         return LaunchesRepositoryImpl(localDataSource = database.dao, remoteDataSource = api)
     }
 }
-
-

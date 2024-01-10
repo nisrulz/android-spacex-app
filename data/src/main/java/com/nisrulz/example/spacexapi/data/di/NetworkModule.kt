@@ -22,7 +22,6 @@ import javax.inject.Singleton
 @Module
 @InstallIn(SingletonComponent::class)
 class NetworkModule {
-
     @Provides
     @Singleton
     fun provideApiService(retrofit: Retrofit): SpaceXLaunchesApi {
@@ -45,9 +44,10 @@ class NetworkModule {
     @Provides
     @Singleton
     fun provideConvertorFactory(): Converter.Factory {
-        val json = Json {
-            coerceInputValues = true
-        }
+        val json =
+            Json {
+                coerceInputValues = true
+            }
         return json.asConverterFactory("application/json".toMediaType())
     }
 
@@ -75,29 +75,30 @@ class NetworkModule {
         return Cache(cacheDirectory, cacheSize.toLong())
     }
 
-
     @Provides
     @Singleton
-    fun provideCacheLoggingInterceptor(): Interceptor = Interceptor { chain ->
-        val request = chain.request()
-        val response = chain.proceed(request)
-        if (response.cacheResponse != null) {
-            println(
-                "🧠 Successful Response from MEMORY_CACHE\n" +
-                        "\t${request.method} ${request.url}"
-            )
-        } else if (response.networkResponse != null) {
-            println(
-                "☁️ Successful Response from NETWORK\n" +
-                        "\t${request.method} ${request.url}"
-            )
+    fun provideCacheLoggingInterceptor(): Interceptor =
+        Interceptor { chain ->
+            val request = chain.request()
+            val response = chain.proceed(request)
+            if (response.cacheResponse != null) {
+                println(
+                    "🧠 Successful Response from MEMORY_CACHE\n" +
+                        "\t${request.method} ${request.url}",
+                )
+            } else if (response.networkResponse != null) {
+                println(
+                    "☁️ Successful Response from NETWORK\n" +
+                        "\t${request.method} ${request.url}",
+                )
+            }
+            return@Interceptor response
         }
-        return@Interceptor response
-    }
 
     @Provides
     @Singleton
-    fun provideLoggingInterceptor() = HttpLoggingInterceptor().apply {
-        setLevel(HttpLoggingInterceptor.Level.BODY)
-    }
+    fun provideLoggingInterceptor() =
+        HttpLoggingInterceptor().apply {
+            setLevel(HttpLoggingInterceptor.Level.BODY)
+        }
 }

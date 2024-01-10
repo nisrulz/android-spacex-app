@@ -26,78 +26,83 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class ListOfLaunchesViewModel @Inject
-constructor(
-    private val coroutineDispatcher: CoroutineDispatcher,
-    private val getAllLaunches: GetAllLaunches,
-    private val bookmarkLaunchInfo: ToggleBookmarkLaunchInfo,
-    private val getAllBookmarkedLaunches: GetAllBookmarkedLaunches,
+class ListOfLaunchesViewModel
+    @Inject
+    constructor(
+        private val coroutineDispatcher: CoroutineDispatcher,
+        private val getAllLaunches: GetAllLaunches,
+        private val bookmarkLaunchInfo: ToggleBookmarkLaunchInfo,
+        private val getAllBookmarkedLaunches: GetAllBookmarkedLaunches,
     ) : ViewModel(),
         Logger by DefaultLogger(BuildConfig.DEBUG) {
-    var uiState: MutableStateFlow<ListOfLaunchesUiState> = MutableStateFlow(Loading)
-        private set
+        var uiState: MutableStateFlow<ListOfLaunchesUiState> = MutableStateFlow(Loading)
+            private set
 
-    var eventFlow = Channel<ListOfLaunchesUiEvent>()
-        private set
+        var eventFlow = Channel<ListOfLaunchesUiEvent>()
+            private set
 
-    @VisibleForTesting
-    fun getListOfLaunches() = viewModelScope.launch(coroutineDispatcher) {
-        getAllLaunches()
-            .catch {
-                uiState.update { Error("Error while fetching list of launches") }
+        @VisibleForTesting
+        fun getListOfLaunches() =
+            viewModelScope.launch(coroutineDispatcher) {
+                getAllLaunches()
+                    .catch {
+                        uiState.update { Error("Error while fetching list of launches") }
+                    }
+                    .collectLatest {
+                        handleListOfLaunches(it)
+                    }
             }
-            .collectLatest {
-                handleListOfLaunches(it)
+
+        @VisibleForTesting
+        fun getListOfBookmarkedLaunches() =
+            viewModelScope.launch(coroutineDispatcher) {
+                getAllBookmarkedLaunches()
+                    .catch {
+                        uiState.update { Error("Error while fetching list of bookmarked launches") }
+                    }
+                    .collectLatest {
+                        handleListOfLaunches(it)
+                    }
             }
 
-    }
-
-    @VisibleForTesting
-    fun getListOfBookmarkedLaunches() = viewModelScope.launch(coroutineDispatcher) {
-        getAllBookmarkedLaunches()
-            .catch {
-                uiState.update { Error("Error while fetching list of bookmarked launches") }
+        fun bookmark(launchInfo: LaunchInfo) =
+            viewModelScope.launch(coroutineDispatcher) {
+                bookmarkLaunchInfo(launchInfo)
             }
-            .collectLatest {
-                handleListOfLaunches(it)
-            }
-    }
 
-    fun bookmark(launchInfo: LaunchInfo) =
-        viewModelScope.launch(coroutineDispatcher) {
-            bookmarkLaunchInfo(launchInfo)
+        private fun handleListOfLaunches(list: List<LaunchInfo>) {
+            uiState.update { Success(list) }
         }
 
-    private fun handleListOfLaunches(list: List<LaunchInfo>) {
-        uiState.update { Success(list) }
-    }
-
-    fun onClickBookmarkToolbarIcon(isShowingBookmarks: Boolean) {
-        if (isShowingBookmarks) {
-            getListOfBookmarkedLaunches()
-        } else {
-            getListOfLaunches()
+        fun onClickBookmarkToolbarIcon(isShowingBookmarks: Boolean) {
+            if (isShowingBookmarks) {
+                getListOfBookmarkedLaunches()
+            } else {
+                getListOfLaunches()
+            }
         }
-    }
 
-    fun showError(message: String) = sendEvent(ShowSnackBar(message))
+        fun showError(message: String) = sendEvent(ShowSnackBar(message))
 
-    fun navigateToDetails(launchId: String) = sendEvent(NavigateToDetails(launchId))
+        fun navigateToDetails(launchId: String) = sendEvent(NavigateToDetails(launchId))
 
-    private fun sendEvent(listOfLaunchesUiEvent: ListOfLaunchesUiEvent) =
-        viewModelScope.launch(coroutineDispatcher) {
-            eventFlow.send(listOfLaunchesUiEvent)
+        private fun sendEvent(listOfLaunchesUiEvent: ListOfLaunchesUiEvent) =
+            viewModelScope.launch(coroutineDispatcher) {
+                eventFlow.send(listOfLaunchesUiEvent)
                 log("Ui Event: $listOfLaunchesUiEvent")
+            }
+
+        sealed interface ListOfLaunchesUiEvent {
+            data class ShowSnackBar(val message: String) : ListOfLaunchesUiEvent
+
+            data class NavigateToDetails(val launchId: String) : ListOfLaunchesUiEvent
         }
 
-    sealed interface ListOfLaunchesUiEvent {
-        data class ShowSnackBar(val message: String) : ListOfLaunchesUiEvent
-        data class NavigateToDetails(val launchId: String) : ListOfLaunchesUiEvent
-    }
+        sealed interface ListOfLaunchesUiState {
+            data object Loading : ListOfLaunchesUiState
 
-    sealed interface ListOfLaunchesUiState {
-        data object Loading : ListOfLaunchesUiState
-        data class Error(val message: String) : ListOfLaunchesUiState
-        data class Success(val data: List<LaunchInfo>) : ListOfLaunchesUiState
+            data class Error(val message: String) : ListOfLaunchesUiState
+
+            data class Success(val data: List<LaunchInfo>) : ListOfLaunchesUiState
+        }
     }
-}

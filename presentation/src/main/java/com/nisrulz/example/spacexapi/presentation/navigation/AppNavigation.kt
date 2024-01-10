@@ -12,13 +12,13 @@ fun AppNavigation() {
     val navController = rememberNavController()
     NavHost(
         navController = navController,
-        startDestination = NavigationRoute.HomeRoute
+        startDestination = NavigationRoute.HomeRoute,
     ) {
-
         homeScreen(
             onNavigateToDetails = { launchId ->
                 navController.navigateToLaunchDetail(launchId)
-            })
+            },
+        )
 
         detailsScreen()
     }

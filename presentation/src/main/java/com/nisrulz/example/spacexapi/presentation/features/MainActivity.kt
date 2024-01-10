@@ -24,4 +24,3 @@ private fun AppEntryPoint() {
         AppNavigation()
     }
 }
-

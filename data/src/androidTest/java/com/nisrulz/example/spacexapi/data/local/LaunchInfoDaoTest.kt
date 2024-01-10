@@ -18,7 +18,6 @@ import java.io.IOException
 
 @RunWith(AndroidJUnit4::class)
 class LaunchInfoDaoTest {
-
     private lateinit var database: SpaceXLaunchesDatabase
     private lateinit var dao: LaunchInfoDao
     private lateinit var launchInfoEntityList: List<LaunchInfoEntity>
@@ -26,10 +25,11 @@ class LaunchInfoDaoTest {
     @Before
     fun setup() {
         val context = ApplicationProvider.getApplicationContext<Context>()
-        database = Room.inMemoryDatabaseBuilder(
-            context,
-            SpaceXLaunchesDatabase::class.java,
-        ).build()
+        database =
+            Room.inMemoryDatabaseBuilder(
+                context,
+                SpaceXLaunchesDatabase::class.java,
+            ).build()
 
         dao = database.dao
 
@@ -43,120 +43,125 @@ class LaunchInfoDaoTest {
     }
 
     @Test
-    fun insert() = runUnconfinedTest {
-        // Insert an items
-        val first = launchInfoEntityList.first()
-        dao.insert(first)
+    fun insert() =
+        runUnconfinedTest {
+            // Insert an items
+            val first = launchInfoEntityList.first()
+            dao.insert(first)
 
-        val expected = listOf(first)
+            val expected = listOf(first)
 
-        dao.getAll().test {
-            assertThat(awaitItem()).isEqualTo(expected)
+            dao.getAll().test {
+                assertThat(awaitItem()).isEqualTo(expected)
+            }
         }
-    }
 
     @Test
-    fun insertAll() = runUnconfinedTest {
-        // Insert all items
-        dao.insertAll(launchInfoEntityList)
+    fun insertAll() =
+        runUnconfinedTest {
+            // Insert all items
+            dao.insertAll(launchInfoEntityList)
 
-        val expected = launchInfoEntityList
+            val expected = launchInfoEntityList
 
-        dao.getAll().test {
-            assertThat(awaitItem()).isEqualTo(expected)
+            dao.getAll().test {
+                assertThat(awaitItem()).isEqualTo(expected)
+            }
         }
-    }
-
 
     @Test
-    fun delete() = runUnconfinedTest {
-        // Insert 2 items
-        val first = launchInfoEntityList.first()
-        val second = launchInfoEntityList[1]
-        dao.apply {
-            insert(first)
-            insert(second)
-            delete(first)
-        }
-        val expected = listOf(second)
+    fun delete() =
+        runUnconfinedTest {
+            // Insert 2 items
+            val first = launchInfoEntityList.first()
+            val second = launchInfoEntityList[1]
+            dao.apply {
+                insert(first)
+                insert(second)
+                delete(first)
+            }
+            val expected = listOf(second)
 
-        dao.getAll().test {
-            assertThat(awaitItem()).isEqualTo(expected)
+            dao.getAll().test {
+                assertThat(awaitItem()).isEqualTo(expected)
+            }
         }
-    }
 
     @Test
-    fun deleteAll() = runUnconfinedTest {
-        // Insert 2 items
-        val first = launchInfoEntityList.first()
-        val second = launchInfoEntityList[1]
-        dao.apply {
-            insert(first)
-            insert(second)
-            deleteAll()
-        }
+    fun deleteAll() =
+        runUnconfinedTest {
+            // Insert 2 items
+            val first = launchInfoEntityList.first()
+            val second = launchInfoEntityList[1]
+            dao.apply {
+                insert(first)
+                insert(second)
+                deleteAll()
+            }
 
-        dao.getAll().test {
-            assertThat(awaitItem()).isEmpty()
+            dao.getAll().test {
+                assertThat(awaitItem()).isEmpty()
+            }
         }
-    }
 
     @Test
-    fun getById() = runUnconfinedTest {
-        // Insert 2 items
-        val first = launchInfoEntityList.first()
-        val second = launchInfoEntityList[1]
-        dao.apply {
-            insert(first)
-            insert(second)
+    fun getById() =
+        runUnconfinedTest {
+            // Insert 2 items
+            val first = launchInfoEntityList.first()
+            val second = launchInfoEntityList[1]
+            dao.apply {
+                insert(first)
+                insert(second)
+            }
+
+            val result = dao.getById(second.id)
+            assertThat(result).isEqualTo(second)
         }
 
-        val result = dao.getById(second.id)
-        assertThat(result).isEqualTo(second)
-    }
-
-
     @Test
-    fun getAll() = runUnconfinedTest {
-        // Insert all items
-        dao.insertAll(launchInfoEntityList)
+    fun getAll() =
+        runUnconfinedTest {
+            // Insert all items
+            dao.insertAll(launchInfoEntityList)
 
-        val expected = launchInfoEntityList
+            val expected = launchInfoEntityList
 
-        dao.getAll().test {
-            assertThat(awaitItem()).isEqualTo(expected)
+            dao.getAll().test {
+                assertThat(awaitItem()).isEqualTo(expected)
+            }
         }
-    }
-
 
     @Test
-    fun update() = runUnconfinedTest {
-        // Insert all items
-        dao.insertAll(launchInfoEntityList)
+    fun update() =
+        runUnconfinedTest {
+            // Insert all items
+            dao.insertAll(launchInfoEntityList)
 
-        val launchInfo = launchInfoEntityList[1]
+            val launchInfo = launchInfoEntityList[1]
 
-        // Check if isBookmarked is set to false initially
-        assertThat(launchInfo.isBookmarked).isFalse()
+            // Check if isBookmarked is set to false initially
+            assertThat(launchInfo.isBookmarked).isFalse()
 
-        // Set isBookmarked to true
-        val updatedLaunchInfoEntity = launchInfo.copy(isBookmarked = true)
-        dao.update(updatedLaunchInfoEntity)
+            // Set isBookmarked to true
+            val updatedLaunchInfoEntity = launchInfo.copy(isBookmarked = true)
+            dao.update(updatedLaunchInfoEntity)
 
-        // Check if isBookmarked is updated to true
-        val result = dao.getById(updatedLaunchInfoEntity.id)
-        assertThat(result?.isBookmarked).isTrue()
-    }
-
-    @Test
-    fun getAllBookmarked() = runUnconfinedTest {
-        // Insert all items
-        dao.insertAll(launchInfoEntityList)
-
-        val expected = TestFactory.buildListOfBookmarkedLaunchInoEntity()
-
-        dao.getAllBookmarked().test {
-            assertThat(awaitItem()).isEqualTo(expected)
+            // Check if isBookmarked is updated to true
+            val result = dao.getById(updatedLaunchInfoEntity.id)
+            assertThat(result?.isBookmarked).isTrue()
         }
-    }
+
+    @Test
+    fun getAllBookmarked() =
+        runUnconfinedTest {
+            // Insert all items
+            dao.insertAll(launchInfoEntityList)
+
+            val expected = TestFactory.buildListOfBookmarkedLaunchInoEntity()
+
+            dao.getAllBookmarked().test {
+                assertThat(awaitItem()).isEqualTo(expected)
+            }
+        }
 }

@@ -10,7 +10,6 @@ import org.junit.Before
 import org.junit.Test
 
 class ToggleBookmarkLaunchInfoTest {
-
     private lateinit var repository: LaunchesRepository
     private lateinit var bookmarkLaunchInfo: ToggleBookmarkLaunchInfo
 
@@ -21,15 +20,16 @@ class ToggleBookmarkLaunchInfoTest {
     }
 
     @Test
-    fun `invoke should call true setBookmarkState on repository`() = runUnconfinedTest {
-        // Given
-        val launchInfo = TestFactory.buildLaunchInfo()
-        coEvery { repository.setBookmark(any(), true) } returns Unit
+    fun `invoke should call true setBookmarkState on repository`() =
+        runUnconfinedTest {
+            // Given
+            val launchInfo = TestFactory.buildLaunchInfo()
+            coEvery { repository.setBookmark(any(), true) } returns Unit
 
-        // When
-        bookmarkLaunchInfo(launchInfo)
+            // When
+            bookmarkLaunchInfo(launchInfo)
 
-        // Then
-        coVerify { repository.setBookmark(any(), true) }
-    }
+            // Then
+            coVerify { repository.setBookmark(any(), true) }
+        }
 }

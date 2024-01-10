@@ -32,7 +32,7 @@ fun ListOfLaunchesScreen(
             when (event) {
                 is ShowSnackBar -> {
                     snackbarHostState.showSnackbar(
-                        message = event.message
+                        message = event.message,
                     )
                 }
 
@@ -46,18 +46,19 @@ fun ListOfLaunchesScreen(
     when (state) {
         Loading -> LoadingComponent()
         is Error -> viewModel.showError((state as Error).message)
-        is Success -> ListOfLaunchesSuccessComponent(
-            state = state as Success,
-            snackbarHostState = snackbarHostState,
-            navigateToDetails = {
-                viewModel.navigateToDetails(it)
-            },
-            bookmark = {
-                viewModel.bookmark(it)
-            },
-            toggleBookmarkList = {
-                viewModel.onClickBookmarkToolbarIcon(it)
-            }
-        )
+        is Success ->
+            ListOfLaunchesSuccessComponent(
+                state = state as Success,
+                snackbarHostState = snackbarHostState,
+                navigateToDetails = {
+                    viewModel.navigateToDetails(it)
+                },
+                bookmark = {
+                    viewModel.bookmark(it)
+                },
+                toggleBookmarkList = {
+                    viewModel.onClickBookmarkToolbarIcon(it)
+                },
+            )
     }
 }
