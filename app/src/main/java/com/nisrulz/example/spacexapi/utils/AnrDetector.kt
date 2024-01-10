@@ -8,7 +8,9 @@ interface AnrDetector {
     fun setupAnrDetector()
 }
 
-class DefaultAnrDetector(private val debugBuild: Boolean = BuildConfig.DEBUG) : AnrDetector {
+class DefaultAnrDetector(
+    private val debugBuild: Boolean = BuildConfig.DEBUG
+) : AnrDetector {
     override fun setupAnrDetector() {
         if (debugBuild) {
             setupThreadPolicy()
@@ -19,8 +21,7 @@ class DefaultAnrDetector(private val debugBuild: Boolean = BuildConfig.DEBUG) : 
     private fun setupThreadPolicy() {
         val policy = StrictMode.ThreadPolicy.Builder()
             // Detect disk operations
-            .detectDiskReads()
-            .detectDiskWrites()
+            .detectDiskReads().detectDiskWrites()
 
             // Detect network operations on the main thread
             .detectNetwork()
@@ -32,8 +33,7 @@ class DefaultAnrDetector(private val debugBuild: Boolean = BuildConfig.DEBUG) : 
             .penaltyLog()
 
             // Flash the screen when a violation occurs
-            .penaltyFlashScreen()
-            .build()
+            .penaltyFlashScreen().build()
 
         // Set the policy
         StrictMode.setThreadPolicy(policy)
@@ -48,8 +48,7 @@ class DefaultAnrDetector(private val debugBuild: Boolean = BuildConfig.DEBUG) : 
             .detectLeakedClosableObjects()
 
             // Print logs
-            .penaltyLog()
-            .build()
+            .penaltyLog().build()
 
         // Set the policy
         StrictMode.setVmPolicy(policy)

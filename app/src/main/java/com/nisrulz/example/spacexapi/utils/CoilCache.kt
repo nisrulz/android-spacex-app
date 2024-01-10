@@ -13,7 +13,9 @@ interface CoilCache : ImageLoaderFactory {
     fun setupCoilCache(context: Context)
 }
 
-class DefaultCoilCache(private val debugBuild: Boolean = BuildConfig.DEBUG) : CoilCache {
+class DefaultCoilCache(
+    private val debugBuild: Boolean = BuildConfig.DEBUG
+) : CoilCache {
 
     private lateinit var context: Context
     override fun setupCoilCache(context: Context) {
