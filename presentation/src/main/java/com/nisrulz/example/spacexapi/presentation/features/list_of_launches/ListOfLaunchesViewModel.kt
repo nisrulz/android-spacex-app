@@ -3,6 +3,9 @@ package com.nisrulz.example.spacexapi.presentation.features.list_of_launches
 import androidx.annotation.VisibleForTesting
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.nisrulz.example.spacexapi.common.utils.DefaultLogger
+import com.nisrulz.example.spacexapi.common.utils.Logger
+import com.nisrulz.example.spacexapi.data.BuildConfig
 import com.nisrulz.example.spacexapi.domain.model.LaunchInfo
 import com.nisrulz.example.spacexapi.domain.usecase.GetAllBookmarkedLaunches
 import com.nisrulz.example.spacexapi.domain.usecase.GetAllLaunches
@@ -29,8 +32,8 @@ constructor(
     private val getAllLaunches: GetAllLaunches,
     private val bookmarkLaunchInfo: ToggleBookmarkLaunchInfo,
     private val getAllBookmarkedLaunches: GetAllBookmarkedLaunches,
-) : ViewModel() {
-
+    ) : ViewModel(),
+        Logger by DefaultLogger(BuildConfig.DEBUG) {
     var uiState: MutableStateFlow<ListOfLaunchesUiState> = MutableStateFlow(Loading)
         private set
 
@@ -84,6 +87,7 @@ constructor(
     private fun sendEvent(listOfLaunchesUiEvent: ListOfLaunchesUiEvent) =
         viewModelScope.launch(coroutineDispatcher) {
             eventFlow.send(listOfLaunchesUiEvent)
+                log("Ui Event: $listOfLaunchesUiEvent")
         }
 
     sealed interface ListOfLaunchesUiEvent {
