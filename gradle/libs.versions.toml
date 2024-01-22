@@ -4,7 +4,7 @@
 compileSdk = "34"
 targetSdk = "34"
 minSdk = "21"
-composeCompiler = "1.5.7"
+composeCompiler = "1.5.8"
 
 # Android Core
 agp = "8.2.1"
@@ -16,9 +16,9 @@ appcompat = "1.6.1"
 material3 = "1.10.0"
 
 # Kotlin
-org-jetbrains-kotlin-android = "1.9.21"
+org-jetbrains-kotlin-android = "1.9.22"
 kotlinxCoroutines = "1.7.3"
-ksp = "1.9.10-1.0.13"
+ksp = "1.9.22-1.0.16"
 kotlinxSerializationJson = "1.6.2"
 
 # Jetpack Compose
