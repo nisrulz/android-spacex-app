@@ -62,15 +62,16 @@ An Offline first Android app to consume the SpaceX Backend API [`https://github.
 
 ## App pattern highlights
 
-- Offline first
+- [Offline first](https://developer.android.com/topic/architecture/data-layer/offline-first)
 - Clean Architecture
-- Repsository
+- [Repsository](https://developer.android.com/topic/architecture/data-layer)
 - Usecases
-- Dependency Injection
+- [Dependency Injection](https://developer.android.com/training/dependency-injection)
 - Declarative UI
 - Navigation with args
 - Cacheing
-- Delegation
+- [Delegation](https://kotlinlang.org/docs/delegation.html)
+- [Gradle Convention Plugins](https://docs.gradle.org/current/samples/sample_convention_plugins.html) [PR](https://github.com/nisrulz/android-spacex-app/pull/5)
 
 ## Project Requirements
 
