@@ -18,7 +18,7 @@ dependencyResolutionManagement {
     }
 }
 
-rootProject.name = "SpacexAPI"
+rootProject.name = "Spacex-API"
 include(":app")
 include(":common")
 include(":data")
