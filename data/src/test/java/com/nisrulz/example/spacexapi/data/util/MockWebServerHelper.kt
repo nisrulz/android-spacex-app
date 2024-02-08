@@ -1,11 +1,14 @@
 package com.nisrulz.example.spacexapi.data.util
 
+import com.jakewharton.retrofit2.converter.kotlinx.serialization.asConverterFactory
+import kotlinx.serialization.json.Json
+import okhttp3.MediaType.Companion.toMediaType
 import okhttp3.mockwebserver.MockResponse
 import okhttp3.mockwebserver.MockWebServer
 import okhttp3.mockwebserver.SocketPolicy
 import okio.Buffer
+import retrofit2.Converter
 import retrofit2.Retrofit
-import retrofit2.converter.gson.GsonConverterFactory
 import java.io.File
 
 object MockWebServerHelper {
@@ -15,7 +18,7 @@ object MockWebServerHelper {
     internal inline fun <reified T : Any> generateRetrofit(mockWebServer: MockWebServer): T =
         Retrofit.Builder()
             .baseUrl(mockWebServer.url("/")) // Dummy url for testing
-            .addConverterFactory(GsonConverterFactory.create())
+            .addConverterFactory(jsonConvertorFactory())
             .build()
             .create(T::class.java)
 
@@ -58,5 +61,16 @@ object MockWebServerHelper {
         val uri = ClassLoader.getSystemResource(filePath)
         val file = File(uri.path)
         return String(file.readBytes())
+    }
+
+    /**
+     * Kotlinx Serialization JSON Convertor Factory
+     */
+    private fun jsonConvertorFactory(): Converter.Factory {
+        val json =
+            Json {
+                coerceInputValues = true
+            }
+        return json.asConverterFactory("application/json".toMediaType())
     }
 }
