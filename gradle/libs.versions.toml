@@ -2,6 +2,8 @@
 
 # SDK
 compileSdk = "34"
+gradle = "8.2.2"
+kotlinGradlePlugin = "1.9.22"
 targetSdk = "34"
 minSdk = "21"
 composeCompiler = "1.5.8"
@@ -56,6 +58,8 @@ coreTesting = "2.2.0"
 kotlinxCoroutinesTest = "1.7.3"
 
 [libraries]
+gradle = { module = "com.android.tools.build:gradle", version.ref = "gradle" }
+kotlin-gradle-plugin = { module = "org.jetbrains.kotlin:kotlin-gradle-plugin", version.ref = "kotlinGradlePlugin" }
 kotlinx-coroutines-android = { group = "org.jetbrains.kotlinx", name = "kotlinx-coroutines-android", version.ref = "kotlinxCoroutines" }
 core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "core-ktx" }
 

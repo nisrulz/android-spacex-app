@@ -8,3 +8,8 @@ repositories {
     mavenCentral()
     gradlePluginPortal()
 }
+
+dependencies {
+    implementation(libs.gradle)
+    implementation(libs.kotlin.gradle.plugin)
+}
