@@ -8,12 +8,6 @@ plugins {
 android {
     namespace = "com.nisrulz.example.spacexapi.presentation"
 
-    compileSdk = libs.versions.compileSdk.get().toInt()
-
-    defaultConfig {
-        minSdk = libs.versions.minSdk.get().toInt()
-    }
-
     buildFeatures {
         compose = true
     }

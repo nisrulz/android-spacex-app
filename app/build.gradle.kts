@@ -8,12 +8,8 @@ plugins {
 
 android {
     namespace = "com.nisrulz.example.spacexapi"
-    compileSdk = libs.versions.compileSdk.get().toInt()
 
     defaultConfig {
-        minSdk = libs.versions.minSdk.get().toInt()
-        targetSdk = libs.versions.targetSdk.get().toInt()
-
         applicationId = "com.nisrulz.example.spacexapi"
         versionCode = 1
         versionName = "1.0"

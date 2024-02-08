@@ -1,21 +1,14 @@
 @Suppress("DSL_SCOPE_VIOLATION") // TODO: Remove once KTIJ-19369 is fixed
 plugins {
+    id("library-convention")
     alias(libs.plugins.ksp)
     alias(libs.plugins.hilt)
 
     alias(libs.plugins.kotlin.serialization)
-
-    id("library-convention")
 }
 
 android {
     namespace = "com.nisrulz.example.spacexapi.data"
-
-    compileSdk = libs.versions.compileSdk.get().toInt()
-
-    defaultConfig {
-        minSdk = libs.versions.minSdk.get().toInt()
-    }
 
     buildFeatures {
         buildConfig = true
