@@ -15,7 +15,7 @@ data class LaunchInfo(
     val isBookmarked: Boolean = false,
 ) {
     fun getFormattedDate(): String {
-        val sourceFormat = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ssXXX", Locale.getDefault())
+        val sourceFormat = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss", Locale.getDefault())
         val targetFormat = SimpleDateFormat("dd-MM-yyyy", Locale.getDefault())
 
         return try {
