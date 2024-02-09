@@ -21,7 +21,7 @@ class SpaceXLaunchesApiTest {
 
     @Before
     fun setup() {
-        mockWebServer.start(8080)
+        mockWebServer.start()
     }
 
     @After
