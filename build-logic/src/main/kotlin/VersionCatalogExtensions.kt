@@ -1,10 +1,17 @@
 import org.gradle.api.Project
+import org.gradle.api.artifacts.ExternalModuleDependencyBundle
+import org.gradle.api.artifacts.MinimalExternalModuleDependency
 import org.gradle.api.artifacts.VersionCatalog
 import org.gradle.api.artifacts.VersionCatalogsExtension
+import org.gradle.api.provider.Provider
 import org.gradle.kotlin.dsl.getByType
+import org.gradle.plugin.use.PluginDependency
+
+private val Project.catalog
+    get() = extensions.getByType<VersionCatalogsExtension>()
 
 internal val Project.libs: VersionCatalog
-    get() = extensions.getByType<VersionCatalogsExtension>().named("libs")
+    get() = catalog.named("libs")
 
 internal val VersionCatalog.compileSdk
     get() = findVersionOrThrow("compileSdk").toInt()
@@ -15,19 +22,34 @@ internal val VersionCatalog.minSdk
 internal val VersionCatalog.targetSdk
     get() = findVersionOrThrow("targetSdk").toInt()
 
-private fun VersionCatalog.findPluginOrThrow(name: String) =
-    findPlugin(name)
-        .orElseThrow { NoSuchElementException("Plugin $name not found in version catalog") }
-
-private fun VersionCatalog.findBundleOrThrow(name: String) =
-    findBundle(name)
-        .orElseThrow { NoSuchElementException("Bundle $name not found in version catalog") }
-
-private fun VersionCatalog.findLibraryOrThrow(name: String) =
-    findLibrary(name)
-        .orElseThrow { NoSuchElementException("Library $name not found in version catalog") }
-
 private fun VersionCatalog.findVersionOrThrow(name: String) =
     findVersion(name)
         .orElseThrow { NoSuchElementException("Version $name not found in version catalog") }
         .requiredVersion
+
+internal fun Project.applyPlugin(
+    alias: String,
+    block: (Provider<PluginDependency>) -> Unit,
+) {
+    libs.findPlugin(alias).ifPresent { plugin ->
+        block(plugin)
+    }
+}
+
+internal fun Project.applyBundle(
+    alias: String,
+    block: (Provider<ExternalModuleDependencyBundle>) -> Unit,
+) {
+    libs.findBundle(alias).ifPresent { bundle ->
+        block(bundle)
+    }
+}
+
+internal fun Project.applyLibrary(
+    alias: String,
+    block: (Provider<MinimalExternalModuleDependency>) -> Unit,
+) {
+    libs.findLibrary(alias).ifPresent { lib ->
+        block(lib)
+    }
+}

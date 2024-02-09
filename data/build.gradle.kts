@@ -1,8 +1,7 @@
 @Suppress("DSL_SCOPE_VIOLATION") // TODO: Remove once KTIJ-19369 is fixed
 plugins {
     id("library-convention")
-    alias(libs.plugins.ksp)
-    alias(libs.plugins.hilt)
+    id("hilt-convention")
 
     alias(libs.plugins.kotlin.serialization)
 }
@@ -24,10 +23,6 @@ android {
 dependencies {
     // Module Dependency
     implementation(project(":domain"))
-
-    // Dagger-Hilt
-    implementation(libs.bundles.hilt)
-    ksp(libs.hilt.compiler)
 
     // Retrofit
     implementation(platform(libs.okhttp.bom))
