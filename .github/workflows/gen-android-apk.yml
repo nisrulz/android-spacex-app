@@ -2,11 +2,12 @@ name: Generate Android APK
 
 env:
   main_project_module: app
-  playstore_name: SpaceX
 
 on:
-  # Allows you to run this workflow manually from the Actions tab
-  workflow_dispatch:
+  # Allows to run this workflow automatically when a tag is pushed
+  create:
+    tags:
+      - "*"
 
 jobs:
   build:
@@ -18,17 +19,17 @@ jobs:
       - name: Set Up JDK
         uses: actions/setup-java@v3
         with:
-          distribution: 'temurin'
-          java-version: '17'
-          cache: 'gradle'
+          distribution: "temurin"
+          java-version: "17"
+          cache: "gradle"
 
       - name: Cache Gradle and wrapper
         uses: actions/cache@v2
         with:
-         path: |
-           ~/.gradle/caches
-           ~/.gradle/wrapper
-         key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle*') }}
+          path: |
+            ~/.gradle/caches
+            ~/.gradle/wrapper
+          key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle*') }}
 
       - name: Change wrapper permissions
         run: chmod +x ./gradlew
@@ -39,18 +40,24 @@ jobs:
       - name: Build project
         run: ./gradlew build
 
-      - name: Build Debug APK - ${{ env.main_project_module }} module
+      - name: Build Debug APK
         run: ./gradlew assembleDebug
 
-      - name: Upload Release Build to Artifacts
-        uses: actions/upload-artifact@v4
-        with:
-            name: release-artifacts
-            paths: app/build/outputs/apk/debug
-                    
       - name: Create Github Release
-        uses: softprops/action-gh-release@v1
-        with:
-          generate_release_notes: true
-          prerelease: true
-          files: app/build/outputs/apk/debug/app-debug.apk
+        env:
+          GH_PAT: ${{ secrets.GH_PAT }}
+          tag: ${{ github.ref_name }}
+        run: |
+          gh auth login --with-token <<< "$GH_PAT"
+          gh release create "$tag" \
+          --repo="$GITHUB_REPOSITORY" \
+          --title="$tag" \
+          --generate-notes
+
+      - name: Upload Debug APK to Github Release
+        env:
+          GH_PAT: ${{ secrets.GH_PAT }}
+          tag: ${{ github.ref_name }}
+        run: |
+          gh auth login --with-token <<< "$GH_PAT"
+          gh release upload "$tag" ./app/build/outputs/apk/debug/app-debug.apk --clobber
