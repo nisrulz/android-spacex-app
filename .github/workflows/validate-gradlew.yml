@@ -1,9 +1,11 @@
 name: "Validate Gradle Wrapper"
 
 on:
+  # Allows to run this workflow when a commit it pushed to the branch
   push:
     branches:
       - main
+  # Allows to run this workflow when a Pull Request is made with the set target branch
   pull_request:
     branches:
       - main
