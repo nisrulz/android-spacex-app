@@ -2,6 +2,9 @@
 
 An Offline first Android app to consume the SpaceX Backend API [`https://github.com/r-spacex/SpaceX-API`](https://github.com/r-spacex/SpaceX-API).
 
+---
+[![Unit Tests](https://github.com/nisrulz/android-spacex-app/actions/workflows/run-tests.yml/badge.svg?branch=main)](https://github.com/nisrulz/android-spacex-app/actions/workflows/run-tests.yml) [![Validate Gradle Wrapper](https://github.com/nisrulz/android-spacex-app/actions/workflows/validate-gradlew.yml/badge.svg)](https://github.com/nisrulz/android-spacex-app/actions/workflows/validate-gradlew.yml) [![Generate Android APK](https://github.com/nisrulz/android-spacex-app/actions/workflows/gen-android-apk.yml/badge.svg)](https://github.com/nisrulz/android-spacex-app/actions/workflows/gen-android-apk.yml)
+
 ![Screenshot](./repo_assets/screenshot.png)
 
 > \[!IMPORTANT]
