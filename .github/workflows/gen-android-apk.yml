@@ -1,4 +1,4 @@
-name: Generate Android APK
+name: Release APK
 
 env:
   main_project_module: app
