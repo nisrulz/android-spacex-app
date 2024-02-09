@@ -12,4 +12,5 @@ repositories {
 dependencies {
     implementation(libs.gradle)
     implementation(libs.kotlin.gradle.plugin)
+    implementation(libs.symbol.processing.gradle.plugin)
 }
