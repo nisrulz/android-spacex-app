@@ -1,4 +1,4 @@
-package com.nisrulz.example.spacexapi.presentation.features.list_of_launches
+package com.nisrulz.example.spacexapi.presentation.features.listoflaunches
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background

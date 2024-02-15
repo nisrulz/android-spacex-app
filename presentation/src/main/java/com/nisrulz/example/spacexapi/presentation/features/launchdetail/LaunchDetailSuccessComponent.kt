@@ -1,4 +1,4 @@
-package com.nisrulz.example.spacexapi.presentation.features.launch_detail
+package com.nisrulz.example.spacexapi.presentation.features.launchdetail
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box

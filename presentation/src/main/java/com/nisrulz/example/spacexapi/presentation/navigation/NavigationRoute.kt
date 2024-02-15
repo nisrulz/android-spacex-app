@@ -4,8 +4,8 @@ import androidx.navigation.NavBackStackEntry
 import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.composable
-import com.nisrulz.example.spacexapi.presentation.features.launch_detail.LaunchDetailScreen
-import com.nisrulz.example.spacexapi.presentation.features.list_of_launches.ListOfLaunchesScreen
+import com.nisrulz.example.spacexapi.presentation.features.launchdetail.LaunchDetailScreen
+import com.nisrulz.example.spacexapi.presentation.features.listoflaunches.ListOfLaunchesScreen
 
 /*
 Read about Type safety in Navigation Compose:

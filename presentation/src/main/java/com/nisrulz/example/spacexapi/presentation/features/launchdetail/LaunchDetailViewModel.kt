@@ -1,14 +1,14 @@
-package com.nisrulz.example.spacexapi.presentation.features.launch_detail
+package com.nisrulz.example.spacexapi.presentation.features.launchdetail
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.nisrulz.example.spacexapi.domain.model.LaunchInfo
 import com.nisrulz.example.spacexapi.domain.usecase.GetLaunchDetail
 import com.nisrulz.example.spacexapi.domain.usecase.ToggleBookmarkLaunchInfo
-import com.nisrulz.example.spacexapi.presentation.features.launch_detail.LaunchDetailViewModel.LaunchDetailUiEvent.ShowSnackBar
-import com.nisrulz.example.spacexapi.presentation.features.launch_detail.LaunchDetailViewModel.LaunchDetailUiState.Error
-import com.nisrulz.example.spacexapi.presentation.features.launch_detail.LaunchDetailViewModel.LaunchDetailUiState.Loading
-import com.nisrulz.example.spacexapi.presentation.features.launch_detail.LaunchDetailViewModel.LaunchDetailUiState.Success
+import com.nisrulz.example.spacexapi.presentation.features.launchdetail.LaunchDetailViewModel.LaunchDetailUiEvent.ShowSnackBar
+import com.nisrulz.example.spacexapi.presentation.features.launchdetail.LaunchDetailViewModel.LaunchDetailUiState.Error
+import com.nisrulz.example.spacexapi.presentation.features.launchdetail.LaunchDetailViewModel.LaunchDetailUiState.Loading
+import com.nisrulz.example.spacexapi.presentation.features.launchdetail.LaunchDetailViewModel.LaunchDetailUiState.Success
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.channels.Channel
