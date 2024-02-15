@@ -21,7 +21,7 @@ import kotlinx.coroutines.flow.receiveAsFlow
 @Composable
 fun ListOfLaunchesScreen(
     viewModel: ListOfLaunchesViewModel = hiltViewModel(),
-    navigateToDetails: (String) -> Unit = {},
+    navigateToDetails: (String) -> Unit = {}
 ) {
     val snackbarHostState = remember { SnackbarHostState() }
     val state by viewModel.uiState.collectAsStateWithLifecycle()
@@ -36,7 +36,7 @@ fun ListOfLaunchesScreen(
                 when (event) {
                     is ShowSnackBar -> {
                         snackbarHostState.showSnackbar(
-                            message = event.message,
+                            message = event.message
                         )
                     }
 
@@ -63,7 +63,7 @@ fun ListOfLaunchesScreen(
                 },
                 toggleBookmarkList = {
                     viewModel.onClickBookmarkToolbarIcon(it)
-                },
+                }
             )
     }
 }

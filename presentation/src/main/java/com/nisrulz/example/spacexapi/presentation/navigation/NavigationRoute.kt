@@ -19,14 +19,12 @@ internal object NavigationRoute {
     private const val navArgLaunchId = "launchId"
     private const val DetailsRoute = "launch_detail/{$navArgLaunchId}"
 
-    private fun buildDetailsRouteWithLaunchId(launchId: String) =
-        DetailsRoute
-            .replace("{$navArgLaunchId}", launchId)
+    private fun buildDetailsRouteWithLaunchId(launchId: String) = DetailsRoute
+        .replace("{$navArgLaunchId}", launchId)
 
     // Functions
-    private fun NavBackStackEntry.getArgLaunchId(): String =
-        arguments
-            ?.getString(navArgLaunchId) ?: ""
+    private fun NavBackStackEntry.getArgLaunchId(): String = arguments
+        ?.getString(navArgLaunchId) ?: ""
 
     fun NavGraphBuilder.homeScreen(onNavigateToDetails: (launchId: String) -> Unit) {
         composable(HomeRoute) {

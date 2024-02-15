@@ -40,62 +40,62 @@ import com.nisrulz.example.spacexapi.presentation.theme.dimens
 fun LaunchInfoItem(
     launchInfo: LaunchInfo,
     onBookmark: (LaunchInfo) -> Unit,
-    onClick: (String) -> Unit,
+    onClick: (String) -> Unit
 ) {
     ElevatedCard(
         modifier =
-            Modifier
-                .fillMaxWidth()
-                .height(200.dp)
-                .padding(MaterialTheme.dimens.small),
+        Modifier
+            .fillMaxWidth()
+            .height(200.dp)
+            .padding(MaterialTheme.dimens.small),
         colors =
-            CardDefaults.cardColors(
-                containerColor = MaterialTheme.colorScheme.surfaceVariant,
-            ),
+        CardDefaults.cardColors(
+            containerColor = MaterialTheme.colorScheme.surfaceVariant
+        ),
         onClick = {
             onClick(launchInfo.id)
-        },
+        }
     ) {
         Row {
             AsyncImage(
                 model =
-                    ImageRequest.Builder(LocalContext.current)
-                        .data(launchInfo.logo)
-                        .crossfade(true)
-                        .build(),
+                ImageRequest.Builder(LocalContext.current)
+                    .data(launchInfo.logo)
+                    .crossfade(true)
+                    .build(),
                 placeholder = painterResource(R.drawable.placeholder),
                 contentDescription = stringResource(R.string.logo_description),
                 contentScale = ContentScale.Crop,
                 modifier =
-                    Modifier
-                        .padding(MaterialTheme.dimens.medium)
-                        .fillMaxWidth(0.4f),
+                Modifier
+                    .padding(MaterialTheme.dimens.medium)
+                    .fillMaxWidth(0.4f)
             )
 
             Column(
                 modifier =
-                    Modifier
-                        .padding(MaterialTheme.dimens.medium)
-                        .fillMaxSize(),
+                Modifier
+                    .padding(MaterialTheme.dimens.medium)
+                    .fillMaxSize()
             ) {
                 Text(
                     text = "LAUNCH ${launchInfo.flight_number}",
                     style =
-                        TextStyle(
-                            color = MaterialTheme.colorScheme.primary,
-                            fontSize = 16.sp,
-                            fontStyle = FontStyle.Italic,
-                            fontWeight = FontWeight.Bold,
-                        ),
+                    TextStyle(
+                        color = MaterialTheme.colorScheme.primary,
+                        fontSize = 16.sp,
+                        fontStyle = FontStyle.Italic,
+                        fontWeight = FontWeight.Bold
+                    )
                 )
                 Text(
                     text = launchInfo.name,
                     style =
-                        TextStyle(
-                            color = MaterialTheme.colorScheme.secondary,
-                            fontSize = 24.sp,
-                            fontWeight = FontWeight.Bold,
-                        ),
+                    TextStyle(
+                        color = MaterialTheme.colorScheme.secondary,
+                        fontSize = 24.sp,
+                        fontWeight = FontWeight.Bold
+                    )
                 )
 
                 Text(text = launchInfo.getFormattedDate())
@@ -112,11 +112,11 @@ fun LaunchInfoItem(
                     painter = painterResource(id = drawableIdForBookmark),
                     contentDescription = stringResource(id = R.string.bookmark),
                     modifier =
-                        Modifier
-                            .align(Alignment.End)
-                            .clickable {
-                                onBookmark(launchInfo)
-                            },
+                    Modifier
+                        .align(Alignment.End)
+                        .clickable {
+                            onBookmark(launchInfo)
+                        }
                 )
             }
         }
@@ -136,12 +136,12 @@ private fun Preview() {
                 logo = "",
                 name = "Name 1",
                 success = false,
-                isBookmarked = false,
+                isBookmarked = false
             )
         LaunchInfoItem(
             launchInfo = testLaunchInfo,
             onClick = {},
-            onBookmark = { },
+            onBookmark = { }
         )
     }
 }

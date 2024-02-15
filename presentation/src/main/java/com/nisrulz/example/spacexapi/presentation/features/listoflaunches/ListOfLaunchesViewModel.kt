@@ -16,6 +16,7 @@ import com.nisrulz.example.spacexapi.presentation.features.listoflaunches.ListOf
 import com.nisrulz.example.spacexapi.presentation.features.listoflaunches.ListOfLaunchesViewModel.ListOfLaunchesUiState.Loading
 import com.nisrulz.example.spacexapi.presentation.features.listoflaunches.ListOfLaunchesViewModel.ListOfLaunchesUiState.Success
 import dagger.hilt.android.lifecycle.HiltViewModel
+import javax.inject.Inject
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -23,20 +24,19 @@ import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
-import javax.inject.Inject
 
 @HiltViewModel
 class ListOfLaunchesViewModel
-    @Inject
-    constructor(
-        private val coroutineDispatcher: CoroutineDispatcher,
-        private val getAllLaunches: GetAllLaunches,
-        private val bookmarkLaunchInfo: ToggleBookmarkLaunchInfo,
-        private val getAllBookmarkedLaunches: GetAllBookmarkedLaunches,
-    ) : ViewModel(),
-        Logger by DefaultLogger(BuildConfig.DEBUG) {
-        var uiState: MutableStateFlow<ListOfLaunchesUiState> = MutableStateFlow(Loading)
-            private set
+@Inject
+constructor(
+    private val coroutineDispatcher: CoroutineDispatcher,
+    private val getAllLaunches: GetAllLaunches,
+    private val bookmarkLaunchInfo: ToggleBookmarkLaunchInfo,
+    private val getAllBookmarkedLaunches: GetAllBookmarkedLaunches
+) : ViewModel(),
+    Logger by DefaultLogger(BuildConfig.DEBUG) {
+    var uiState: MutableStateFlow<ListOfLaunchesUiState> = MutableStateFlow(Loading)
+        private set
 
     /*
      A CONFLATED channel is a type of channel that only preserves the latest value.
@@ -45,71 +45,68 @@ class ListOfLaunchesViewModel
      This behavior can be useful in certain scenarios where one only care about the latest
      value and don’t want to process outdated values.
      */
-        var eventFlow: Channel<ListOfLaunchesUiEvent> = Channel(Channel.CONFLATED)
-            private set
+    var eventFlow: Channel<ListOfLaunchesUiEvent> = Channel(Channel.CONFLATED)
+        private set
 
-        @VisibleForTesting
-        fun getListOfLaunches() =
-            viewModelScope.launch(coroutineDispatcher) {
-                getAllLaunches()
-                    .catch {
-                        uiState.update { Error("Error while fetching list of launches") }
-                    }
-                    .collectLatest {
-                        handleListOfLaunches(it)
-                    }
+    @VisibleForTesting
+    fun getListOfLaunches() = viewModelScope.launch(coroutineDispatcher) {
+        getAllLaunches()
+            .catch {
+                uiState.update { Error("Error while fetching list of launches") }
             }
-
-        @VisibleForTesting
-        fun getListOfBookmarkedLaunches() =
-            viewModelScope.launch(coroutineDispatcher) {
-                getAllBookmarkedLaunches()
-                    .catch {
-                        uiState.update { Error("Error while fetching list of bookmarked launches") }
-                    }
-                    .collectLatest {
-                        handleListOfLaunches(it)
-                    }
+            .collectLatest {
+                handleListOfLaunches(it)
             }
+    }
 
-        fun bookmark(launchInfo: LaunchInfo) =
-            viewModelScope.launch(coroutineDispatcher) {
-                bookmarkLaunchInfo(launchInfo)
+    @VisibleForTesting
+    fun getListOfBookmarkedLaunches() = viewModelScope.launch(coroutineDispatcher) {
+        getAllBookmarkedLaunches()
+            .catch {
+                uiState.update { Error("Error while fetching list of bookmarked launches") }
             }
-
-        private fun handleListOfLaunches(list: List<LaunchInfo>) {
-            uiState.update { Success(list) }
-        }
-
-        fun onClickBookmarkToolbarIcon(isShowingBookmarks: Boolean) {
-            if (isShowingBookmarks) {
-                getListOfBookmarkedLaunches()
-            } else {
-                getListOfLaunches()
+            .collectLatest {
+                handleListOfLaunches(it)
             }
-        }
+    }
 
-        fun showError(message: String) = sendEvent(ShowSnackBar(message))
+    fun bookmark(launchInfo: LaunchInfo) = viewModelScope.launch(coroutineDispatcher) {
+        bookmarkLaunchInfo(launchInfo)
+    }
 
-        fun navigateToDetails(launchId: String) = sendEvent(NavigateToDetails(launchId))
+    private fun handleListOfLaunches(list: List<LaunchInfo>) {
+        uiState.update { Success(list) }
+    }
 
-        private fun sendEvent(listOfLaunchesUiEvent: ListOfLaunchesUiEvent) =
-            viewModelScope.launch(coroutineDispatcher) {
-                eventFlow.send(listOfLaunchesUiEvent)
-                log("Ui Event: $listOfLaunchesUiEvent")
-            }
-
-        sealed interface ListOfLaunchesUiEvent {
-            data class ShowSnackBar(val message: String) : ListOfLaunchesUiEvent
-
-            data class NavigateToDetails(val launchId: String) : ListOfLaunchesUiEvent
-        }
-
-        sealed interface ListOfLaunchesUiState {
-            data object Loading : ListOfLaunchesUiState
-
-            data class Error(val message: String) : ListOfLaunchesUiState
-
-            data class Success(val data: List<LaunchInfo>) : ListOfLaunchesUiState
+    fun onClickBookmarkToolbarIcon(isShowingBookmarks: Boolean) {
+        if (isShowingBookmarks) {
+            getListOfBookmarkedLaunches()
+        } else {
+            getListOfLaunches()
         }
     }
+
+    fun showError(message: String) = sendEvent(ShowSnackBar(message))
+
+    fun navigateToDetails(launchId: String) = sendEvent(NavigateToDetails(launchId))
+
+    private fun sendEvent(listOfLaunchesUiEvent: ListOfLaunchesUiEvent) =
+        viewModelScope.launch(coroutineDispatcher) {
+            eventFlow.send(listOfLaunchesUiEvent)
+            log("Ui Event: $listOfLaunchesUiEvent")
+        }
+
+    sealed interface ListOfLaunchesUiEvent {
+        data class ShowSnackBar(val message: String) : ListOfLaunchesUiEvent
+
+        data class NavigateToDetails(val launchId: String) : ListOfLaunchesUiEvent
+    }
+
+    sealed interface ListOfLaunchesUiState {
+        data object Loading : ListOfLaunchesUiState
+
+        data class Error(val message: String) : ListOfLaunchesUiState
+
+        data class Success(val data: List<LaunchInfo>) : ListOfLaunchesUiState
+    }
+}

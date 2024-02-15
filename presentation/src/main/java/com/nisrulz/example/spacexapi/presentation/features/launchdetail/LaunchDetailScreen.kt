@@ -14,10 +14,7 @@ import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.receiveAsFlow
 
 @Composable
-fun LaunchDetailScreen(
-    viewModel: LaunchDetailViewModel = hiltViewModel(),
-    launchId: String,
-) {
+fun LaunchDetailScreen(viewModel: LaunchDetailViewModel = hiltViewModel(), launchId: String) {
     val snackbarHostState = remember { SnackbarHostState() }
     val state by viewModel.uiState.collectAsStateWithLifecycle()
 
@@ -37,11 +34,13 @@ fun LaunchDetailScreen(
 
     when (state) {
         LaunchDetailUiState.Loading -> LoadingComponent()
-        is LaunchDetailUiState.Error -> viewModel.showError((state as LaunchDetailUiState.Error).message)
+        is LaunchDetailUiState.Error -> viewModel.showError(
+            (state as LaunchDetailUiState.Error).message
+        )
         is LaunchDetailUiState.Success ->
             LaunchDetailSuccessComponent(
                 state = state as LaunchDetailUiState.Success,
-                snackbarHostState = snackbarHostState,
+                snackbarHostState = snackbarHostState
             )
     }
 }
