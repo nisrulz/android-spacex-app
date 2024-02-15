@@ -28,7 +28,7 @@ class LaunchDetailViewModel
         var uiState: MutableStateFlow<LaunchDetailUiState> = MutableStateFlow(Loading)
             private set
 
-        var eventFlow = Channel<LaunchDetailUiEvent>()
+        var eventFlow: Channel<LaunchDetailUiEvent> = Channel(Channel.CONFLATED)
             private set
 
         fun getLaunchInfoDetails(launchId: String?) =

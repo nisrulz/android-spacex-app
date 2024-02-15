@@ -8,7 +8,7 @@ import androidx.compose.runtime.remember
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.nisrulz.example.spacexapi.presentation.features.components.LoadingComponent
-import com.nisrulz.example.spacexapi.presentation.features.launch_detail.LaunchDetailViewModel.LaunchDetailUiEvent
+import com.nisrulz.example.spacexapi.presentation.features.launch_detail.LaunchDetailViewModel.LaunchDetailUiEvent.ShowSnackBar
 import com.nisrulz.example.spacexapi.presentation.features.launch_detail.LaunchDetailViewModel.LaunchDetailUiState
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.receiveAsFlow
@@ -25,9 +25,9 @@ fun LaunchDetailScreen(
         with(viewModel) {
             getLaunchInfoDetails(launchId)
 
-            viewModel.eventFlow.receiveAsFlow().collectLatest {
+            eventFlow.receiveAsFlow().collectLatest {
                 when (it) {
-                    is LaunchDetailUiEvent.ShowSnackBar -> {
+                    is ShowSnackBar -> {
                         snackbarHostState.showSnackbar(message = it.message)
                     }
                 }

@@ -38,7 +38,14 @@ class ListOfLaunchesViewModel
         var uiState: MutableStateFlow<ListOfLaunchesUiState> = MutableStateFlow(Loading)
             private set
 
-        var eventFlow = Channel<ListOfLaunchesUiEvent>()
+    /*
+     A CONFLATED channel is a type of channel that only preserves the latest value.
+     When a new value is sent to the channel, if the previous value has not been consumed yet,
+     it will be discarded and replaced with the new value.
+     This behavior can be useful in certain scenarios where one only care about the latest
+     value and don’t want to process outdated values.
+     */
+        var eventFlow: Channel<ListOfLaunchesUiEvent> = Channel(Channel.CONFLATED)
             private set
 
         @VisibleForTesting

@@ -27,17 +27,22 @@ fun ListOfLaunchesScreen(
     val state by viewModel.uiState.collectAsStateWithLifecycle()
 
     LaunchedEffect(true) {
-        viewModel.getListOfLaunches()
-        viewModel.eventFlow.receiveAsFlow().collectLatest { event ->
-            when (event) {
-                is ShowSnackBar -> {
-                    snackbarHostState.showSnackbar(
-                        message = event.message,
-                    )
-                }
+        with(viewModel) {
+            getListOfLaunches()
 
-                is NavigateToDetails -> {
-                    navigateToDetails(event.launchId)
+            // collectLatest() Consumes only the most recent value, cancelling any previous
+            // uncompleted processing.
+            eventFlow.receiveAsFlow().collectLatest { event ->
+                when (event) {
+                    is ShowSnackBar -> {
+                        snackbarHostState.showSnackbar(
+                            message = event.message,
+                        )
+                    }
+
+                    is NavigateToDetails -> {
+                        navigateToDetails(event.launchId)
+                    }
                 }
             }
         }
