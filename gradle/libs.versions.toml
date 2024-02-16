@@ -12,6 +12,9 @@ core-ktx = "1.12.0"
 lifecycleVer = "2.7.0"
 appcompat = "1.6.1"
 
+# Logs
+timber = "5.0.1"
+
 # Material
 material3 = "1.10.0"
 
@@ -61,6 +64,9 @@ kotlin-gradle-plugin = { module = "org.jetbrains.kotlin:kotlin-gradle-plugin", v
 symbol-processing-gradle-plugin = { module = "com.google.devtools.ksp:symbol-processing-gradle-plugin", version.ref = "ksp" }
 kotlinx-coroutines-android = { group = "org.jetbrains.kotlinx", name = "kotlinx-coroutines-android", version.ref = "kotlinxCoroutines" }
 core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "core-ktx" }
+
+# Logs
+timber = { module = "com.jakewharton.timber:timber", version.ref = "timber" }
 
 # Lifecycle
 lifecycle-viewmodel-ktx = { group = "androidx.lifecycle", name = "lifecycle-viewmodel-ktx", version.ref = "lifecycleVer" }

@@ -3,9 +3,8 @@ package com.nisrulz.example.spacexapi.presentation.features.listoflaunches
 import androidx.annotation.VisibleForTesting
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.nisrulz.example.spacexapi.common.utils.DefaultLogger
-import com.nisrulz.example.spacexapi.common.utils.Logger
-import com.nisrulz.example.spacexapi.data.BuildConfig
+import com.nisrulz.example.spacexapi.common.analytics.InUseAnalytics
+import com.nisrulz.example.spacexapi.common.logger.InUseLoggers
 import com.nisrulz.example.spacexapi.domain.model.LaunchInfo
 import com.nisrulz.example.spacexapi.domain.usecase.GetAllBookmarkedLaunches
 import com.nisrulz.example.spacexapi.domain.usecase.GetAllLaunches
@@ -16,7 +15,6 @@ import com.nisrulz.example.spacexapi.presentation.features.listoflaunches.ListOf
 import com.nisrulz.example.spacexapi.presentation.features.listoflaunches.ListOfLaunchesViewModel.ListOfLaunchesUiState.Loading
 import com.nisrulz.example.spacexapi.presentation.features.listoflaunches.ListOfLaunchesViewModel.ListOfLaunchesUiState.Success
 import dagger.hilt.android.lifecycle.HiltViewModel
-import javax.inject.Inject
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -24,6 +22,7 @@ import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
 @HiltViewModel
 class ListOfLaunchesViewModel
@@ -32,9 +31,10 @@ constructor(
     private val coroutineDispatcher: CoroutineDispatcher,
     private val getAllLaunches: GetAllLaunches,
     private val bookmarkLaunchInfo: ToggleBookmarkLaunchInfo,
-    private val getAllBookmarkedLaunches: GetAllBookmarkedLaunches
-) : ViewModel(),
-    Logger by DefaultLogger(BuildConfig.DEBUG) {
+    private val getAllBookmarkedLaunches: GetAllBookmarkedLaunches,
+    private val logger: InUseLoggers,
+    private val analytics: InUseAnalytics
+) : ViewModel() {
     var uiState: MutableStateFlow<ListOfLaunchesUiState> = MutableStateFlow(Loading)
         private set
 
@@ -93,7 +93,8 @@ constructor(
     private fun sendEvent(listOfLaunchesUiEvent: ListOfLaunchesUiEvent) =
         viewModelScope.launch(coroutineDispatcher) {
             eventFlow.send(listOfLaunchesUiEvent)
-            log("Ui Event: $listOfLaunchesUiEvent")
+            logger.log("Ui Event: $listOfLaunchesUiEvent")
+            analytics.trackEvent("Navigating to Details")
         }
 
     sealed interface ListOfLaunchesUiEvent {
