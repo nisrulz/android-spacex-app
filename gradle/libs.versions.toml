@@ -17,7 +17,7 @@ material3 = "1.10.0"
 
 # Kotlin
 org-jetbrains-kotlin-android = "1.9.22"
-kotlinxCoroutines = "1.7.3"
+kotlinxCoroutines = "1.8.0"
 ksp = "1.9.22-1.0.16"
 kotlinxSerializationJson = "1.6.2"
 
@@ -53,7 +53,7 @@ turbineVer = "1.0.0"
 mockkVersion = "1.13.9"
 junitKtx = "1.1.5"
 coreTesting = "2.2.0"
-kotlinxCoroutinesTest = "1.7.3"
+kotlinxCoroutinesTest = "1.8.0"
 
 [libraries]
 gradle = { module = "com.android.tools.build:gradle", version.ref = "agp" }
