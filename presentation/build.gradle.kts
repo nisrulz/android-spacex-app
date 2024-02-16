@@ -16,9 +16,9 @@ android {
 
 dependencies {
     // Module Dependency
-    implementation(project(":common"))
-    implementation(project(":domain"))
-    implementation(project(":data"))
+    implementation(projects.core.common)
+    implementation(projects.domain)
+    implementation(projects.data)
 
     // Material
     implementation(libs.bundles.material)
