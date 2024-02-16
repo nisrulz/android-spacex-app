@@ -1,4 +1,4 @@
-package com.nisrulz.example.spacexapi.data.local.entity
+package com.nisrulz.example.spacexapi.storage.roomdb.entity
 
 import androidx.room.Entity
 import androidx.room.PrimaryKey
@@ -12,5 +12,5 @@ data class LaunchInfoEntity(
     val logo: String?,
     val name: String,
     val success: Boolean,
-    val isBookmarked: Boolean = false,
+    val isBookmarked: Boolean = false
 )

@@ -1,4 +1,4 @@
-package com.nisrulz.example.spacexapi.data.util
+package com.nisrulz.example.spacexapi.storage.roomdb.util
 
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.TestScope

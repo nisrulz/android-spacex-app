@@ -1,11 +1,11 @@
 package com.nisrulz.example.spacexapi.data.repository
 
 import com.google.common.truth.Truth.assertThat
-import com.nisrulz.example.spacexapi.data.local.LaunchInfoDao
 import com.nisrulz.example.spacexapi.data.util.TestFactory
 import com.nisrulz.example.spacexapi.data.util.runUnconfinedTest
 import com.nisrulz.example.spacexapi.domain.repository.LaunchesRepository
 import com.nisrulz.example.spacexapi.network.retrofit.SpaceXLaunchesApi
+import com.nisrulz.example.spacexapi.storage.roomdb.LaunchInfoDao
 import io.mockk.coEvery
 import io.mockk.mockk
 import kotlinx.coroutines.flow.flowOf

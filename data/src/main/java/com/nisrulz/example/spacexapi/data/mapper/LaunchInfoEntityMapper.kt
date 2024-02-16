@@ -1,7 +1,7 @@
 package com.nisrulz.example.spacexapi.data.mapper
 
-import com.nisrulz.example.spacexapi.data.local.entity.LaunchInfoEntity
 import com.nisrulz.example.spacexapi.domain.model.LaunchInfo
+import com.nisrulz.example.spacexapi.storage.roomdb.entity.LaunchInfoEntity
 
 fun LaunchInfo.mapFromDomainModel(): LaunchInfoEntity {
     return LaunchInfoEntity(
@@ -12,7 +12,7 @@ fun LaunchInfo.mapFromDomainModel(): LaunchInfoEntity {
         logo = logo,
         name = name,
         success = success,
-        isBookmarked = isBookmarked,
+        isBookmarked = isBookmarked
     )
 }
 
@@ -25,8 +25,9 @@ fun LaunchInfoEntity.mapToDomainModel(): LaunchInfo {
         logo = logo,
         name = name,
         success = success,
-        isBookmarked = isBookmarked,
+        isBookmarked = isBookmarked
     )
 }
 
-fun List<LaunchInfoEntity>.mapToDomainModelList(): List<LaunchInfo> = this.map { it.mapToDomainModel() }
+fun List<LaunchInfoEntity>.mapToDomainModelList(): List<LaunchInfo> =
+    this.map { it.mapToDomainModel() }

@@ -1,7 +1,7 @@
 package com.nisrulz.example.spacexapi.data.mapper
 
-import com.nisrulz.example.spacexapi.data.local.entity.LaunchInfoEntity
 import com.nisrulz.example.spacexapi.network.retrofit.dto.LaunchInfoResponse
+import com.nisrulz.example.spacexapi.storage.roomdb.entity.LaunchInfoEntity
 
 fun LaunchInfoResponse.toEntity() = LaunchInfoEntity(
     date_local = date_local,

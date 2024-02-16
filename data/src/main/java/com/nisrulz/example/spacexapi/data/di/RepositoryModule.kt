@@ -1,9 +1,9 @@
 package com.nisrulz.example.spacexapi.data.di
 
-import com.nisrulz.example.spacexapi.data.local.SpaceXLaunchesDatabase
 import com.nisrulz.example.spacexapi.data.repository.LaunchesRepositoryImpl
 import com.nisrulz.example.spacexapi.domain.repository.LaunchesRepository
 import com.nisrulz.example.spacexapi.network.retrofit.SpaceXLaunchesApi
+import com.nisrulz.example.spacexapi.storage.roomdb.SpaceXLaunchesDatabase
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn

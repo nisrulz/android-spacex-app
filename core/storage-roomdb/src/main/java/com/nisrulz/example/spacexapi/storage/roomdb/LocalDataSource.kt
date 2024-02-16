@@ -1,6 +1,6 @@
-package com.nisrulz.example.spacexapi.data.local
+package com.nisrulz.example.spacexapi.storage.roomdb
 
-import com.nisrulz.example.spacexapi.data.local.entity.LaunchInfoEntity
+import com.nisrulz.example.spacexapi.storage.roomdb.entity.LaunchInfoEntity
 import kotlinx.coroutines.flow.Flow
 
 interface LocalDataSource {

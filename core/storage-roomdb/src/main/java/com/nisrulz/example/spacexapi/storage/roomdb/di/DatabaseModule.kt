@@ -1,8 +1,8 @@
-package com.nisrulz.example.spacexapi.data.di
+package com.nisrulz.example.spacexapi.storage.roomdb.di
 
 import android.app.Application
 import androidx.room.Room
-import com.nisrulz.example.spacexapi.data.local.SpaceXLaunchesDatabase
+import com.nisrulz.example.spacexapi.storage.roomdb.SpaceXLaunchesDatabase
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -18,7 +18,7 @@ class DatabaseModule {
         return Room.databaseBuilder(
             application,
             klass = SpaceXLaunchesDatabase::class.java,
-            name = SpaceXLaunchesDatabase.DATABASE_NAME,
+            name = SpaceXLaunchesDatabase.DATABASE_NAME
         ).build()
     }
 }

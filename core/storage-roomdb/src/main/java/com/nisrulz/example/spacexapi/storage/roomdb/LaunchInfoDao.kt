@@ -1,4 +1,4 @@
-package com.nisrulz.example.spacexapi.data.local
+package com.nisrulz.example.spacexapi.storage.roomdb
 
 import androidx.room.Dao
 import androidx.room.Delete
@@ -6,7 +6,7 @@ import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
 import androidx.room.Update
-import com.nisrulz.example.spacexapi.data.local.entity.LaunchInfoEntity
+import com.nisrulz.example.spacexapi.storage.roomdb.entity.LaunchInfoEntity
 import kotlinx.coroutines.flow.Flow
 
 @Dao

@@ -22,13 +22,10 @@ dependencies {
     // Module Dependency
     implementation(projects.domain)
     implementation(projects.core.networkRetrofit)
+    implementation(projects.core.storageRoomdb)
 
     // Lifecycle
     implementation(libs.lifecycle.viewmodel.ktx)
-
-    // Room
-    api(libs.bundles.room)
-    ksp(libs.room.compiler)
 
     // Testing
     testImplementation(libs.bundles.testing)

@@ -1,6 +1,5 @@
 package com.nisrulz.example.spacexapi.data.util
 
-import com.nisrulz.example.spacexapi.data.local.entity.LaunchInfoEntity
 import com.nisrulz.example.spacexapi.domain.model.LaunchInfo
 import com.nisrulz.example.spacexapi.network.retrofit.dto.Fairings
 import com.nisrulz.example.spacexapi.network.retrofit.dto.Flickr
@@ -8,6 +7,7 @@ import com.nisrulz.example.spacexapi.network.retrofit.dto.LaunchInfoResponse
 import com.nisrulz.example.spacexapi.network.retrofit.dto.Links
 import com.nisrulz.example.spacexapi.network.retrofit.dto.Patch
 import com.nisrulz.example.spacexapi.network.retrofit.dto.Reddit
+import com.nisrulz.example.spacexapi.storage.roomdb.entity.LaunchInfoEntity
 
 object TestFactory {
     //region LaunchInfoResponse

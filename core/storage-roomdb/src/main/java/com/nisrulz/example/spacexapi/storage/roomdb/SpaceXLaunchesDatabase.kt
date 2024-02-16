@@ -1,13 +1,13 @@
-package com.nisrulz.example.spacexapi.data.local
+package com.nisrulz.example.spacexapi.storage.roomdb
 
 import androidx.room.Database
 import androidx.room.RoomDatabase
-import com.nisrulz.example.spacexapi.data.local.entity.LaunchInfoEntity
+import com.nisrulz.example.spacexapi.storage.roomdb.entity.LaunchInfoEntity
 
 @Database(
     entities = [LaunchInfoEntity::class],
     version = 1,
-    exportSchema = false,
+    exportSchema = false
 )
 abstract class SpaceXLaunchesDatabase : RoomDatabase() {
     abstract val dao: LaunchInfoDao

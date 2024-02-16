@@ -23,11 +23,13 @@ enableFeaturePreview("TYPESAFE_PROJECT_ACCESSORS")
 rootProject.name = "Spacex-API"
 include(":app")
 
-// Core Modules
+//region Core Modules
 include(":core:common")
 include(":core:analytics")
 include(":core:logger")
+include(":core:storage-roomdb")
 include(":core:network-retrofit")
+//endregion
 
 include(":data")
 include(":domain")
