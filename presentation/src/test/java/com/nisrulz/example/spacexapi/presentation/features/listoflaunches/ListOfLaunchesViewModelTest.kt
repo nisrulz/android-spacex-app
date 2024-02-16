@@ -2,11 +2,11 @@ package com.nisrulz.example.spacexapi.presentation.features.listoflaunches
 
 import app.cash.turbine.test
 import com.google.common.truth.Truth.assertThat
-import com.nisrulz.example.spacexapi.common.analytics.InUseAnalytics
-import com.nisrulz.example.spacexapi.common.logger.InUseLoggers
+import com.nisrulz.example.spacexapi.analytics.InUseAnalytics
 import com.nisrulz.example.spacexapi.domain.usecase.GetAllBookmarkedLaunches
 import com.nisrulz.example.spacexapi.domain.usecase.GetAllLaunches
 import com.nisrulz.example.spacexapi.domain.usecase.ToggleBookmarkLaunchInfo
+import com.nisrulz.example.spacexapi.logger.InUseLoggers
 import com.nisrulz.example.spacexapi.presentation.features.listoflaunches.ListOfLaunchesViewModel.ListOfLaunchesUiEvent.NavigateToDetails
 import com.nisrulz.example.spacexapi.presentation.features.listoflaunches.ListOfLaunchesViewModel.ListOfLaunchesUiEvent.ShowSnackBar
 import com.nisrulz.example.spacexapi.presentation.features.listoflaunches.ListOfLaunchesViewModel.ListOfLaunchesUiState.Loading

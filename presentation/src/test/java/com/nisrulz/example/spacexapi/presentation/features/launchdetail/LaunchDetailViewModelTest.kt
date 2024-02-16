@@ -30,57 +30,54 @@ class LaunchDetailViewModelTest {
             LaunchDetailViewModel(
                 coroutineDispatcher = testDispatcher,
                 getLaunchDetail = getLaunchDetail,
-                bookmarkLaunchInfo = bookmarkLaunchInfo,
+                bookmarkLaunchInfo = bookmarkLaunchInfo
             )
     }
 
     @Test
-    fun `getLaunchInfoDetails() should update uiState with Success`() =
-        runUnconfinedTest {
-            // Given
-            val launchId = "TestLaunchId"
-            val expected = TestFactory.buildLaunchInfo()
-            coEvery { getLaunchDetail(launchId) } returns expected
+    fun `getLaunchInfoDetails() should update uiState with Success`() = runUnconfinedTest {
+        // Given
+        val launchId = "TestLaunchId"
+        val expected = TestFactory.buildLaunchInfo()
+        coEvery { getLaunchDetail(launchId) } returns expected
 
-            sut.uiState.test {
-                // When
-                sut.getLaunchInfoDetails(launchId)
-
-                // Then
-                assertThat(awaitItem()).isEqualTo(Loading)
-                assertThat(awaitItem()).isEqualTo(Success(expected))
-            }
-        }
-
-    @Test
-    fun `bookmark() should call bookmarkLaunchInfo()`() =
-        runUnconfinedTest {
-            // Given
-            val launchInfo = TestFactory.buildLaunchInfo()
-            coEvery { bookmarkLaunchInfo(any()) } returns Unit
-
+        sut.uiState.test {
             // When
-            sut.bookmark(launchInfo)
+            sut.getLaunchInfoDetails(launchId)
 
             // Then
-            coVerify {
-                bookmarkLaunchInfo(launchInfo)
-            }
+            assertThat(awaitItem()).isEqualTo(Loading)
+            assertThat(awaitItem()).isEqualTo(Success(expected))
         }
+    }
 
     @Test
-    fun `showError() should update uiEvent with ShowSnackBar`() =
-        runUnconfinedTest {
-            // Given
-            val message = "Test Error Message"
+    fun `bookmark() should call bookmarkLaunchInfo()`() = runUnconfinedTest {
+        // Given
+        val launchInfo = TestFactory.buildLaunchInfo()
+        coEvery { bookmarkLaunchInfo(any()) } returns Unit
+
+        // When
+        sut.bookmark(launchInfo)
+
+        // Then
+        coVerify {
+            bookmarkLaunchInfo(launchInfo)
+        }
+    }
+
+    @Test
+    fun `showError() should update uiEvent with ShowSnackBar`() = runUnconfinedTest {
+        // Given
+        val message = "Test Error Message"
+
+        // Then
+        sut.eventFlow.receiveAsFlow().test {
+            // When
+            sut.showError(message)
 
             // Then
-            sut.eventFlow.receiveAsFlow().test {
-                // When
-                sut.showError(message)
-
-                // Then
-                assertThat(awaitItem()).isEqualTo(ShowSnackBar(message))
-            }
+            assertThat(awaitItem()).isEqualTo(ShowSnackBar(message))
         }
+    }
 }

@@ -1,7 +1,6 @@
-package com.nisrulz.example.spacexapi.common.analytics
+package com.nisrulz.example.spacexapi.analytics
 
 import android.util.Log
-import com.nisrulz.example.spacexapi.common.BuildConfig
 
 class FirebaseAnalyticsService : AnalyticsService {
     override fun trackEvent(message: String) {

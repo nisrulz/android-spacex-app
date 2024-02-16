@@ -1,7 +1,6 @@
-package com.nisrulz.example.spacexapi.common.logger
+package com.nisrulz.example.spacexapi.logger
 
 import android.util.Log
-import com.nisrulz.example.spacexapi.common.BuildConfig
 import javax.inject.Inject
 
 class SimpleLogger

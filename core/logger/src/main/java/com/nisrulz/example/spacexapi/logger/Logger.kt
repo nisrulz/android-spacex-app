@@ -1,4 +1,4 @@
-package com.nisrulz.example.spacexapi.common.logger
+package com.nisrulz.example.spacexapi.logger
 
 interface Logger {
     fun log(message: String)

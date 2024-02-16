@@ -1,4 +1,4 @@
-package com.nisrulz.example.spacexapi.common.analytics
+package com.nisrulz.example.spacexapi.analytics
 
 interface AnalyticsService {
     fun trackEvent(message: String)

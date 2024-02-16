@@ -5,7 +5,7 @@ plugins {
 }
 
 android {
-    namespace = "com.nisrulz.example.spacexapi.common"
+    namespace = "com.nisrulz.example.spacexapi.logger"
 
     buildFeatures {
         buildConfig = true
@@ -13,6 +13,5 @@ android {
 }
 
 dependencies {
-    api(projects.core.analytics)
-    api(projects.core.logger)
+    implementation(libs.timber)
 }

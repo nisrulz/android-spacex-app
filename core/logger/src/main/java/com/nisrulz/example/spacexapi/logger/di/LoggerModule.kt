@@ -1,8 +1,8 @@
-package com.nisrulz.example.spacexapi.common.di
+package com.nisrulz.example.spacexapi.logger.di
 
-import com.nisrulz.example.spacexapi.common.logger.Logger
-import com.nisrulz.example.spacexapi.common.logger.SimpleLogger
-import com.nisrulz.example.spacexapi.common.logger.TimberLogger
+import com.nisrulz.example.spacexapi.logger.Logger
+import com.nisrulz.example.spacexapi.logger.SimpleLogger
+import com.nisrulz.example.spacexapi.logger.TimberLogger
 import dagger.Binds
 import dagger.Module
 import dagger.hilt.InstallIn
