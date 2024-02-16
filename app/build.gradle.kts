@@ -16,5 +16,5 @@ android {
 
 dependencies {
     // Module Dependency
-    implementation(project(":presentation"))
+    implementation(projects.presentation)
 }

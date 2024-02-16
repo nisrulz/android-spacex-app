@@ -22,7 +22,7 @@ android {
 
 dependencies {
     // Module Dependency
-    implementation(project(":domain"))
+    implementation(projects.domain)
 
     // Retrofit
     implementation(platform(libs.okhttp.bom))

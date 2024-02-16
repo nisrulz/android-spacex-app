@@ -89,5 +89,6 @@ An Offline first Android app to consume the SpaceX Backend API [`https://github.
 3. Everything should sync and build automatically
 
 ## License
-Copyright © 2023 [Nishant Srivastava](https://github.com/nisrulz). <br />
-This project is [Apache License 2.0](./LICENSE) licensed.
+
+- Copyright © 2023 [Nishant Srivastava](https://github.com/nisrulz).
+- This project is [Apache License 2.0](./LICENSE) licensed.

@@ -17,9 +17,12 @@ dependencyResolutionManagement {
     }
 }
 
+// For accessing modules as type safe values
+enableFeaturePreview("TYPESAFE_PROJECT_ACCESSORS")
+
 rootProject.name = "Spacex-API"
 include(":app")
-include(":common")
+include(":core:common")
 include(":data")
 include(":domain")
 include(":presentation")
