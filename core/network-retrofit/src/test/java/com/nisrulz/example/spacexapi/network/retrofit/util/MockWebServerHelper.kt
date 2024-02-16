@@ -1,6 +1,7 @@
-package com.nisrulz.example.spacexapi.data.util
+package com.nisrulz.example.spacexapi.network.retrofit.util
 
 import com.jakewharton.retrofit2.converter.kotlinx.serialization.asConverterFactory
+import java.io.File
 import kotlinx.serialization.json.Json
 import okhttp3.MediaType.Companion.toMediaType
 import okhttp3.mockwebserver.MockResponse
@@ -9,7 +10,6 @@ import okhttp3.mockwebserver.SocketPolicy
 import okio.Buffer
 import retrofit2.Converter
 import retrofit2.Retrofit
-import java.io.File
 
 object MockWebServerHelper {
     /**
@@ -25,14 +25,11 @@ object MockWebServerHelper {
     /**
      * Sets which response the [MockWebServer] should return when a request is made
      */
-    internal fun MockWebServer.setResponse(
-        fileName: String,
-        responseCode: Int = 200,
-    ) {
+    internal fun MockWebServer.setResponse(fileName: String, responseCode: Int = 200) {
         enqueue(
             MockResponse()
                 .setResponseCode(responseCode)
-                .setBody(getFileAsString(fileName)),
+                .setBody(getFileAsString(fileName))
         )
     }
 
@@ -43,7 +40,7 @@ object MockWebServerHelper {
         enqueue(
             MockResponse()
                 .setBody(Buffer().write(ByteArray(4096)))
-                .setSocketPolicy(SocketPolicy.DISCONNECT_DURING_RESPONSE_BODY),
+                .setSocketPolicy(SocketPolicy.DISCONNECT_DURING_RESPONSE_BODY)
         )
     }
 
@@ -59,6 +56,9 @@ object MockWebServerHelper {
      */
     private fun getFileAsString(filePath: String): String {
         val uri = ClassLoader.getSystemResource(filePath)
+        if (uri == null) {
+            println("File not found! Check if the response json is placed in resources directory")
+        }
         val file = File(uri.path)
         return String(file.readBytes())
     }

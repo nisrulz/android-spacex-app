@@ -1,12 +1,15 @@
-package com.nisrulz.example.spacexapi.data.di
+package com.nisrulz.example.spacexapi.network.retrofit.di
 
 import android.app.Application
 import com.jakewharton.retrofit2.converter.kotlinx.serialization.asConverterFactory
-import com.nisrulz.example.spacexapi.data.remote.SpaceXLaunchesApi
+import com.nisrulz.example.spacexapi.network.retrofit.SpaceXLaunchesApi
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
+import java.io.File
+import java.util.concurrent.TimeUnit
+import javax.inject.Singleton
 import kotlinx.serialization.json.Json
 import okhttp3.Cache
 import okhttp3.Interceptor
@@ -15,9 +18,6 @@ import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Converter
 import retrofit2.Retrofit
-import java.io.File
-import java.util.concurrent.TimeUnit
-import javax.inject.Singleton
 
 @Module
 @InstallIn(SingletonComponent::class)
@@ -30,10 +30,7 @@ class NetworkModule {
 
     @Provides
     @Singleton
-    fun provideRetrofit(
-        okHttpClient: OkHttpClient,
-        jsonConverter: Converter.Factory,
-    ): Retrofit {
+    fun provideRetrofit(okHttpClient: OkHttpClient, jsonConverter: Converter.Factory): Retrofit {
         return Retrofit.Builder()
             .baseUrl(SpaceXLaunchesApi.BASE_URL)
             .addConverterFactory(jsonConverter)
@@ -56,7 +53,7 @@ class NetworkModule {
     fun provideOkhttpClient(
         cacheLoggingInterceptor: Interceptor,
         httpLoggingInterceptor: HttpLoggingInterceptor,
-        cache: Cache,
+        cache: Cache
     ) = OkHttpClient
         .Builder()
         .cache(cache)
@@ -77,28 +74,26 @@ class NetworkModule {
 
     @Provides
     @Singleton
-    fun provideCacheLoggingInterceptor(): Interceptor =
-        Interceptor { chain ->
-            val request = chain.request()
-            val response = chain.proceed(request)
-            if (response.cacheResponse != null) {
-                println(
-                    "🧠 Successful Response from MEMORY_CACHE\n" +
-                        "\t${request.method} ${request.url}",
-                )
-            } else if (response.networkResponse != null) {
-                println(
-                    "☁️ Successful Response from NETWORK\n" +
-                        "\t${request.method} ${request.url}",
-                )
-            }
-            return@Interceptor response
+    fun provideCacheLoggingInterceptor(): Interceptor = Interceptor { chain ->
+        val request = chain.request()
+        val response = chain.proceed(request)
+        if (response.cacheResponse != null) {
+            println(
+                "🧠 Successful Response from MEMORY_CACHE\n" +
+                    "\t${request.method} ${request.url}"
+            )
+        } else if (response.networkResponse != null) {
+            println(
+                "☁️ Successful Response from NETWORK\n" +
+                    "\t${request.method} ${request.url}"
+            )
         }
+        return@Interceptor response
+    }
 
     @Provides
     @Singleton
-    fun provideLoggingInterceptor() =
-        HttpLoggingInterceptor().apply {
-            setLevel(HttpLoggingInterceptor.Level.BODY)
-        }
+    fun provideLoggingInterceptor() = HttpLoggingInterceptor().apply {
+        setLevel(HttpLoggingInterceptor.Level.BODY)
+    }
 }

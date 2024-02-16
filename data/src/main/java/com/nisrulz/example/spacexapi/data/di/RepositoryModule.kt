@@ -1,9 +1,9 @@
 package com.nisrulz.example.spacexapi.data.di
 
 import com.nisrulz.example.spacexapi.data.local.SpaceXLaunchesDatabase
-import com.nisrulz.example.spacexapi.data.remote.SpaceXLaunchesApi
 import com.nisrulz.example.spacexapi.data.repository.LaunchesRepositoryImpl
 import com.nisrulz.example.spacexapi.domain.repository.LaunchesRepository
+import com.nisrulz.example.spacexapi.network.retrofit.SpaceXLaunchesApi
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -17,7 +17,7 @@ class RepositoryModule {
     @ViewModelScoped
     fun provideRepository(
         database: SpaceXLaunchesDatabase,
-        api: SpaceXLaunchesApi,
+        api: SpaceXLaunchesApi
     ): LaunchesRepository {
         return LaunchesRepositoryImpl(localDataSource = database.dao, remoteDataSource = api)
     }

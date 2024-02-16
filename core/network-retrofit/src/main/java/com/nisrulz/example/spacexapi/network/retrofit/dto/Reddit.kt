@@ -1,4 +1,4 @@
-package com.nisrulz.example.spacexapi.data.remote.dto
+package com.nisrulz.example.spacexapi.network.retrofit.dto
 
 import kotlinx.serialization.Serializable
 
@@ -7,5 +7,5 @@ data class Reddit(
     val campaign: String = "",
     val launch: String = "",
     val media: String = "",
-    val recovery: String = "",
+    val recovery: String = ""
 )

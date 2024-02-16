@@ -2,8 +2,6 @@
 plugins {
     id("library-convention")
     id("hilt-convention")
-
-    alias(libs.plugins.kotlin.serialization)
 }
 
 android {
@@ -23,11 +21,7 @@ android {
 dependencies {
     // Module Dependency
     implementation(projects.domain)
-
-    // Retrofit
-    implementation(platform(libs.okhttp.bom))
-    implementation(libs.bundles.retrofit)
-    testImplementation(libs.okhttp.mockwebserver)
+    implementation(projects.core.networkRetrofit)
 
     // Lifecycle
     implementation(libs.lifecycle.viewmodel.ktx)

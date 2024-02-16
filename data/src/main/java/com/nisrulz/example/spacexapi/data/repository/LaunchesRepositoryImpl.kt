@@ -4,16 +4,16 @@ import com.nisrulz.example.spacexapi.data.local.LocalDataSource
 import com.nisrulz.example.spacexapi.data.mapper.mapToDomainModel
 import com.nisrulz.example.spacexapi.data.mapper.mapToDomainModelList
 import com.nisrulz.example.spacexapi.data.mapper.toEntityList
-import com.nisrulz.example.spacexapi.data.remote.RemoteDataSource
 import com.nisrulz.example.spacexapi.domain.model.LaunchInfo
 import com.nisrulz.example.spacexapi.domain.repository.LaunchesRepository
+import com.nisrulz.example.spacexapi.network.retrofit.RemoteDataSource
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.map
 
 class LaunchesRepositoryImpl(
     private val localDataSource: LocalDataSource,
-    private val remoteDataSource: RemoteDataSource,
+    private val remoteDataSource: RemoteDataSource
 ) : LaunchesRepository {
     override suspend fun getListOfLaunches(): Flow<List<LaunchInfo>> {
         // 1. Get list of all bookmarked launches
@@ -45,10 +45,7 @@ class LaunchesRepositoryImpl(
         return localDataSource.getAllBookmarked().map { it.mapToDomainModelList() }
     }
 
-    override suspend fun setBookmark(
-        id: String,
-        value: Boolean,
-    ) {
+    override suspend fun setBookmark(id: String, value: Boolean) {
         val launch = localDataSource.getById(id)
         launch?.copy(isBookmarked = value)?.let {
             localDataSource.update(it)

@@ -2,10 +2,10 @@ package com.nisrulz.example.spacexapi.data.repository
 
 import com.google.common.truth.Truth.assertThat
 import com.nisrulz.example.spacexapi.data.local.LaunchInfoDao
-import com.nisrulz.example.spacexapi.data.remote.SpaceXLaunchesApi
 import com.nisrulz.example.spacexapi.data.util.TestFactory
 import com.nisrulz.example.spacexapi.data.util.runUnconfinedTest
 import com.nisrulz.example.spacexapi.domain.repository.LaunchesRepository
+import com.nisrulz.example.spacexapi.network.retrofit.SpaceXLaunchesApi
 import io.mockk.coEvery
 import io.mockk.mockk
 import kotlinx.coroutines.flow.flowOf
@@ -25,24 +25,23 @@ class LaunchesRepositoryImplTest {
     }
 
     @Test
-    fun `getListOfLaunches() returns a list of LaunchInfo on success`() =
-        runUnconfinedTest {
-            // Given
-            coEvery { api.getAllLaunches() } returns TestFactory.buildListOfLaunchInfoResponse()
-            coEvery { dao.deleteAll() } returns Unit
-            coEvery { dao.getAllBookmarked() } returns flowOf(emptyList())
-            coEvery { dao.insertAll(any()) } returns Unit
-            coEvery { dao.getAll() } returns flowOf(TestFactory.buildListOfLaunchInfoEntity())
-            val expected = TestFactory.buildListOfLaunchInfo()
+    fun `getListOfLaunches() returns a list of LaunchInfo on success`() = runUnconfinedTest {
+        // Given
+        coEvery { api.getAllLaunches() } returns TestFactory.buildListOfLaunchInfoResponse()
+        coEvery { dao.deleteAll() } returns Unit
+        coEvery { dao.getAllBookmarked() } returns flowOf(emptyList())
+        coEvery { dao.insertAll(any()) } returns Unit
+        coEvery { dao.getAll() } returns flowOf(TestFactory.buildListOfLaunchInfoEntity())
+        val expected = TestFactory.buildListOfLaunchInfo()
 
-            // When
-            val resultFlow = sut.getListOfLaunches()
+        // When
+        val resultFlow = sut.getListOfLaunches()
 
-            // Then
-            resultFlow.collect {
-                assertThat(it).isEqualTo(expected)
-            }
+        // Then
+        resultFlow.collect {
+            assertThat(it).isEqualTo(expected)
         }
+    }
 
     @Test
     fun `getListOfLaunches() returns an empty list when repository returns nothing`() =
@@ -67,7 +66,9 @@ class LaunchesRepositoryImplTest {
     fun `getAllBookmarked() returns a list of bookmarked LaunchInfo on success`() =
         runUnconfinedTest {
             // Given
-            coEvery { dao.getAllBookmarked() } returns flowOf(TestFactory.buildListOfBookmarkedLaunchInfoEntity())
+            coEvery {
+                dao.getAllBookmarked()
+            } returns flowOf(TestFactory.buildListOfBookmarkedLaunchInfoEntity())
             val expected = TestFactory.buildListOfBookmarkedLaunchInfo()
 
             // When
@@ -95,31 +96,29 @@ class LaunchesRepositoryImplTest {
         }
 
     @Test
-    fun `getLaunchDetail() returns a valid LaunchInfo for id on success`() =
-        runUnconfinedTest {
-            // Given
-            val id = TestFactory.buildLaunchInfoEntity().id
-            coEvery { dao.getById(any()) } returns TestFactory.buildLaunchInfoEntity()
-            val expected = TestFactory.buildLaunchInfo()
+    fun `getLaunchDetail() returns a valid LaunchInfo for id on success`() = runUnconfinedTest {
+        // Given
+        val id = TestFactory.buildLaunchInfoEntity().id
+        coEvery { dao.getById(any()) } returns TestFactory.buildLaunchInfoEntity()
+        val expected = TestFactory.buildLaunchInfo()
 
-            // When
-            val result = sut.getLaunchDetail(id)
+        // When
+        val result = sut.getLaunchDetail(id)
 
-            // Then
-            assertThat(result).isEqualTo(expected)
-        }
+        // Then
+        assertThat(result).isEqualTo(expected)
+    }
 
     @Test
-    fun `getLaunchDetail() returns null when item with id cannot be found`() =
-        runUnconfinedTest {
-            // Given
-            val id = TestFactory.buildLaunchInfoEntity().id
-            coEvery { dao.getById(any()) } returns null
+    fun `getLaunchDetail() returns null when item with id cannot be found`() = runUnconfinedTest {
+        // Given
+        val id = TestFactory.buildLaunchInfoEntity().id
+        coEvery { dao.getById(any()) } returns null
 
-            // When
-            val result = sut.getLaunchDetail(id)
+        // When
+        val result = sut.getLaunchDetail(id)
 
-            // Then
-            assertThat(result).isEqualTo(null)
-        }
+        // Then
+        assertThat(result).isEqualTo(null)
+    }
 }

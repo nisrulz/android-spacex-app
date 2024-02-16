@@ -1,4 +1,4 @@
-package com.nisrulz.example.spacexapi.data.remote.dto
+package com.nisrulz.example.spacexapi.network.retrofit.dto
 
 import kotlinx.serialization.Serializable
 
@@ -11,5 +11,5 @@ data class Links(
     val reddit: Reddit? = null,
     val webcast: String = "",
     val wikipedia: String = "",
-    val youtube_id: String = "",
+    val youtube_id: String = ""
 )

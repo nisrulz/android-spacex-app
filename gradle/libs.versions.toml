@@ -3,7 +3,7 @@
 # SDK
 compileSdk = "34"
 targetSdk = "34"
-minSdk = "21"
+minSdk = "23"
 composeCompiler = "1.5.8"
 
 # Android Core

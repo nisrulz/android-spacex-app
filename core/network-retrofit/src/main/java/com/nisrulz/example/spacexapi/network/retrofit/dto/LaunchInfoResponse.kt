@@ -1,4 +1,4 @@
-package com.nisrulz.example.spacexapi.data.remote.dto
+package com.nisrulz.example.spacexapi.network.retrofit.dto
 
 import kotlinx.serialization.Serializable
 
@@ -30,5 +30,5 @@ data class LaunchInfoResponse(
     val success: Boolean = false,
     val tbd: Boolean = false,
     val upcoming: Boolean = false,
-    val window: Int = 0,
+    val window: Int = 0
 )

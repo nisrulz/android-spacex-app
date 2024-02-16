@@ -1,9 +1,9 @@
-package com.nisrulz.example.spacexapi.data.remote.dto
+package com.nisrulz.example.spacexapi.network.retrofit.dto
 
 import kotlinx.serialization.Serializable
 
 @Serializable
 data class Patch(
     val large: String = "",
-    val small: String = "",
+    val small: String = ""
 )

@@ -27,6 +27,7 @@ include(":app")
 include(":core:common")
 include(":core:analytics")
 include(":core:logger")
+include(":core:network-retrofit")
 
 include(":data")
 include(":domain")

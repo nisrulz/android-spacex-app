@@ -1,4 +1,4 @@
-package com.nisrulz.example.spacexapi.data.remote.dto
+package com.nisrulz.example.spacexapi.network.retrofit.dto
 
 import kotlinx.serialization.Serializable
 
@@ -12,5 +12,5 @@ data class Core(
     val landing_type: String = "",
     val landpad: String = "",
     val legs: Boolean = false,
-    val reused: Boolean = false,
+    val reused: Boolean = false
 )

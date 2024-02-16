@@ -1,4 +1,4 @@
-package com.nisrulz.example.spacexapi.data.remote.dto
+package com.nisrulz.example.spacexapi.network.retrofit.dto
 
 import kotlinx.serialization.Serializable
 
@@ -7,5 +7,5 @@ data class Fairings(
     val recovered: Boolean = false,
     val recovery_attempt: Boolean = false,
     val reused: Boolean = false,
-    val ships: List<String>,
+    val ships: List<String>
 )
