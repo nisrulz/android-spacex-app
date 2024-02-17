@@ -22,7 +22,9 @@ class UseCaseModule {
 
     @Provides
     @ViewModelScoped
-    fun provideGetAllBookmarkedLaunchesUseCase(repository: LaunchesRepository): GetAllBookmarkedLaunches {
+    fun provideGetAllBookmarkedLaunchesUseCase(
+        repository: LaunchesRepository
+    ): GetAllBookmarkedLaunches {
         return GetAllBookmarkedLaunches(repository)
     }
 

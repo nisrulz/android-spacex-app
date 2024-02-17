@@ -13,21 +13,21 @@ https://developer.android.com/guide/navigation/design/type-safety
  */
 internal object NavigationRoute {
     // Home
-    const val HomeRoute = "list_of_launches"
+    const val HOME_ROUTE = "list_of_launches"
 
     // Details
-    private const val navArgLaunchId = "launchId"
-    private const val DetailsRoute = "launch_detail/{$navArgLaunchId}"
+    private const val NAV_ARG_LAUNCH_ID = "launchId"
+    private const val DETAILS_ROUTE = "launch_detail/{$NAV_ARG_LAUNCH_ID}"
 
-    private fun buildDetailsRouteWithLaunchId(launchId: String) = DetailsRoute
-        .replace("{$navArgLaunchId}", launchId)
+    private fun buildDetailsRouteWithLaunchId(launchId: String) = DETAILS_ROUTE
+        .replace("{$NAV_ARG_LAUNCH_ID}", launchId)
 
     // Functions
     private fun NavBackStackEntry.getArgLaunchId(): String = arguments
-        ?.getString(navArgLaunchId) ?: ""
+        ?.getString(NAV_ARG_LAUNCH_ID) ?: ""
 
     fun NavGraphBuilder.homeScreen(onNavigateToDetails: (launchId: String) -> Unit) {
-        composable(HomeRoute) {
+        composable(HOME_ROUTE) {
             ListOfLaunchesScreen(navigateToDetails = { launchId ->
                 onNavigateToDetails(launchId)
             })
@@ -35,7 +35,7 @@ internal object NavigationRoute {
     }
 
     fun NavGraphBuilder.detailsScreen() {
-        composable(DetailsRoute) { backStackEntry ->
+        composable(DETAILS_ROUTE) { backStackEntry ->
             val id = backStackEntry.getArgLaunchId()
             if (id.isNotEmpty()) {
                 LaunchDetailScreen(launchId = id)

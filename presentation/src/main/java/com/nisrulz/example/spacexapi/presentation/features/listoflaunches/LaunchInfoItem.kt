@@ -35,7 +35,6 @@ import com.nisrulz.example.spacexapi.presentation.R
 import com.nisrulz.example.spacexapi.presentation.theme.SpacexAPITheme
 import com.nisrulz.example.spacexapi.presentation.theme.dimens
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun LaunchInfoItem(
     launchInfo: LaunchInfo,
