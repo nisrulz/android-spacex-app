@@ -78,6 +78,12 @@ An Offline first Android app to consume the SpaceX Backend API [`https://github.
 - [Gradle Convention Plugins](https://docs.gradle.org/current/samples/sample_convention_plugins.html) | PR [#5](https://github.com/nisrulz/android-spacex-app/pull/5) [#7](https://github.com/nisrulz/android-spacex-app/pull/7)
 - [Github Actions](https://docs.github.com/en/actions) | [Workflows used](.github/workflows)
 
+## Dependency Graph
+
+<img src="dependency_graph.svg" alt="Dependency Graph" />
+
+> To generate this graph, simply run `python3 generate_dependency_graph.py` in the root directory.
+
 ## Project Requirements
 
 - Java 11+
