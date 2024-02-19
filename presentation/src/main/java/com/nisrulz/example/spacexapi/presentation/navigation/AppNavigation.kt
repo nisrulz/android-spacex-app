@@ -3,6 +3,7 @@ package com.nisrulz.example.spacexapi.presentation.navigation
 import androidx.compose.runtime.Composable
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.rememberNavController
+import com.nisrulz.example.spacexapi.presentation.navigation.NavigationRoute.backFromLaunchDetails
 import com.nisrulz.example.spacexapi.presentation.navigation.NavigationRoute.detailsScreen
 import com.nisrulz.example.spacexapi.presentation.navigation.NavigationRoute.homeScreen
 import com.nisrulz.example.spacexapi.presentation.navigation.NavigationRoute.navigateToLaunchDetail
@@ -14,12 +15,12 @@ fun AppNavigation() {
         navController = navController,
         startDestination = NavigationRoute.HOME_ROUTE
     ) {
-        homeScreen(
-            onNavigateToDetails = { launchId ->
-                navController.navigateToLaunchDetail(launchId)
-            }
-        )
+        homeScreen(onNavigateToDetails = { launchId ->
+            navController.navigateToLaunchDetail(launchId)
+        })
 
-        detailsScreen()
+        detailsScreen(onBackAction = {
+            navController.backFromLaunchDetails()
+        })
     }
 }

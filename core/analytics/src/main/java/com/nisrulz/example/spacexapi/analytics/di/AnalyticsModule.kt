@@ -1,8 +1,8 @@
 package com.nisrulz.example.spacexapi.analytics.di
 
-import com.nisrulz.example.spacexapi.analytics.AnalyticsService
-import com.nisrulz.example.spacexapi.analytics.FirebaseAnalyticsService
-import com.nisrulz.example.spacexapi.analytics.GoogleAnalyticsService
+import com.nisrulz.example.spacexapi.analytics.contract.AnalyticsService
+import com.nisrulz.example.spacexapi.analytics.services.FirebaseAnalyticsService
+import com.nisrulz.example.spacexapi.analytics.services.GoogleAnalyticsService
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn

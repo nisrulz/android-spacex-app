@@ -34,16 +34,20 @@ internal object NavigationRoute {
         }
     }
 
-    fun NavGraphBuilder.detailsScreen() {
+    fun NavGraphBuilder.detailsScreen(onBackAction: () -> Unit) {
         composable(DETAILS_ROUTE) { backStackEntry ->
             val id = backStackEntry.getArgLaunchId()
             if (id.isNotEmpty()) {
-                LaunchDetailScreen(launchId = id)
+                LaunchDetailScreen(launchId = id, onBackAction = onBackAction)
             }
         }
     }
 
     fun NavController.navigateToLaunchDetail(launchId: String) {
         this.navigate(buildDetailsRouteWithLaunchId(launchId))
+    }
+
+    fun NavController.backFromLaunchDetails() {
+        this.popBackStack()
     }
 }

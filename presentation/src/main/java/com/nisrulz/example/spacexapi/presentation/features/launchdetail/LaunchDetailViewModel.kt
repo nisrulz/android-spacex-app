@@ -2,6 +2,9 @@ package com.nisrulz.example.spacexapi.presentation.features.launchdetail
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.nisrulz.example.spacexapi.analytics.InUseAnalytics
+import com.nisrulz.example.spacexapi.analytics.trackNavigateToListOfLaunches
+import com.nisrulz.example.spacexapi.analytics.trackScreenLaunchDetail
 import com.nisrulz.example.spacexapi.domain.model.LaunchInfo
 import com.nisrulz.example.spacexapi.domain.usecase.GetLaunchDetail
 import com.nisrulz.example.spacexapi.domain.usecase.ToggleBookmarkLaunchInfo
@@ -23,7 +26,8 @@ class LaunchDetailViewModel
 constructor(
     private val coroutineDispatcher: CoroutineDispatcher,
     private val getLaunchDetail: GetLaunchDetail,
-    private val bookmarkLaunchInfo: ToggleBookmarkLaunchInfo
+    private val bookmarkLaunchInfo: ToggleBookmarkLaunchInfo,
+    private val analytics: InUseAnalytics
 ) : ViewModel() {
     var uiState: MutableStateFlow<LaunchDetailUiState> = MutableStateFlow(Loading)
         private set
@@ -48,6 +52,9 @@ constructor(
     fun showError(message: String) = viewModelScope.launch(coroutineDispatcher) {
         eventFlow.send(ShowSnackBar(message))
     }
+
+    fun trackScreenEntered() = analytics.trackScreenLaunchDetail()
+    fun trackOnBack() = analytics.trackNavigateToListOfLaunches()
 
     sealed interface LaunchDetailUiState {
         data object Loading : LaunchDetailUiState

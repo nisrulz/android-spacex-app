@@ -28,6 +28,9 @@ fun ListOfLaunchesScreen(
 
     LaunchedEffect(true) {
         with(viewModel) {
+            // Analytics
+            trackScreenEntered()
+
             getListOfLaunches()
 
             // collectLatest() Consumes only the most recent value, cancelling any previous

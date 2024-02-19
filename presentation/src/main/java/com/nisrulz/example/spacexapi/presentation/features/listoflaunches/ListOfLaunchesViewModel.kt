@@ -4,6 +4,8 @@ import androidx.annotation.VisibleForTesting
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.nisrulz.example.spacexapi.analytics.InUseAnalytics
+import com.nisrulz.example.spacexapi.analytics.trackNavigateToDetail
+import com.nisrulz.example.spacexapi.analytics.trackScreenListOfLaunches
 import com.nisrulz.example.spacexapi.domain.model.LaunchInfo
 import com.nisrulz.example.spacexapi.domain.usecase.GetAllBookmarkedLaunches
 import com.nisrulz.example.spacexapi.domain.usecase.GetAllLaunches
@@ -94,8 +96,10 @@ constructor(
         viewModelScope.launch(coroutineDispatcher) {
             eventFlow.send(listOfLaunchesUiEvent)
             logger.log("Ui Event: $listOfLaunchesUiEvent")
-            analytics.trackEvent("Navigating to Details")
+            analytics.trackNavigateToDetail()
         }
+
+    fun trackScreenEntered() = analytics.trackScreenListOfLaunches()
 
     sealed interface ListOfLaunchesUiEvent {
         data class ShowSnackBar(val message: String) : ListOfLaunchesUiEvent
