@@ -1,0 +1,28 @@
+# Use 
+digraph {
+    node [fillcolor=lightblue shape=box3d style=filled]
+    graph [splines=polyline]
+
+    // Define the labels
+    "core.analytics" [label="Analytics"]
+    "core.logger" [label="Logging"]
+    "core.common" [label="Common"]
+    "core.networkRetrofit" [label="Network: Retrofit"]
+    "core.storageRoomdb" [label="Storage: Room DB"]
+    "data" [label="Data (RepositoryImpl, Mapper)"]
+    "domain" [label="Domain (Usecase, Repository, Model)"]
+    "presentation" [label="Presentation (ViewModel, UI, Navigation)"]
+    "app" [label="Application"]
+
+    // Define the layers
+    "app" -> "presentation" [label="uses"]
+    "presentation" -> "domain" [label="uses"]
+    "domain" -> "data" [label="uses"]
+
+    // Define the dependencies within the layers
+    "presentation" -> "core.common" [label="uses"]
+    "core.common" -> "core.analytics" [label="uses"]
+    "core.common" -> "core.logger" [label="uses"]
+    "data" -> "core.networkRetrofit" [label="uses"]
+    "data" -> "core.storageRoomdb" [label="uses"]
+}

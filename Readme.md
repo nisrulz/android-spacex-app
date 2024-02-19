@@ -80,9 +80,16 @@ An Offline first Android app to consume the SpaceX Backend API [`https://github.
 
 ## Dependency Graph
 
-<img src="dependency_graph.svg" alt="Dependency Graph" />
+<img src="./repo_assets/dependency_graph/module_dependency_graph.svg" alt="Dependency Graph" />
 
-> To generate this graph, simply run `python3 generate_dependency_graph.py` in the root directory.
+<br/>
+
+> To generate this graph, simply run in the root directory.
+>
+> ```sh
+> cd repo_assets/dependency_graph
+> python3 generate_module_dependency_graph.py 
+> ```
 
 ## Project Requirements
 
