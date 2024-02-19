@@ -17,7 +17,6 @@ android {
 dependencies {
     // Module Dependency
     implementation(projects.core.common)
-    implementation(projects.domain)
     implementation(projects.data)
 
     // Material

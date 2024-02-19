@@ -20,7 +20,7 @@ android {
 
 dependencies {
     // Module Dependency
-    implementation(projects.domain)
+    api(projects.domain)
     implementation(projects.core.networkRetrofit)
     implementation(projects.core.storageRoomdb)
 
