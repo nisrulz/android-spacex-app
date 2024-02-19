@@ -3,6 +3,7 @@ package com.nisrulz.example.spacexapi.presentation.features.listoflaunches
 import app.cash.turbine.test
 import com.google.common.truth.Truth.assertThat
 import com.nisrulz.example.spacexapi.analytics.InUseAnalytics
+import com.nisrulz.example.spacexapi.analytics.contract.AnalyticsEvent
 import com.nisrulz.example.spacexapi.domain.usecase.GetAllBookmarkedLaunches
 import com.nisrulz.example.spacexapi.domain.usecase.GetAllLaunches
 import com.nisrulz.example.spacexapi.domain.usecase.ToggleBookmarkLaunchInfo
@@ -44,7 +45,7 @@ class ListOfLaunchesViewModelTest {
             every { log(any<String>()) } just runs
         }
         analytics = mockk {
-            every { trackEvent(any<String>()) } just runs
+            every { trackEvent(any<AnalyticsEvent>()) } just runs
         }
 
         sut = ListOfLaunchesViewModel(
@@ -117,7 +118,7 @@ class ListOfLaunchesViewModelTest {
             // Then
             assertThat(awaitItem()).isEqualTo(ShowSnackBar(message))
             verify { logger.log(any<String>()) }
-            verify { analytics.trackEvent(any<String>()) }
+            verify { analytics.trackEvent(any<AnalyticsEvent>()) }
         }
     }
 
@@ -134,7 +135,7 @@ class ListOfLaunchesViewModelTest {
             // Then
             assertThat(awaitItem()).isEqualTo(NavigateToDetails(launchId))
             verify { logger.log(any<String>()) }
-            verify { analytics.trackEvent(any<String>()) }
+            verify { analytics.trackEvent(any<AnalyticsEvent>()) }
         }
     }
 }

@@ -1,4 +1,5 @@
-# Use 
+# Use https://edotor.net/ to visualize and edit this digraph
+
 digraph {
     node [fillcolor=lightblue shape=box3d style=filled]
     graph [splines=polyline]

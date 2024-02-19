@@ -2,6 +2,7 @@ package com.nisrulz.example.spacexapi.presentation.features.launchdetail
 
 import app.cash.turbine.test
 import com.google.common.truth.Truth.assertThat
+import com.nisrulz.example.spacexapi.analytics.InUseAnalytics
 import com.nisrulz.example.spacexapi.domain.usecase.GetLaunchDetail
 import com.nisrulz.example.spacexapi.domain.usecase.ToggleBookmarkLaunchInfo
 import com.nisrulz.example.spacexapi.presentation.features.launchdetail.LaunchDetailViewModel.LaunchDetailUiEvent.ShowSnackBar
@@ -21,16 +22,19 @@ class LaunchDetailViewModelTest {
     private lateinit var sut: LaunchDetailViewModel
     private lateinit var getLaunchDetail: GetLaunchDetail
     private lateinit var bookmarkLaunchInfo: ToggleBookmarkLaunchInfo
+    private lateinit var analytics: InUseAnalytics
 
     @Before
     fun setup() {
         getLaunchDetail = mockk()
         bookmarkLaunchInfo = mockk()
+        analytics = mockk()
         sut =
             LaunchDetailViewModel(
                 coroutineDispatcher = testDispatcher,
                 getLaunchDetail = getLaunchDetail,
-                bookmarkLaunchInfo = bookmarkLaunchInfo
+                bookmarkLaunchInfo = bookmarkLaunchInfo,
+                analytics = analytics
             )
     }
 
