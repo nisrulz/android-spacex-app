@@ -2,6 +2,7 @@
 plugins {
     id("library-convention")
     id("hilt-convention")
+    id("testing-convention")
 }
 
 android {
@@ -12,9 +13,4 @@ dependencies {
     // Room
     api(libs.bundles.room)
     ksp(libs.room.compiler)
-
-    // Testing
-    testImplementation(libs.bundles.testing)
-    testImplementation(libs.bundles.mockk)
-    androidTestImplementation(libs.bundles.android.testing)
 }

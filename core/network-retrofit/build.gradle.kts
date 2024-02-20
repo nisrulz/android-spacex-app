@@ -2,6 +2,7 @@
 plugins {
     id("library-convention")
     id("hilt-convention")
+    id("testing-convention")
 
     alias(libs.plugins.kotlin.serialization)
 }
@@ -15,8 +16,4 @@ dependencies {
     implementation(platform(libs.okhttp.bom))
     implementation(libs.bundles.retrofit)
     testImplementation(libs.okhttp.mockwebserver)
-
-    // Testing
-    testImplementation(libs.bundles.testing)
-    testImplementation(libs.bundles.mockk)
 }

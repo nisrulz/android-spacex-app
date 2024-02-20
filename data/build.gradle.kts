@@ -2,6 +2,7 @@
 plugins {
     id("library-convention")
     id("hilt-convention")
+    id("testing-convention")
 }
 
 android {
@@ -26,9 +27,4 @@ dependencies {
 
     // Lifecycle
     implementation(libs.lifecycle.viewmodel.ktx)
-
-    // Testing
-    testImplementation(libs.bundles.testing)
-    testImplementation(libs.bundles.mockk)
-    androidTestImplementation(libs.bundles.android.testing)
 }

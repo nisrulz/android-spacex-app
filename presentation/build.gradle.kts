@@ -2,6 +2,7 @@
 plugins {
     id("library-convention")
     id("hilt-convention")
+    id("testing-convention")
 }
 android {
     namespace = "com.nisrulz.example.spacexapi.presentation"
@@ -39,9 +40,4 @@ dependencies {
 
     // Debug
     debugImplementation(libs.bundles.compose.debug)
-
-    // Testing
-    testImplementation(libs.bundles.testing)
-    testImplementation(libs.bundles.mockk)
-    androidTestImplementation(libs.bundles.android.testing)
 }
