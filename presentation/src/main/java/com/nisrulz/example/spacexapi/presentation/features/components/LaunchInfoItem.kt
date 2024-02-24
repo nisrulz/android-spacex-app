@@ -1,4 +1,4 @@
-package com.nisrulz.example.spacexapi.presentation.features.listoflaunches
+package com.nisrulz.example.spacexapi.presentation.features.components
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
@@ -12,7 +12,6 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.ElevatedCard
-import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -30,6 +29,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
+import com.nisrulz.example.spacexapi.common.contract.utils.SingleValueCallback
 import com.nisrulz.example.spacexapi.domain.model.LaunchInfo
 import com.nisrulz.example.spacexapi.presentation.R
 import com.nisrulz.example.spacexapi.presentation.theme.SpacexAPITheme
@@ -38,12 +38,11 @@ import com.nisrulz.example.spacexapi.presentation.theme.dimens
 @Composable
 fun LaunchInfoItem(
     launchInfo: LaunchInfo,
-    onBookmark: (LaunchInfo) -> Unit,
-    onClick: (String) -> Unit
+    onBookmark: SingleValueCallback<LaunchInfo>,
+    onClick: SingleValueCallback<String>
 ) {
     ElevatedCard(
-        modifier =
-        Modifier
+        modifier = Modifier
             .fillMaxWidth()
             .height(200.dp)
             .padding(MaterialTheme.dimens.small),

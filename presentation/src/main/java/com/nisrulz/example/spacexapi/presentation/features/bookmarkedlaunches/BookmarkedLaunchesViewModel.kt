@@ -1,18 +1,11 @@
-package com.nisrulz.example.spacexapi.presentation.features.listoflaunches
+package com.nisrulz.example.spacexapi.presentation.features.bookmarkedlaunches
 
 import androidx.annotation.VisibleForTesting
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.nisrulz.example.spacexapi.analytics.InUseAnalytics
-import com.nisrulz.example.spacexapi.analytics.trackNavigateToDetail
-import com.nisrulz.example.spacexapi.analytics.trackScreenListOfLaunches
 import com.nisrulz.example.spacexapi.domain.model.LaunchInfo
 import com.nisrulz.example.spacexapi.domain.usecase.GetAllBookmarkedLaunches
-import com.nisrulz.example.spacexapi.domain.usecase.GetAllLaunches
 import com.nisrulz.example.spacexapi.domain.usecase.ToggleBookmarkLaunchInfo
-import com.nisrulz.example.spacexapi.logger.InUseLoggers
-import com.nisrulz.example.spacexapi.presentation.features.listoflaunches.ListOfLaunchesViewModel.UiEvent.NavigateToDetails
-import com.nisrulz.example.spacexapi.presentation.features.listoflaunches.ListOfLaunchesViewModel.UiEvent.ShowSnackBar
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 import kotlinx.coroutines.CoroutineDispatcher
@@ -24,15 +17,12 @@ import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
 @HiltViewModel
-class ListOfLaunchesViewModel
+class BookmarkedLaunchesViewModel
 @Inject
 constructor(
     private val coroutineDispatcher: CoroutineDispatcher,
-    private val getAllLaunches: GetAllLaunches,
     private val bookmarkLaunchInfo: ToggleBookmarkLaunchInfo,
-    private val getAllBookmarkedLaunches: GetAllBookmarkedLaunches,
-    private val logger: InUseLoggers,
-    private val analytics: InUseAnalytics
+    private val getAllBookmarkedLaunches: GetAllBookmarkedLaunches
 ) : ViewModel() {
     var uiState: MutableStateFlow<UiState> = MutableStateFlow(UiState(isLoading = true))
         private set
@@ -48,37 +38,16 @@ constructor(
         private set
 
     @VisibleForTesting
-    fun getListOfLaunches() = viewModelScope.launch(coroutineDispatcher) {
-        getAllLaunches()
-            .catch {
-                stopLoading()
-                uiState.update {
-                    it.copy(error = "Error while fetching list of launches")
-                }
-            }
-            .collectLatest {
-                stopLoading()
-                handleListOfLaunches(it)
-            }
-    }
-
-    @VisibleForTesting
     fun getListOfBookmarkedLaunches() = viewModelScope.launch(coroutineDispatcher) {
         getAllBookmarkedLaunches()
             .catch {
                 stopLoading()
-                uiState.update {
-                    it.copy(error = "Error while fetching list of bookmarked launches")
-                }
+                setError("Error while fetching list of bookmarked launches: ${it.stackTrace}")
             }
             .collectLatest {
                 stopLoading()
                 handleListOfLaunches(it)
             }
-    }
-
-    fun bookmark(launchInfo: LaunchInfo) = viewModelScope.launch(coroutineDispatcher) {
-        bookmarkLaunchInfo(launchInfo)
     }
 
     private fun handleListOfLaunches(list: List<LaunchInfo>) {
@@ -87,30 +56,28 @@ constructor(
         }
     }
 
-    fun onClickBookmarkToolbarIcon() {
-        navigateToBookmarks()
-    }
-
-    fun showError(message: String) = sendEvent(ShowSnackBar(message))
-
-    fun navigateToDetails(launchId: String) = sendEvent(NavigateToDetails(launchId))
-    private fun navigateToBookmarks() = sendEvent(UiEvent.NavigateToBookmarks)
-
-    private fun sendEvent(uiEvent: UiEvent) = viewModelScope.launch(coroutineDispatcher) {
-        eventFlow.send(uiEvent)
-        logger.log("Ui Event: $uiEvent")
-        analytics.trackNavigateToDetail()
+    fun bookmark(launchInfo: LaunchInfo) = viewModelScope.launch(coroutineDispatcher) {
+        bookmarkLaunchInfo(launchInfo)
     }
 
     private fun stopLoading() = uiState.update { it.copy(isLoading = false) }
+    private fun setError(message: String) = uiState.update { it.copy(error = message) }
 
-    fun trackScreenEntered() = analytics.trackScreenListOfLaunches()
+    fun showError(message: String) = sendEvent(UiEvent.ShowSnackBar(message))
+
+    fun navigateBack() = sendEvent(UiEvent.NavigateBack)
+
+    fun navigateToDetails(launchId: String) = sendEvent(UiEvent.NavigateToDetails(launchId))
+
+    private fun sendEvent(uiEvent: UiEvent) = viewModelScope.launch(coroutineDispatcher) {
+        eventFlow.send(uiEvent)
+    }
 
     sealed interface UiEvent {
         data class ShowSnackBar(val message: String) : UiEvent
 
         data class NavigateToDetails(val launchId: String) : UiEvent
-        data object NavigateToBookmarks : UiEvent
+        data object NavigateBack : UiEvent
     }
 
     data class UiState(

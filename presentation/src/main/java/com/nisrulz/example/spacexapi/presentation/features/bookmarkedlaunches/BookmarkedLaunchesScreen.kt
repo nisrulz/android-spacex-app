@@ -1,6 +1,7 @@
-package com.nisrulz.example.spacexapi.presentation.features.listoflaunches
+package com.nisrulz.example.spacexapi.presentation.features.bookmarkedlaunches
 
 import android.annotation.SuppressLint
+import androidx.activity.compose.BackHandler
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -11,17 +12,15 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.nisrulz.example.spacexapi.common.contract.utils.EmptyCallback
 import com.nisrulz.example.spacexapi.common.contract.utils.SingleValueCallback
 import com.nisrulz.example.spacexapi.presentation.features.components.LoadingComponent
-import com.nisrulz.example.spacexapi.presentation.features.listoflaunches.ListOfLaunchesViewModel.UiEvent
-import com.nisrulz.example.spacexapi.presentation.features.listoflaunches.ListOfLaunchesViewModel.UiEvent.ShowSnackBar
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.receiveAsFlow
 
 @SuppressLint("VisibleForTests")
 @Composable
-fun ListOfLaunchesScreen(
-    viewModel: ListOfLaunchesViewModel = hiltViewModel(),
-    navigateToDetails: SingleValueCallback<String>,
-    navigateToBookmarks: EmptyCallback
+fun BookmarkedLaunchesScreen(
+    viewModel: BookmarkedLaunchesViewModel = hiltViewModel(),
+    navigateBack: EmptyCallback = {},
+    navigateToDetails: SingleValueCallback<String> = {}
 ) {
     val snackbarHostState = remember { SnackbarHostState() }
     val state by viewModel.uiState.collectAsStateWithLifecycle()
@@ -29,25 +28,29 @@ fun ListOfLaunchesScreen(
     LaunchedEffect(true) {
         with(viewModel) {
             // Analytics
-            trackScreenEntered()
-
-            getListOfLaunches()
+            getListOfBookmarkedLaunches()
 
             // collectLatest() Consumes only the most recent value, cancelling any previous
             // uncompleted processing.
             eventFlow.receiveAsFlow().collectLatest { event ->
                 when (event) {
-                    is ShowSnackBar -> {
+                    BookmarkedLaunchesViewModel.UiEvent.NavigateBack -> navigateBack()
+                    is BookmarkedLaunchesViewModel.UiEvent.NavigateToDetails -> {
+                        navigateToDetails(event.launchId)
+                    }
+
+                    is BookmarkedLaunchesViewModel.UiEvent.ShowSnackBar -> {
                         snackbarHostState.showSnackbar(
                             message = event.message
                         )
                     }
-
-                    is UiEvent.NavigateToDetails -> navigateToDetails(event.launchId)
-                    UiEvent.NavigateToBookmarks -> navigateToBookmarks()
                 }
             }
         }
+    }
+
+    BackHandler(true) {
+        viewModel.navigateBack()
     }
 
     with(state) {
@@ -55,7 +58,7 @@ fun ListOfLaunchesScreen(
         if (isLoading) {
             LoadingComponent()
         } else {
-            ListOfLaunchesSuccessComponent(
+            BookmarkedLaunchesListComponent(
                 state = state,
                 snackbarHostState = snackbarHostState,
                 navigateToDetails = {
@@ -64,8 +67,8 @@ fun ListOfLaunchesScreen(
                 bookmark = {
                     viewModel.bookmark(it)
                 },
-                navigateToBookmarks = {
-                    viewModel.onClickBookmarkToolbarIcon()
+                navigateBack = {
+                    viewModel.navigateBack()
                 }
             )
         }

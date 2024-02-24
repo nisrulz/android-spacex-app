@@ -5,9 +5,9 @@ import com.google.common.truth.Truth.assertThat
 import com.nisrulz.example.spacexapi.analytics.InUseAnalytics
 import com.nisrulz.example.spacexapi.domain.usecase.GetLaunchDetail
 import com.nisrulz.example.spacexapi.domain.usecase.ToggleBookmarkLaunchInfo
-import com.nisrulz.example.spacexapi.presentation.features.launchdetail.LaunchDetailViewModel.LaunchDetailUiEvent.ShowSnackBar
-import com.nisrulz.example.spacexapi.presentation.features.launchdetail.LaunchDetailViewModel.LaunchDetailUiState.Loading
-import com.nisrulz.example.spacexapi.presentation.features.launchdetail.LaunchDetailViewModel.LaunchDetailUiState.Success
+import com.nisrulz.example.spacexapi.presentation.features.launchdetail.LaunchDetailViewModel.UiEvent.ShowSnackBar
+import com.nisrulz.example.spacexapi.presentation.features.launchdetail.LaunchDetailViewModel.UiState.Loading
+import com.nisrulz.example.spacexapi.presentation.features.launchdetail.LaunchDetailViewModel.UiState.Success
 import com.nisrulz.example.spacexapi.presentation.util.TestFactory
 import com.nisrulz.example.spacexapi.presentation.util.runUnconfinedTest
 import com.nisrulz.example.spacexapi.presentation.util.testDispatcher

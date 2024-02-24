@@ -1,9 +1,14 @@
 package com.nisrulz.example.spacexapi.presentation.navigation
 
+import androidx.compose.animation.core.LinearEasing
+import androidx.compose.animation.core.tween
+import androidx.compose.animation.fadeIn
+import androidx.compose.animation.fadeOut
 import androidx.navigation.NavBackStackEntry
 import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.composable
+import com.nisrulz.example.spacexapi.presentation.features.bookmarkedlaunches.BookmarkedLaunchesScreen
 import com.nisrulz.example.spacexapi.presentation.features.launchdetail.LaunchDetailScreen
 import com.nisrulz.example.spacexapi.presentation.features.listoflaunches.ListOfLaunchesScreen
 
@@ -14,6 +19,9 @@ https://developer.android.com/guide/navigation/design/type-safety
 internal object NavigationRoute {
     // Home
     const val HOME_ROUTE = "list_of_launches"
+
+    // Bookmark
+    private const val BOOKMARK_ROUTE = "bookmarked_launches"
 
     // Details
     private const val NAV_ARG_LAUNCH_ID = "launchId"
@@ -26,16 +34,47 @@ internal object NavigationRoute {
     private fun NavBackStackEntry.getArgLaunchId(): String = arguments
         ?.getString(NAV_ARG_LAUNCH_ID) ?: ""
 
-    fun NavGraphBuilder.homeScreen(onNavigateToDetails: (launchId: String) -> Unit) {
-        composable(HOME_ROUTE) {
+    fun NavGraphBuilder.homeScreen(
+        onNavigateToDetails: (launchId: String) -> Unit,
+        onNavigateToBookmarks: () -> Unit
+    ) {
+        composable(
+            HOME_ROUTE,
+            enterTransition = { customFadeIn() },
+            exitTransition = { customFadeOut() }
+        ) {
             ListOfLaunchesScreen(navigateToDetails = { launchId ->
                 onNavigateToDetails(launchId)
+            }, navigateToBookmarks = {
+                onNavigateToBookmarks()
             })
         }
     }
 
+    fun NavGraphBuilder.bookmarkScreen(
+        onNavigateToDetails: (launchId: String) -> Unit,
+        onBackAction: () -> Unit
+    ) {
+        composable(
+            BOOKMARK_ROUTE,
+            enterTransition = { customFadeIn() },
+            exitTransition = { customFadeOut() }
+        ) {
+            BookmarkedLaunchesScreen(
+                navigateToDetails = { launchId ->
+                    onNavigateToDetails(launchId)
+                },
+                navigateBack = onBackAction
+            )
+        }
+    }
+
     fun NavGraphBuilder.detailsScreen(onBackAction: () -> Unit) {
-        composable(DETAILS_ROUTE) { backStackEntry ->
+        composable(
+            DETAILS_ROUTE,
+            enterTransition = { customFadeIn() },
+            exitTransition = { customFadeOut() }
+        ) { backStackEntry ->
             val id = backStackEntry.getArgLaunchId()
             if (id.isNotEmpty()) {
                 LaunchDetailScreen(launchId = id, onBackAction = onBackAction)
@@ -43,11 +82,29 @@ internal object NavigationRoute {
         }
     }
 
+    fun NavController.navigateToBookmarks() {
+        this.navigate(BOOKMARK_ROUTE)
+    }
+
     fun NavController.navigateToLaunchDetail(launchId: String) {
         this.navigate(buildDetailsRouteWithLaunchId(launchId))
     }
 
-    fun NavController.backFromLaunchDetails() {
+    fun NavController.navigateBack() {
         this.popBackStack()
     }
+
+    private fun customFadeIn() = fadeIn(
+        animationSpec = tween(
+            300,
+            easing = LinearEasing
+        )
+    )
+
+    private fun customFadeOut() = fadeOut(
+        animationSpec = tween(
+            300,
+            easing = LinearEasing
+        )
+    )
 }

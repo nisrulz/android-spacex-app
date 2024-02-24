@@ -1,8 +1,11 @@
 package com.nisrulz.example.spacexapi.presentation.features.listoflaunches
 
+import androidx.compose.animation.core.animateDpAsState
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.interaction.MutableInteractionSource
+import androidx.compose.foundation.interaction.collectIsPressedAsState
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -17,19 +20,20 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.SnackbarHost
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
-import com.nisrulz.example.spacexapi.common.contract.utils.ValueCallback
+import androidx.compose.ui.unit.dp
+import com.nisrulz.example.spacexapi.common.contract.utils.EmptyCallback
+import com.nisrulz.example.spacexapi.common.contract.utils.SingleValueCallback
 import com.nisrulz.example.spacexapi.domain.model.LaunchInfo
 import com.nisrulz.example.spacexapi.presentation.R
+import com.nisrulz.example.spacexapi.presentation.features.components.LaunchInfoItem
 import com.nisrulz.example.spacexapi.presentation.theme.SpacexAPITheme
 import com.nisrulz.example.spacexapi.presentation.theme.dimens
 
@@ -37,48 +41,51 @@ import com.nisrulz.example.spacexapi.presentation.theme.dimens
 fun ListOfLaunchesSuccessComponent(
     modifier: Modifier = Modifier,
     snackbarHostState: SnackbarHostState,
-    state: ListOfLaunchesViewModel.ListOfLaunchesUiState.Success,
-    navigateToDetails: ValueCallback<String>,
-    bookmark: ValueCallback<LaunchInfo>,
-    toggleBookmarkList: ValueCallback<Boolean>,
+    state: ListOfLaunchesViewModel.UiState,
+    navigateToDetails: SingleValueCallback<String>,
+    bookmark: SingleValueCallback<LaunchInfo>,
+    navigateToBookmarks: EmptyCallback
 ) {
-    var isShowingBookmarks by remember { mutableStateOf(false) }
-
+    val mutableInteractionSource = remember {
+        MutableInteractionSource()
+    }
+    val pressed = mutableInteractionSource.collectIsPressedAsState()
+    val elevation = animateDpAsState(
+        targetValue = if (pressed.value) {
+            300.dp
+        } else {
+            8.dp
+        },
+        label = "elevation"
+    )
     Box(
-        modifier =
-            modifier
-                .fillMaxSize()
-                .background(Color.Black),
+        modifier = modifier
+            .fillMaxSize()
+            .background(Color.Black)
+            .graphicsLayer {
+                this.shadowElevation = elevation.value.toPx()
+            }
     ) {
         Column {
             Row(
-                modifier =
-                    Modifier
-                        .fillMaxWidth(),
+                modifier = Modifier
+                    .fillMaxWidth()
             ) {
                 Image(
                     modifier = Modifier.weight(0.8f, true),
                     painter = painterResource(id = R.drawable.logo),
-                    contentDescription = stringResource(id = R.string.title_main),
+                    contentDescription = stringResource(id = R.string.title_main)
                 )
 
-                val drawableIdForBookmark =
-                    if (isShowingBookmarks) {
-                        R.drawable.list_all
-                    } else {
-                        R.drawable.bookmarks
-                    }
                 Image(
-                    painter = painterResource(id = drawableIdForBookmark),
+                    painter = painterResource(id = R.drawable.bookmarks),
                     contentDescription = stringResource(id = R.string.title_bookmarks),
-                    modifier =
-                        Modifier
-                            .weight(0.2f, true)
-                            .padding(top = MaterialTheme.dimens.large)
-                            .clickable {
-                                isShowingBookmarks = !isShowingBookmarks
-                                toggleBookmarkList(isShowingBookmarks)
-                            },
+                    modifier = Modifier
+                        .weight(0.2f, true)
+                        .padding(top = MaterialTheme.dimens.large)
+                        .clickable {
+                            navigateToBookmarks()
+                        }
                 )
             }
 
@@ -94,7 +101,7 @@ fun ListOfLaunchesSuccessComponent(
                         },
                         onBookmark = {
                             bookmark(it)
-                        },
+                        }
                     )
                 }
             }
@@ -104,9 +111,9 @@ fun ListOfLaunchesSuccessComponent(
         SnackbarHost(
             hostState = snackbarHostState,
             modifier =
-                Modifier
-                    .fillMaxWidth()
-                    .align(Alignment.BottomCenter),
+            Modifier
+                .fillMaxWidth()
+                .align(Alignment.BottomCenter)
         )
     }
 }
@@ -123,22 +130,22 @@ private fun Preview() {
             logo = "",
             name = "Name 1",
             success = false,
-            isBookmarked = false,
+            isBookmarked = false
         )
     SpacexAPITheme {
         ListOfLaunchesSuccessComponent(
             state =
-                ListOfLaunchesViewModel.ListOfLaunchesUiState.Success(
-                    data =
-                        listOf(
-                            testLaunchInfo,
-                            testLaunchInfo.copy(name = "Name 2"),
-                        ),
-                ),
+            ListOfLaunchesViewModel.UiState(
+                data =
+                listOf(
+                    testLaunchInfo,
+                    testLaunchInfo.copy(name = "Name 2")
+                )
+            ),
             snackbarHostState = SnackbarHostState(),
             navigateToDetails = {},
             bookmark = { },
-            toggleBookmarkList = {},
+            navigateToBookmarks = {}
         )
     }
 }

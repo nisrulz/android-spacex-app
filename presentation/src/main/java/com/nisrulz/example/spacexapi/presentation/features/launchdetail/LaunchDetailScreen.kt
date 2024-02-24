@@ -8,9 +8,9 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.nisrulz.example.spacexapi.common.contract.utils.EmptyCallback
 import com.nisrulz.example.spacexapi.presentation.features.components.LoadingComponent
-import com.nisrulz.example.spacexapi.presentation.features.launchdetail.LaunchDetailViewModel.LaunchDetailUiEvent.ShowSnackBar
-import com.nisrulz.example.spacexapi.presentation.features.launchdetail.LaunchDetailViewModel.LaunchDetailUiState
+import com.nisrulz.example.spacexapi.presentation.features.launchdetail.LaunchDetailViewModel.UiEvent.ShowSnackBar
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.receiveAsFlow
 
@@ -18,7 +18,7 @@ import kotlinx.coroutines.flow.receiveAsFlow
 fun LaunchDetailScreen(
     viewModel: LaunchDetailViewModel = hiltViewModel(),
     launchId: String,
-    onBackAction: () -> Unit
+    onBackAction: EmptyCallback = {}
 ) {
     val snackbarHostState = remember { SnackbarHostState() }
     val state by viewModel.uiState.collectAsStateWithLifecycle()
@@ -47,16 +47,15 @@ fun LaunchDetailScreen(
         onBackAction()
     }
 
-    when (state) {
-        LaunchDetailUiState.Loading -> LoadingComponent()
-        is LaunchDetailUiState.Error -> viewModel.showError(
-            (state as LaunchDetailUiState.Error).message
-        )
-
-        is LaunchDetailUiState.Success ->
+    with(state) {
+        if (error.isNotEmpty()) viewModel.showError(error)
+        if (isLoading) {
+            LoadingComponent()
+        } else {
             LaunchDetailSuccessComponent(
-                state = state as LaunchDetailUiState.Success,
+                state = state,
                 snackbarHostState = snackbarHostState
             )
+        }
     }
 }
