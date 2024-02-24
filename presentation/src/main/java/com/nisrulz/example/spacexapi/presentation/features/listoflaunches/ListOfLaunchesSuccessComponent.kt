@@ -27,6 +27,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
+import com.nisrulz.example.spacexapi.common.contract.utils.ValueCallback
 import com.nisrulz.example.spacexapi.domain.model.LaunchInfo
 import com.nisrulz.example.spacexapi.presentation.R
 import com.nisrulz.example.spacexapi.presentation.theme.SpacexAPITheme
@@ -37,9 +38,9 @@ fun ListOfLaunchesSuccessComponent(
     modifier: Modifier = Modifier,
     snackbarHostState: SnackbarHostState,
     state: ListOfLaunchesViewModel.ListOfLaunchesUiState.Success,
-    navigateToDetails: (String) -> Unit,
-    bookmark: (LaunchInfo) -> Unit,
-    toggleBookmarkList: (Boolean) -> Unit,
+    navigateToDetails: ValueCallback<String>,
+    bookmark: ValueCallback<LaunchInfo>,
+    toggleBookmarkList: ValueCallback<Boolean>,
 ) {
     var isShowingBookmarks by remember { mutableStateOf(false) }
 
