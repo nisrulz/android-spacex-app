@@ -1,5 +1,6 @@
 plugins {
-    id("android-app-java-compat-convention")
+    id("com.android.application")
+    id("org.jetbrains.kotlin.android")
 }
 
 android {
@@ -21,7 +22,7 @@ android {
             isMinifyEnabled = false
             proguardFiles(
                 getDefaultProguardFile("proguard-android-optimize.txt"),
-                "proguard-rules.pro",
+                "proguard-rules.pro"
             )
         }
     }
@@ -33,5 +34,14 @@ android {
         resources {
             excludes += "/META-INF/{AL2.0,LGPL2.1}"
         }
+    }
+
+    compileOptions {
+        targetCompatibility = JavaVersion.VERSION_1_8
+        sourceCompatibility = JavaVersion.VERSION_1_8
+    }
+
+    kotlinOptions {
+        jvmTarget = JavaVersion.VERSION_1_8.toString()
     }
 }
