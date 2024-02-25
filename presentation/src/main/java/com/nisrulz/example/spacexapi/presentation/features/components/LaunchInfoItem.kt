@@ -43,7 +43,7 @@ fun LaunchInfoItem(
     onClick: SingleValueCallback<String>
 ) {
     ElevatedCard(
-        modifier = Modifier
+        modifier = modifier
             .fillMaxWidth()
             .height(200.dp)
             .padding(MaterialTheme.dimens.small),

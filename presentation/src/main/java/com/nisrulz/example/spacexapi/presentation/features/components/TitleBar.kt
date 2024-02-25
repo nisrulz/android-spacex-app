@@ -28,12 +28,6 @@ fun TitleBar(
     modifier = modifier
         .fillMaxWidth()
 ) {
-    Image(
-        modifier = Modifier.weight(0.8f, true),
-        painter = painterResource(id = R.drawable.logo),
-        contentDescription = stringResource(id = R.string.title_main)
-    )
-
     if (leftNavButtonIcon != -1) {
         Image(
             painter = painterResource(id = leftNavButtonIcon),
@@ -46,6 +40,12 @@ fun TitleBar(
                 }
         )
     }
+
+    Image(
+        modifier = Modifier.weight(0.8f, true),
+        painter = painterResource(id = R.drawable.logo),
+        contentDescription = stringResource(id = R.string.title_main)
+    )
 
     if (rightNavButtonIcon != -1) {
         Image(

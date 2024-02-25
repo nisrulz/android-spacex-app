@@ -17,8 +17,6 @@ import androidx.compose.material3.SnackbarHost
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -43,8 +41,6 @@ fun BookmarkedLaunchesListComponent(
     bookmark: SingleValueCallback<LaunchInfo> = {},
     navigateBack: EmptyCallback = {}
 ) {
-    var isShowingBookmarks by remember { mutableStateOf(false) }
-
     Box(
         modifier = modifier
             .fillMaxSize()

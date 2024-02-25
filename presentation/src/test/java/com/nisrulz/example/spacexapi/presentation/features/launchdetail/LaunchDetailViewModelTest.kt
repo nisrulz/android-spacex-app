@@ -5,9 +5,8 @@ import com.google.common.truth.Truth.assertThat
 import com.nisrulz.example.spacexapi.analytics.InUseAnalytics
 import com.nisrulz.example.spacexapi.domain.usecase.GetLaunchDetail
 import com.nisrulz.example.spacexapi.domain.usecase.ToggleBookmarkLaunchInfo
+import com.nisrulz.example.spacexapi.presentation.features.launchdetail.LaunchDetailViewModel.UiEvent.NavigateBack
 import com.nisrulz.example.spacexapi.presentation.features.launchdetail.LaunchDetailViewModel.UiEvent.ShowSnackBar
-import com.nisrulz.example.spacexapi.presentation.features.launchdetail.LaunchDetailViewModel.UiState.Loading
-import com.nisrulz.example.spacexapi.presentation.features.launchdetail.LaunchDetailViewModel.UiState.Success
 import com.nisrulz.example.spacexapi.presentation.util.TestFactory
 import com.nisrulz.example.spacexapi.presentation.util.runUnconfinedTest
 import com.nisrulz.example.spacexapi.presentation.util.testDispatcher
@@ -39,7 +38,7 @@ class LaunchDetailViewModelTest {
     }
 
     @Test
-    fun `getLaunchInfoDetails() should update uiState with Success`() = runUnconfinedTest {
+    fun `getLaunchInfoDetails() should update uiState with launch details`() = runUnconfinedTest {
         // Given
         val launchId = "TestLaunchId"
         val expected = TestFactory.buildLaunchInfo()
@@ -50,8 +49,8 @@ class LaunchDetailViewModelTest {
             sut.getLaunchInfoDetails(launchId)
 
             // Then
-            assertThat(awaitItem()).isEqualTo(Loading)
-            assertThat(awaitItem()).isEqualTo(Success(expected))
+            assertThat(awaitItem().isLoading).isTrue()
+            assertThat(awaitItem().data).isEqualTo(expected)
         }
     }
 
@@ -82,6 +81,18 @@ class LaunchDetailViewModelTest {
 
             // Then
             assertThat(awaitItem()).isEqualTo(ShowSnackBar(message))
+        }
+    }
+
+    @Test
+    fun `navigateBack() should update uiEvent with NavigateBack`() = runUnconfinedTest {
+        // Then
+        sut.eventFlow.receiveAsFlow().test {
+            // When
+            sut.navigateBack()
+
+            // Then
+            assertThat(awaitItem()).isEqualTo(NavigateBack)
         }
     }
 }

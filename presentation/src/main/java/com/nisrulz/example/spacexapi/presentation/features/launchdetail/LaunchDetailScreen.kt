@@ -11,6 +11,7 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.nisrulz.example.spacexapi.common.contract.utils.EmptyCallback
 import com.nisrulz.example.spacexapi.presentation.features.components.EmptyComponent
 import com.nisrulz.example.spacexapi.presentation.features.components.LoadingComponent
+import com.nisrulz.example.spacexapi.presentation.features.launchdetail.LaunchDetailViewModel.UiEvent.NavigateBack
 import com.nisrulz.example.spacexapi.presentation.features.launchdetail.LaunchDetailViewModel.UiEvent.ShowSnackBar
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.receiveAsFlow
@@ -36,6 +37,8 @@ fun LaunchDetailScreen(
                     is ShowSnackBar -> {
                         snackbarHostState.showSnackbar(message = it.message)
                     }
+
+                    NavigateBack -> onBackAction()
                 }
             }
         }
@@ -45,7 +48,7 @@ fun LaunchDetailScreen(
         // Analytics
         viewModel.trackOnBack()
 
-        onBackAction()
+        viewModel.navigateBack()
     }
 
     with(state) {
@@ -54,13 +57,13 @@ fun LaunchDetailScreen(
             LoadingComponent()
         } else if (data == null) {
             EmptyComponent(message = "No launch info available") {
-                onBackAction()
+                viewModel.navigateBack()
             }
         } else {
             LaunchDetailSuccessComponent(
                 state = state,
                 snackbarHostState = snackbarHostState,
-                navigateBack = { onBackAction() }
+                navigateBack = { viewModel.navigateBack() }
             )
         }
     }

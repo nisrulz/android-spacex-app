@@ -35,7 +35,7 @@ constructor(
     fun getLaunchInfoDetails(launchId: String?) = viewModelScope.launch(coroutineDispatcher) {
         stopLoading()
         if (launchId.isNullOrBlank()) {
-            showError("No Data")
+            setError("No Data")
         } else {
             update(getLaunchDetail(launchId))
         }
@@ -58,6 +58,12 @@ constructor(
 
     private fun stopLoading() = uiState.update { it.copy(isLoading = false) }
 
+    fun navigateBack() = sendEvent(UiEvent.NavigateBack)
+
+    private fun sendEvent(uiEvent: UiEvent) = viewModelScope.launch(coroutineDispatcher) {
+        eventFlow.send(uiEvent)
+    }
+
     fun trackScreenEntered() = analytics.trackScreenLaunchDetail()
     fun trackOnBack() = analytics.trackNavigateToListOfLaunches()
 
@@ -69,5 +75,7 @@ constructor(
 
     sealed interface UiEvent {
         data class ShowSnackBar(val message: String) : UiEvent
+
+        data object NavigateBack : UiEvent
     }
 }

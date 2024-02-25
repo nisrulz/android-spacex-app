@@ -56,8 +56,8 @@ fun LaunchDetailSuccessComponent(
                     .fillMaxSize()
             ) {
                 TitleBar(
-                    rightNavButtonIcon = R.drawable.back,
-                    rightNavButtonAction = {
+                    leftNavButtonIcon = R.drawable.back,
+                    leftNavButtonAction = {
                         navigateBack()
                     }
                 )

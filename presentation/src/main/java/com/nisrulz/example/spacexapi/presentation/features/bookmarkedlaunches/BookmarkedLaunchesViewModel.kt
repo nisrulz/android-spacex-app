@@ -12,7 +12,8 @@ import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.catch
-import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
@@ -40,20 +41,11 @@ constructor(
     @VisibleForTesting
     fun getListOfBookmarkedLaunches() = viewModelScope.launch(coroutineDispatcher) {
         getAllBookmarkedLaunches()
-            .catch {
-                stopLoading()
-                setError("Error while fetching list of bookmarked launches: ${it.stackTrace}")
-            }
-            .collectLatest {
-                stopLoading()
+            .onEach {
                 handleListOfLaunches(it)
-            }
-    }
-
-    private fun handleListOfLaunches(list: List<LaunchInfo>) {
-        uiState.update {
-            it.copy(data = list)
-        }
+            }.catch {
+                setError(it.message ?: "Error")
+            }.collect()
     }
 
     fun bookmark(launchInfo: LaunchInfo) = viewModelScope.launch(coroutineDispatcher) {
@@ -61,7 +53,15 @@ constructor(
     }
 
     private fun stopLoading() = uiState.update { it.copy(isLoading = false) }
-    private fun setError(message: String) = uiState.update { it.copy(error = message) }
+    private fun setError(message: String) {
+        uiState.update { it.copy(error = message) }
+        stopLoading()
+    }
+
+    private fun handleListOfLaunches(list: List<LaunchInfo>) {
+        uiState.update { it.copy(data = list) }
+        stopLoading()
+    }
 
     fun showError(message: String) = sendEvent(UiEvent.ShowSnackBar(message))
 

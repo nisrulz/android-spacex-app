@@ -19,7 +19,8 @@ import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.catch
-import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
@@ -50,31 +51,11 @@ constructor(
     @VisibleForTesting
     fun getListOfLaunches() = viewModelScope.launch(coroutineDispatcher) {
         getAllLaunches()
-            .catch {
-                stopLoading()
-                uiState.update {
-                    it.copy(error = "Error while fetching list of launches")
-                }
-            }
-            .collectLatest {
-                stopLoading()
+            .onEach {
                 handleListOfLaunches(it)
-            }
-    }
-
-    @VisibleForTesting
-    fun getListOfBookmarkedLaunches() = viewModelScope.launch(coroutineDispatcher) {
-        getAllBookmarkedLaunches()
-            .catch {
-                stopLoading()
-                uiState.update {
-                    it.copy(error = "Error while fetching list of bookmarked launches")
-                }
-            }
-            .collectLatest {
-                stopLoading()
-                handleListOfLaunches(it)
-            }
+            }.catch {
+                setError(it.message ?: "Error")
+            }.collect()
     }
 
     fun bookmark(launchInfo: LaunchInfo) = viewModelScope.launch(coroutineDispatcher) {
@@ -82,13 +63,17 @@ constructor(
     }
 
     private fun handleListOfLaunches(list: List<LaunchInfo>) {
-        uiState.update {
-            it.copy(data = list)
-        }
+        uiState.update { it.copy(data = list) }
+        stopLoading()
     }
 
     fun onClickBookmarkToolbarIcon() {
         navigateToBookmarks()
+    }
+
+    private fun setError(message: String) {
+        uiState.update { it.copy(error = message) }
+        stopLoading()
     }
 
     fun showError(message: String) = sendEvent(ShowSnackBar(message))

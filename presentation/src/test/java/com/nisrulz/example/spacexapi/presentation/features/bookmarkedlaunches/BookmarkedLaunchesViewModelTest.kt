@@ -1,76 +1,56 @@
-package com.nisrulz.example.spacexapi.presentation.features.listoflaunches
+package com.nisrulz.example.spacexapi.presentation.features.bookmarkedlaunches
 
 import app.cash.turbine.test
 import com.google.common.truth.Truth.assertThat
-import com.nisrulz.example.spacexapi.analytics.InUseAnalytics
-import com.nisrulz.example.spacexapi.analytics.contract.AnalyticsEvent
 import com.nisrulz.example.spacexapi.domain.usecase.GetAllBookmarkedLaunches
-import com.nisrulz.example.spacexapi.domain.usecase.GetAllLaunches
 import com.nisrulz.example.spacexapi.domain.usecase.ToggleBookmarkLaunchInfo
-import com.nisrulz.example.spacexapi.logger.InUseLoggers
-import com.nisrulz.example.spacexapi.presentation.features.listoflaunches.ListOfLaunchesViewModel.UiEvent.NavigateToDetails
-import com.nisrulz.example.spacexapi.presentation.features.listoflaunches.ListOfLaunchesViewModel.UiEvent.ShowSnackBar
+import com.nisrulz.example.spacexapi.presentation.features.bookmarkedlaunches.BookmarkedLaunchesViewModel.UiEvent.NavigateBack
+import com.nisrulz.example.spacexapi.presentation.features.bookmarkedlaunches.BookmarkedLaunchesViewModel.UiEvent.NavigateToDetails
+import com.nisrulz.example.spacexapi.presentation.features.bookmarkedlaunches.BookmarkedLaunchesViewModel.UiEvent.ShowSnackBar
 import com.nisrulz.example.spacexapi.presentation.util.TestFactory
 import com.nisrulz.example.spacexapi.presentation.util.runUnconfinedTest
 import com.nisrulz.example.spacexapi.presentation.util.testDispatcher
 import io.mockk.coEvery
 import io.mockk.coVerify
-import io.mockk.every
-import io.mockk.just
 import io.mockk.mockk
-import io.mockk.runs
-import io.mockk.verify
 import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.flow.receiveAsFlow
 import org.junit.Before
 import org.junit.Test
 
-class ListOfLaunchesViewModelTest {
-    private lateinit var sut: ListOfLaunchesViewModel
-    private lateinit var getAllLaunches: GetAllLaunches
+class BookmarkedLaunchesViewModelTest {
+    private lateinit var sut: BookmarkedLaunchesViewModel
     private lateinit var bookmarkLaunchInfo: ToggleBookmarkLaunchInfo
     private lateinit var getAllBookmarkedLaunches: GetAllBookmarkedLaunches
-    private lateinit var logger: InUseLoggers
-    private lateinit var analytics: InUseAnalytics
 
     @Before
     fun setup() {
-        getAllLaunches = mockk()
         bookmarkLaunchInfo = mockk()
         getAllBookmarkedLaunches = mockk()
 
-        logger = mockk {
-            every { log(any<String>()) } just runs
-        }
-        analytics = mockk {
-            every { trackEvent(any<AnalyticsEvent>()) } just runs
-        }
-
-        sut = ListOfLaunchesViewModel(
+        sut = BookmarkedLaunchesViewModel(
             coroutineDispatcher = testDispatcher,
-            getAllLaunches = getAllLaunches,
             bookmarkLaunchInfo = bookmarkLaunchInfo,
-            getAllBookmarkedLaunches = getAllBookmarkedLaunches,
-            logger = logger,
-            analytics = analytics
+            getAllBookmarkedLaunches = getAllBookmarkedLaunches
         )
     }
 
     @Test
-    fun `getListOfLaunches() should update uiState with list of launches`() = runUnconfinedTest {
-        // Given
-        val list = TestFactory.buildListOfLaunchInfo()
-        coEvery { getAllLaunches() } returns flowOf(list)
+    fun `getListOfBookmarkedLaunches() should update uiState with list of bookmarked launches`() =
+        runUnconfinedTest {
+            // Given
+            val list = TestFactory.buildListOfBookmarkedLaunchInfo()
+            coEvery { getAllBookmarkedLaunches() } returns flowOf(list)
 
-        sut.uiState.test {
-            // When
-            sut.getListOfLaunches()
+            sut.uiState.test {
+                // When
+                sut.getListOfBookmarkedLaunches()
 
-            // Then
-            assertThat(awaitItem().isLoading).isTrue()
-            assertThat(awaitItem().data).isEqualTo(list)
+                // Then
+                assertThat(awaitItem().isLoading).isTrue()
+                assertThat(awaitItem().data).isEqualTo(list)
+            }
         }
-    }
 
     @Test
     fun `bookmark() should call bookmarkLaunchInfo()`() = runUnconfinedTest {
@@ -99,8 +79,6 @@ class ListOfLaunchesViewModelTest {
 
             // Then
             assertThat(awaitItem()).isEqualTo(ShowSnackBar(message))
-            verify { logger.log(any<String>()) }
-            verify { analytics.trackEvent(any<AnalyticsEvent>()) }
         }
     }
 
@@ -116,8 +94,18 @@ class ListOfLaunchesViewModelTest {
 
             // Then
             assertThat(awaitItem()).isEqualTo(NavigateToDetails(launchId))
-            verify { logger.log(any<String>()) }
-            verify { analytics.trackEvent(any<AnalyticsEvent>()) }
+        }
+    }
+
+    @Test
+    fun `navigateBack() should update uiEvent with NavigateBack`() = runUnconfinedTest {
+        // Then
+        sut.eventFlow.receiveAsFlow().test {
+            // When
+            sut.navigateBack()
+
+            // Then
+            assertThat(awaitItem()).isEqualTo(NavigateBack)
         }
     }
 }
