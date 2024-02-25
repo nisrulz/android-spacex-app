@@ -37,6 +37,7 @@ import com.nisrulz.example.spacexapi.presentation.theme.dimens
 
 @Composable
 fun LaunchInfoItem(
+    modifier: Modifier = Modifier,
     launchInfo: LaunchInfo,
     onBookmark: SingleValueCallback<LaunchInfo>,
     onClick: SingleValueCallback<String>

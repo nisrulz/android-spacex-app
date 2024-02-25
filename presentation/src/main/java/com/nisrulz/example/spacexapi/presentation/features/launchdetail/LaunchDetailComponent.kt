@@ -30,16 +30,18 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
+import com.nisrulz.example.spacexapi.common.contract.utils.EmptyCallback
 import com.nisrulz.example.spacexapi.domain.model.LaunchInfo
 import com.nisrulz.example.spacexapi.presentation.R
-import com.nisrulz.example.spacexapi.presentation.features.components.EmptyComponent
+import com.nisrulz.example.spacexapi.presentation.features.components.TitleBar
 import com.nisrulz.example.spacexapi.presentation.theme.SpacexAPITheme
 
 @Composable
 fun LaunchDetailSuccessComponent(
     modifier: Modifier = Modifier,
     snackbarHostState: SnackbarHostState,
-    state: LaunchDetailViewModel.UiState
+    state: LaunchDetailViewModel.UiState,
+    navigateBack: EmptyCallback = {}
 ) {
     Box(
         modifier =
@@ -49,88 +51,99 @@ fun LaunchDetailSuccessComponent(
     ) {
         state.data?.apply {
             Column(
-                modifier =
-                Modifier
-                    .padding(32.dp)
+                modifier = Modifier
                     .verticalScroll(rememberScrollState())
                     .fillMaxSize()
             ) {
-                AsyncImage(
-                    model =
-                    ImageRequest.Builder(LocalContext.current)
-                        .data(logo)
-                        .crossfade(true)
-                        .build(),
-                    placeholder = painterResource(R.drawable.placeholder),
-                    contentDescription = stringResource(R.string.logo_description),
-                    contentScale = ContentScale.Crop,
-                    modifier =
-                    Modifier
-                        .fillMaxHeight(0.5f)
-                        .padding(48.dp)
-                        .fillMaxWidth()
+                TitleBar(
+                    rightNavButtonIcon = R.drawable.back,
+                    rightNavButtonAction = {
+                        navigateBack()
+                    }
                 )
 
-                Text(
-                    text = "LAUNCH $flight_number",
-                    style =
-                    TextStyle(
-                        color = MaterialTheme.colorScheme.primary,
-                        fontSize = 16.sp,
-                        fontStyle = FontStyle.Italic,
-                        fontWeight = FontWeight.Bold
+                Column(
+                    modifier = modifier
+                        .fillMaxSize()
+                        .padding(32.dp)
+                ) {
+                    AsyncImage(
+                        model =
+                        ImageRequest.Builder(LocalContext.current)
+                            .data(logo)
+                            .crossfade(true)
+                            .build(),
+                        placeholder = painterResource(R.drawable.placeholder),
+                        contentDescription = stringResource(R.string.logo_description),
+                        contentScale = ContentScale.Crop,
+                        modifier =
+                        Modifier
+                            .fillMaxHeight(0.5f)
+                            .padding(48.dp)
+                            .fillMaxWidth()
                     )
-                )
-                Text(
-                    text = name,
-                    style =
-                    TextStyle(
-                        color = MaterialTheme.colorScheme.inversePrimary,
-                        fontSize = 24.sp,
-                        fontWeight = FontWeight.ExtraBold
-                    )
-                )
-                Spacer(modifier = Modifier.padding(16.dp))
 
-                Text(
-                    text = "Date: ${getFormattedDate()}",
-                    style =
-                    TextStyle(
-                        color = Color.White,
-                        fontSize = 14.sp,
-                        fontWeight = FontWeight.Medium
+                    Text(
+                        text = "LAUNCH $flight_number",
+                        style =
+                        TextStyle(
+                            color = MaterialTheme.colorScheme.primary,
+                            fontSize = 16.sp,
+                            fontStyle = FontStyle.Italic,
+                            fontWeight = FontWeight.Bold
+                        )
                     )
-                )
-                Spacer(modifier = Modifier.padding(16.dp))
-                Text(
-                    text = "Details",
-                    style =
-                    TextStyle(
-                        color = Color.White,
-                        fontSize = 14.sp,
-                        fontWeight = FontWeight.Medium
+                    Text(
+                        text = name,
+                        style =
+                        TextStyle(
+                            color = MaterialTheme.colorScheme.inversePrimary,
+                            fontSize = 24.sp,
+                            fontWeight = FontWeight.ExtraBold
+                        )
                     )
-                )
-                Text(
-                    text = getDetailsString(),
-                    style =
-                    TextStyle(
-                        color = Color.White
-                    )
-                )
-                Spacer(modifier = Modifier.padding(16.dp))
+                    Spacer(modifier = Modifier.padding(16.dp))
 
-                Text(
-                    text = "Was Successful: ${wasSuccessfulString()}",
-                    style =
-                    TextStyle(
-                        color = MaterialTheme.colorScheme.inversePrimary,
-                        fontSize = 14.sp,
-                        fontWeight = FontWeight.Medium
+                    Text(
+                        text = "Date: ${getFormattedDate()}",
+                        style =
+                        TextStyle(
+                            color = Color.White,
+                            fontSize = 14.sp,
+                            fontWeight = FontWeight.Medium
+                        )
                     )
-                )
+                    Spacer(modifier = Modifier.padding(16.dp))
+                    Text(
+                        text = "Details",
+                        style =
+                        TextStyle(
+                            color = Color.White,
+                            fontSize = 14.sp,
+                            fontWeight = FontWeight.Medium
+                        )
+                    )
+                    Text(
+                        text = getDetailsString(),
+                        style =
+                        TextStyle(
+                            color = Color.White
+                        )
+                    )
+                    Spacer(modifier = Modifier.padding(16.dp))
+
+                    Text(
+                        text = "Was Successful: ${wasSuccessfulString()}",
+                        style =
+                        TextStyle(
+                            color = MaterialTheme.colorScheme.inversePrimary,
+                            fontSize = 14.sp,
+                            fontWeight = FontWeight.Medium
+                        )
+                    )
+                }
             }
-        } ?: EmptyComponent(msg = "No items in list")
+        }
 
         // Wire in Snackbar Widget
         SnackbarHost(

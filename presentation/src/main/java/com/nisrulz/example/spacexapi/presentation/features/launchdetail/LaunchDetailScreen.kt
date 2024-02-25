@@ -9,6 +9,7 @@ import androidx.compose.runtime.remember
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.nisrulz.example.spacexapi.common.contract.utils.EmptyCallback
+import com.nisrulz.example.spacexapi.presentation.features.components.EmptyComponent
 import com.nisrulz.example.spacexapi.presentation.features.components.LoadingComponent
 import com.nisrulz.example.spacexapi.presentation.features.launchdetail.LaunchDetailViewModel.UiEvent.ShowSnackBar
 import kotlinx.coroutines.flow.collectLatest
@@ -51,10 +52,15 @@ fun LaunchDetailScreen(
         if (error.isNotEmpty()) viewModel.showError(error)
         if (isLoading) {
             LoadingComponent()
+        } else if (data == null) {
+            EmptyComponent(message = "No launch info available") {
+                onBackAction()
+            }
         } else {
             LaunchDetailSuccessComponent(
                 state = state,
-                snackbarHostState = snackbarHostState
+                snackbarHostState = snackbarHostState,
+                navigateBack = { onBackAction() }
             )
         }
     }

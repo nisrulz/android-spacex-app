@@ -2,7 +2,6 @@
 <resources>
     <string name="logo_description">SpaceX Launch Logo</string>
     <string name="title_main">SpaceX Launches</string>
-    <string name="title_bookmarks">Bookmarked Launches</string>
     <string name="bookmark">Bookmark</string>
     <string name="error_1">Something went wrong!</string>
     <string name="error_2">Couldn\'t reach server, check your internet connection.</string>

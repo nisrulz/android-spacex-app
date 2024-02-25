@@ -11,6 +11,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.nisrulz.example.spacexapi.common.contract.utils.EmptyCallback
 import com.nisrulz.example.spacexapi.common.contract.utils.SingleValueCallback
+import com.nisrulz.example.spacexapi.presentation.features.components.EmptyComponent
 import com.nisrulz.example.spacexapi.presentation.features.components.LoadingComponent
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.receiveAsFlow
@@ -57,6 +58,10 @@ fun BookmarkedLaunchesScreen(
         if (error.isNotEmpty()) viewModel.showError(error)
         if (isLoading) {
             LoadingComponent()
+        } else if (data.isEmpty()) {
+            EmptyComponent(message = "No bookmarked launches") {
+                viewModel.navigateBack()
+            }
         } else {
             BookmarkedLaunchesListComponent(
                 state = state,

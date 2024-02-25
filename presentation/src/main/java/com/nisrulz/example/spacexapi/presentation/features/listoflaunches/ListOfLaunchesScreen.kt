@@ -10,6 +10,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.nisrulz.example.spacexapi.common.contract.utils.EmptyCallback
 import com.nisrulz.example.spacexapi.common.contract.utils.SingleValueCallback
+import com.nisrulz.example.spacexapi.presentation.features.components.EmptyComponent
 import com.nisrulz.example.spacexapi.presentation.features.components.LoadingComponent
 import com.nisrulz.example.spacexapi.presentation.features.listoflaunches.ListOfLaunchesViewModel.UiEvent
 import com.nisrulz.example.spacexapi.presentation.features.listoflaunches.ListOfLaunchesViewModel.UiEvent.ShowSnackBar
@@ -54,6 +55,8 @@ fun ListOfLaunchesScreen(
         if (error.isNotEmpty()) viewModel.showError(error)
         if (isLoading) {
             LoadingComponent()
+        } else if (data.isEmpty()) {
+            EmptyComponent(message = "No launches to show")
         } else {
             ListOfLaunchesSuccessComponent(
                 state = state,
