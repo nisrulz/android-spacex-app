@@ -3,16 +3,10 @@ plugins {
     id("library-convention")
     id("hilt-convention")
     id("testing-convention")
+    id("jetpack-compose-convention")
 }
 android {
     namespace = "com.nisrulz.example.spacexapi.presentation"
-
-    buildFeatures {
-        compose = true
-    }
-    composeOptions {
-        kotlinCompilerExtensionVersion = libs.versions.composeCompiler.get()
-    }
 }
 
 dependencies {
@@ -33,11 +27,4 @@ dependencies {
     implementation(libs.bundles.lifecycle)
     implementation(libs.bundles.core)
     implementation(libs.bundles.ktx)
-
-    // Compose
-    implementation(platform(libs.compose.bom))
-    implementation(libs.bundles.compose)
-
-    // Debug
-    debugImplementation(libs.bundles.compose.debug)
 }

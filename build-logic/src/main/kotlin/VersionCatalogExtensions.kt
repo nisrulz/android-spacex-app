@@ -22,15 +22,14 @@ internal val VersionCatalog.minSdk
 internal val VersionCatalog.targetSdk
     get() = findVersionOrThrow("targetSdk").toInt()
 
-private fun VersionCatalog.findVersionOrThrow(name: String) =
-    findVersion(name)
-        .orElseThrow { NoSuchElementException("Version $name not found in version catalog") }
-        .requiredVersion
+internal val VersionCatalog.kotlinCompilerExtensionVersion
+    get() = findVersionOrThrow("composeCompiler").toString()
 
-internal fun Project.applyPlugin(
-    alias: String,
-    block: (Provider<PluginDependency>) -> Unit,
-) {
+private fun VersionCatalog.findVersionOrThrow(name: String) = findVersion(name)
+    .orElseThrow { NoSuchElementException("Version $name not found in version catalog") }
+    .requiredVersion
+
+internal fun Project.applyPlugin(alias: String, block: (Provider<PluginDependency>) -> Unit) {
     libs.findPlugin(alias).ifPresent { plugin ->
         block(plugin)
     }
@@ -38,7 +37,7 @@ internal fun Project.applyPlugin(
 
 internal fun Project.applyBundle(
     alias: String,
-    block: (Provider<ExternalModuleDependencyBundle>) -> Unit,
+    block: (Provider<ExternalModuleDependencyBundle>) -> Unit
 ) {
     libs.findBundle(alias).ifPresent { bundle ->
         block(bundle)
@@ -47,7 +46,7 @@ internal fun Project.applyBundle(
 
 internal fun Project.applyLibrary(
     alias: String,
-    block: (Provider<MinimalExternalModuleDependency>) -> Unit,
+    block: (Provider<MinimalExternalModuleDependency>) -> Unit
 ) {
     libs.findLibrary(alias).ifPresent { lib ->
         block(lib)
