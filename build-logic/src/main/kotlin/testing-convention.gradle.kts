@@ -1,5 +1,5 @@
-import gradle.kotlin.dsl.accessors._624aae704a5c30b505ab3598db099943.androidTestImplementation
-import gradle.kotlin.dsl.accessors._624aae704a5c30b505ab3598db099943.testImplementation
+import gradle.kotlin.dsl.accessors._1c35da307f1540a2fdd9273b146bf0a7.androidTestImplementation
+import gradle.kotlin.dsl.accessors._1c35da307f1540a2fdd9273b146bf0a7.testImplementation
 
 applyBundle("testing") {
     dependencies {

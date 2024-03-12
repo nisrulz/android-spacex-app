@@ -17,4 +17,15 @@ android {
 dependencies {
     // Module Dependency
     implementation(projects.presentation)
+
+    /**
+     * @TODO: Remove this workaround when below issues are solved with AGP 8.3.0
+     * https://github.com/google/guava/issues/6618
+     * https://github.com/android/nowinandroid/pull/1140#issuecomment-1979431658
+     */
+    modules {
+        module("com.google.guava:listenablefuture") {
+            replacedBy("com.google.guava:guava", "listenablefuture is part of guava")
+        }
+    }
 }

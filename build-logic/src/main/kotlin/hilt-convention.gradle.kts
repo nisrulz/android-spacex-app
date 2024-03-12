@@ -1,4 +1,4 @@
-import gradle.kotlin.dsl.accessors._624aae704a5c30b505ab3598db099943.implementation
+import gradle.kotlin.dsl.accessors._f498a892b084b6e1620083bdb51439d5.implementation
 
 plugins {
     id("com.google.devtools.ksp")

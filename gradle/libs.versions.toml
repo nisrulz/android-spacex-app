@@ -1,16 +1,25 @@
 [versions]
 
-# SDK
+#region ---- SDK
 compileSdk = "34"
 targetSdk = "34"
 minSdk = "23"
-composeCompiler = "1.5.8"
 
-# Android Core
-agp = "8.2.2"
+#region ---- Kotlin version dependent
+# https://developer.android.com/jetpack/androidx/releases/compose-kotlin#pre-release_kotlin_compatibility
+composeCompiler = "1.5.10"
+# https://github.com/JetBrains/kotlin/releases
+org-jetbrains-kotlin-android = "1.9.22"
+# https://github.com/google/ksp/releases
+ksp = "1.9.22-1.0.17"
+#endregion
+
+#region ---- Android Core
+agp = "8.3.0"
 core-ktx = "1.12.0"
 lifecycleVer = "2.7.0"
 appcompat = "1.6.1"
+#endregion
 
 # Logs
 timber = "5.0.1"
@@ -18,31 +27,34 @@ timber = "5.0.1"
 # Material
 material3 = "1.10.0"
 
-# Kotlin
-org-jetbrains-kotlin-android = "1.9.22"
+#region ---- Kotlin
 kotlinxCoroutines = "1.8.0"
-ksp = "1.9.22-1.0.16"
 kotlinxSerializationJson = "1.6.2"
+#endregion
 
-# Jetpack Compose
+#region ---- Jetpack Compose
 activity-compose = "1.8.2"
-compose-bom = "2024.02.00"
+compose-bom = "2024.02.02"
+#endregion
 
 # Navigation
 navigationCompose = "2.7.7"
 
-# Hilt
+#region ---- Hilt
 hilt = "2.50"
-hiltNavigation = "1.1.0"
-hiltExt = "1.1.0"
+hiltNavigation = "1.2.0"
+hiltExt = "1.2.0"
+#endregion
 
-# Retrofit
+#region ---- Retrofit
 okhttp = "4.12.0"
 retrofit = "2.9.0"
+#endregion
 
-# Room
+#region ---- Room
 retrofit2KotlinxSerializationConverter = "1.0.0"
 room = "2.6.1"
+#endregion
 
 # Coil
 coil = "2.5.0"
