@@ -1,6 +1,5 @@
 package com.nisrulz.example.spacexapi.network.retrofit.util
 
-import com.jakewharton.retrofit2.converter.kotlinx.serialization.asConverterFactory
 import java.io.File
 import kotlinx.serialization.json.Json
 import okhttp3.MediaType.Companion.toMediaType
@@ -10,6 +9,7 @@ import okhttp3.mockwebserver.SocketPolicy
 import okio.Buffer
 import retrofit2.Converter
 import retrofit2.Retrofit
+import retrofit2.converter.kotlinx.serialization.asConverterFactory
 
 object MockWebServerHelper {
     /**

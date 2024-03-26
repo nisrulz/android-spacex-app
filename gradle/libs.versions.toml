@@ -48,11 +48,10 @@ hiltExt = "1.2.0"
 
 #region ---- Retrofit
 okhttp = "4.12.0"
-retrofit = "2.11.0"
+retrofit-bom = "2.11.0"
 #endregion
 
 #region ---- Room
-retrofit2KotlinxSerializationConverter = "1.0.0"
 room = "2.6.1"
 #endregion
 
@@ -100,7 +99,6 @@ appcompat = { group = "androidx.appcompat", name = "appcompat", version.ref = "a
 material = { group = "androidx.compose.material", name = "material" }
 material3 = { group = "androidx.compose.material3", name = "material3" }
 
-
 # Coil
 coil-kt = { group = "io.coil-kt", name = "coil", version.ref = "coil" }
 coil-kt-compose = { group = "io.coil-kt", name = "coil-compose", version.ref = "coil" }
@@ -116,11 +114,13 @@ hilt-navigation = { group = "androidx.hilt", name = "hilt-navigation-compose", v
 navigation-compose = { group = "androidx.navigation", name = "navigation-compose", version.ref = "navigationCompose" }
 
 # Retrofit
-retrofit-core = { group = "com.squareup.retrofit2", name = "retrofit", version.ref = "retrofit" }
+retrofit-bom = { group = "com.squareup.retrofit2", name = "retrofit-bom", version.ref = "retrofit-bom" }
+retrofit-core = { group = "com.squareup.retrofit2", name = "retrofit" }
+retrofit2-kotlinx-serialization-converter = { group = "com.squareup.retrofit2", name = "converter-kotlinx-serialization" }
+
 
 # Serialization
 kotlinx-serialization-json = { module = "org.jetbrains.kotlinx:kotlinx-serialization-json", version.ref = "kotlinxSerializationJson" }
-retrofit2-kotlinx-serialization-converter = { module = "com.jakewharton.retrofit:retrofit2-kotlinx-serialization-converter", version.ref = "retrofit2KotlinxSerializationConverter" }
 
 # Okhttp
 okhttp-bom = { group = "com.squareup.okhttp3", name = "okhttp-bom", version.ref = "okhttp" }

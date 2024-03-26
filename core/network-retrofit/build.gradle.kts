@@ -13,6 +13,7 @@ android {
 dependencies {
     // Retrofit
     implementation(platform(libs.okhttp.bom))
+    implementation(platform(libs.retrofit.bom))
     implementation(libs.bundles.retrofit)
     testImplementation(libs.okhttp.mockwebserver)
 }
