@@ -9,7 +9,7 @@ minSdk = "23"
 # https://developer.android.com/jetpack/androidx/releases/compose-kotlin#pre-release_kotlin_compatibility
 composeCompiler = "1.5.10"
 # https://github.com/JetBrains/kotlin/releases
-org-jetbrains-kotlin-android = "1.9.22"
+org-jetbrains-kotlin-android = "2.0.0"
 # https://github.com/google/ksp/releases
 ksp = "1.9.22-1.0.17"
 #endregion
