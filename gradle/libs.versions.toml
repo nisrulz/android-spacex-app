@@ -68,7 +68,7 @@ turbineVer = "1.1.0"
 mockkVersion = "1.13.11"
 junitKtx = "1.1.5"
 coreTesting = "2.2.0"
-kotlinxCoroutinesTest = "1.8.0"
+kotlinxCoroutinesTest = "1.8.1"
 
 [libraries]
 gradle = { module = "com.android.tools.build:gradle", version.ref = "agp" }
