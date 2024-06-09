@@ -2,7 +2,13 @@ pluginManagement {
     includeBuild("build-logic")
 
     repositories {
-        google()
+        google {
+            content {
+                includeGroupByRegex("com\\.android.*")
+                includeGroupByRegex("com\\.google.*")
+                includeGroupByRegex("androidx.*")
+            }
+        }
         mavenCentral()
         gradlePluginPortal()
     }
@@ -14,6 +20,10 @@ dependencyResolutionManagement {
     repositories {
         google()
         mavenCentral()
+
+        // Try mavenLocal only if the dependency cannot
+        // be found on Maven Central
+        mavenLocal()
     }
 }
 
