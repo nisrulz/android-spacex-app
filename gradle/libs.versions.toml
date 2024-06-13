@@ -1,23 +1,18 @@
 [versions]
 
-#region ---- SDK
-compileSdk = "34"
-targetSdk = "34"
-minSdk = "23"
-
 #region ---- Kotlin version dependent
 # https://developer.android.com/jetpack/androidx/releases/compose-kotlin#pre-release_kotlin_compatibility
 composeCompiler = "1.5.10"
 # https://github.com/JetBrains/kotlin/releases
-org-jetbrains-kotlin-android = "1.9.22"
+org-jetbrains-kotlin-android = "2.0.0"
 # https://github.com/google/ksp/releases
-ksp = "1.9.22-1.0.17"
+ksp = "2.0.0-1.0.21"
 #endregion
 
 #region ---- Android Core
-agp = "8.3.0"
-core-ktx = "1.12.0"
-lifecycleVer = "2.8.1"
+agp = "8.5.0"
+core-ktx = "1.13.1"
+lifecycleVer = "2.8.2"
 appcompat = "1.7.0"
 #endregion
 
