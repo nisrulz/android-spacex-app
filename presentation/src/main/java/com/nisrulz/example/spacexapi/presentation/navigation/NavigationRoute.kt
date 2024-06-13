@@ -39,9 +39,7 @@ internal object NavigationRoute {
         onNavigateToBookmarks: () -> Unit
     ) {
         composable(
-            HOME_ROUTE,
-            enterTransition = { customFadeIn() },
-            exitTransition = { customFadeOut() }
+            HOME_ROUTE
         ) {
             ListOfLaunchesScreen(navigateToDetails = { launchId ->
                 onNavigateToDetails(launchId)
@@ -56,9 +54,7 @@ internal object NavigationRoute {
         onBackAction: () -> Unit
     ) {
         composable(
-            BOOKMARK_ROUTE,
-            enterTransition = { customFadeIn() },
-            exitTransition = { customFadeOut() }
+            BOOKMARK_ROUTE
         ) {
             BookmarkedLaunchesScreen(
                 navigateToDetails = { launchId ->
@@ -71,9 +67,7 @@ internal object NavigationRoute {
 
     fun NavGraphBuilder.detailsScreen(onBackAction: () -> Unit) {
         composable(
-            DETAILS_ROUTE,
-            enterTransition = { customFadeIn() },
-            exitTransition = { customFadeOut() }
+            DETAILS_ROUTE
         ) { backStackEntry ->
             val id = backStackEntry.getArgLaunchId()
             if (id.isNotEmpty()) {

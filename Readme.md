@@ -75,7 +75,7 @@ An Offline first Android app to consume the SpaceX Backend API [`https://github.
 - Cacheing
 - [Delegation](https://kotlinlang.org/docs/delegation.html)
 - [Multibindings with Hilt](https://dagger.dev/dev-guide/multibindings.html)
-- [Gradle Convention Plugins](https://docs.gradle.org/current/samples/sample_convention_plugins.html) | PR [#5](https://github.com/nisrulz/android-spacex-app/pull/5) [#7](https://github.com/nisrulz/android-spacex-app/pull/7)
+- [Convention Plugins](https://github.com/nisrulz/android-spacex-app/pull/29/commits/2e05a6c3fa972cd29c89a28cb5a735aa073d4f43)
 - [Github Actions](https://docs.github.com/en/actions) | [Workflows used](.github/workflows)
 
 ## Dependency Graph

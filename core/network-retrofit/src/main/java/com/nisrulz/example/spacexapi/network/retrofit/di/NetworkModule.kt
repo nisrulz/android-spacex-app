@@ -1,7 +1,6 @@
 package com.nisrulz.example.spacexapi.network.retrofit.di
 
 import android.app.Application
-import com.jakewharton.retrofit2.converter.kotlinx.serialization.asConverterFactory
 import com.nisrulz.example.spacexapi.network.retrofit.SpaceXLaunchesApi
 import dagger.Module
 import dagger.Provides
@@ -18,6 +17,7 @@ import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Converter
 import retrofit2.Retrofit
+import retrofit2.converter.kotlinx.serialization.asConverterFactory
 
 @Module
 @InstallIn(SingletonComponent::class)

@@ -1,23 +1,17 @@
 [versions]
 
-#region ---- SDK
-compileSdk = "34"
-targetSdk = "34"
-minSdk = "23"
-
 #region ---- Kotlin version dependent
-# https://developer.android.com/jetpack/androidx/releases/compose-kotlin#pre-release_kotlin_compatibility
-composeCompiler = "1.5.10"
 # https://github.com/JetBrains/kotlin/releases
-org-jetbrains-kotlin-android = "1.9.22"
+kotlin = "2.0.0"
 # https://github.com/google/ksp/releases
-ksp = "1.9.22-1.0.17"
+ksp = "2.0.0-1.0.21"
 #endregion
 
 #region ---- Android Core
-agp = "8.3.0"
-core-ktx = "1.12.0"
-lifecycleVer = "2.8.1"
+agp = "8.5.0"
+androidTools = "31.4.2"
+core-ktx = "1.13.1"
+lifecycleVer = "2.8.2"
 appcompat = "1.7.0"
 #endregion
 
@@ -34,7 +28,7 @@ kotlinxSerializationJson = "1.6.2"
 
 #region ---- Jetpack Compose
 activity-compose = "1.9.0"
-compose-bom = "2024.05.00"
+compose-bom = "2024.06.00"
 #endregion
 
 # Navigation
@@ -48,11 +42,10 @@ hiltExt = "1.2.0"
 
 #region ---- Retrofit
 okhttp = "4.12.0"
-retrofit = "2.11.0"
+retrofit-bom = "2.11.0"
 #endregion
 
 #region ---- Room
-retrofit2KotlinxSerializationConverter = "1.0.0"
 room = "2.6.1"
 #endregion
 
@@ -71,9 +64,14 @@ coreTesting = "2.2.0"
 kotlinxCoroutinesTest = "1.8.1"
 
 [libraries]
-gradle = { module = "com.android.tools.build:gradle", version.ref = "agp" }
-kotlin-gradle-plugin = { module = "org.jetbrains.kotlin:kotlin-gradle-plugin", version.ref = "org-jetbrains-kotlin-android" }
+# build-logic
+android-gradle-plugin = { module = "com.android.tools.build:gradle", version.ref = "agp" }
+android-tools-common = { module = "com.android.tools:common", version.ref = "androidTools" }
+compose-gradle-plugin = { module = "org.jetbrains.kotlin:compose-compiler-gradle-plugin", version.ref = "kotlin" }
+kotlin-gradle-plugin = { module = "org.jetbrains.kotlin:kotlin-gradle-plugin", version.ref = "kotlin" }
 symbol-processing-gradle-plugin = { module = "com.google.devtools.ksp:symbol-processing-gradle-plugin", version.ref = "ksp" }
+#----- end
+
 kotlinx-coroutines-android = { group = "org.jetbrains.kotlinx", name = "kotlinx-coroutines-android", version.ref = "kotlinxCoroutines" }
 core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "core-ktx" }
 
@@ -100,7 +98,6 @@ appcompat = { group = "androidx.appcompat", name = "appcompat", version.ref = "a
 material = { group = "androidx.compose.material", name = "material" }
 material3 = { group = "androidx.compose.material3", name = "material3" }
 
-
 # Coil
 coil-kt = { group = "io.coil-kt", name = "coil", version.ref = "coil" }
 coil-kt-compose = { group = "io.coil-kt", name = "coil-compose", version.ref = "coil" }
@@ -116,11 +113,13 @@ hilt-navigation = { group = "androidx.hilt", name = "hilt-navigation-compose", v
 navigation-compose = { group = "androidx.navigation", name = "navigation-compose", version.ref = "navigationCompose" }
 
 # Retrofit
-retrofit-core = { group = "com.squareup.retrofit2", name = "retrofit", version.ref = "retrofit" }
+retrofit-bom = { group = "com.squareup.retrofit2", name = "retrofit-bom", version.ref = "retrofit-bom" }
+retrofit-core = { group = "com.squareup.retrofit2", name = "retrofit" }
+retrofit2-kotlinx-serialization-converter = { group = "com.squareup.retrofit2", name = "converter-kotlinx-serialization" }
+
 
 # Serialization
 kotlinx-serialization-json = { module = "org.jetbrains.kotlinx:kotlinx-serialization-json", version.ref = "kotlinxSerializationJson" }
-retrofit2-kotlinx-serialization-converter = { module = "com.jakewharton.retrofit:retrofit2-kotlinx-serialization-converter", version.ref = "retrofit2KotlinxSerializationConverter" }
 
 # Okhttp
 okhttp-bom = { group = "com.squareup.okhttp3", name = "okhttp-bom", version.ref = "okhttp" }
@@ -145,15 +144,26 @@ kotlinx-coroutines-test = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-t
 turbine = { module = "app.cash.turbine:turbine", version.ref = "turbineVer" }
 
 [plugins]
+
+org-jetbrains-kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
+compose-compiler = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "kotlin" }
+kotlin-serialization = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "kotlin" }
+
 com-android-application = { id = "com.android.application", version.ref = "agp" }
 com-android-library = { id = "com.android.library", version.ref = "agp" }
-org-jetbrains-kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "org-jetbrains-kotlin-android" }
 ksp = { id = "com.google.devtools.ksp", version.ref = "ksp" }
-kotlin-serialization = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "org-jetbrains-kotlin-android" }
 
 
 # Hilt
 hilt = { id = "com.google.dagger.hilt.android", version.ref = "hilt" }
+
+# Plugins defined by this project
+spacexapi-android-application = { id = "spacexapi.android.application", version = "unspecified" }
+spacexapi-android-library = { id = "spacexapi.android.library", version = "unspecified" }
+spacexapi-android-compose = { id = "spacexapi.android.compose", version = "unspecified" }
+spacexapi-android-testing = { id = "spacexapi.android.testing", version = "unspecified" }
+spacexapi-android-app-hilt = { id = "spacexapi.android.app.hilt", version = "unspecified" }
+spacexapi-android-lib-hilt = { id = "spacexapi.android.lib.hilt", version = "unspecified" }
 
 [bundles]
 lifecycle = ["lifecycle-runtime-ktx", "lifecycle-runtime-compose"]

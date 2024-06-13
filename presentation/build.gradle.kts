@@ -1,12 +1,14 @@
-@Suppress("DSL_SCOPE_VIOLATION") // TODO: Remove once KTIJ-19369 is fixed
+import com.nisrulz.example.spacexapi.info.ApplicationInfo
+
 plugins {
-    id("library-convention")
-    id("hilt-convention")
-    id("testing-convention")
-    id("jetpack-compose-convention")
+    alias(libs.plugins.spacexapi.android.library)
+    alias(libs.plugins.spacexapi.android.lib.hilt)
+    alias(libs.plugins.spacexapi.android.testing)
+
+    alias(libs.plugins.spacexapi.android.compose)
 }
 android {
-    namespace = "com.nisrulz.example.spacexapi.presentation"
+    namespace = "${ApplicationInfo.BASE_NAMESPACE}.presentation"
 }
 
 dependencies {
