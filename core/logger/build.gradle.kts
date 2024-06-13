@@ -1,10 +1,12 @@
+import com.nisrulz.example.spacexapi.info.ApplicationInfo
+
 plugins {
-    id("library-convention")
-    id("hilt-convention")
+    alias(libs.plugins.spacexapi.android.library)
+    alias(libs.plugins.spacexapi.android.lib.hilt)
 }
 
 android {
-    namespace = "com.nisrulz.example.spacexapi.logger"
+    namespace = "${ApplicationInfo.BASE_NAMESPACE}.logger"
 
     buildFeatures {
         buildConfig = true

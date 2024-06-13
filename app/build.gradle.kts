@@ -1,16 +1,12 @@
+import com.nisrulz.example.spacexapi.info.ApplicationInfo
+
 plugins {
-    id("app-convention")
-    id("hilt-convention")
+    alias(libs.plugins.spacexapi.android.application)
+    alias(libs.plugins.spacexapi.android.app.hilt)
 }
 
 android {
-    namespace = "com.nisrulz.example.spacexapi"
-
-    defaultConfig {
-        applicationId = "com.nisrulz.example.spacexapi"
-        versionCode = 1
-        versionName = "1.0"
-    }
+    namespace = ApplicationInfo.BASE_NAMESPACE
 }
 
 dependencies {

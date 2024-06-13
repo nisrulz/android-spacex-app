@@ -1,13 +1,15 @@
+import com.nisrulz.example.spacexapi.info.ApplicationInfo
+
 plugins {
-    id("library-convention")
-    id("hilt-convention")
-    id("testing-convention")
+    alias(libs.plugins.spacexapi.android.library)
+    alias(libs.plugins.spacexapi.android.lib.hilt)
+    alias(libs.plugins.spacexapi.android.testing)
 
     alias(libs.plugins.kotlin.serialization)
 }
 
 android {
-    namespace = "com.nisrulz.example.spacexapi.network.retrofit"
+    namespace = "${ApplicationInfo.BASE_NAMESPACE}.network.retrofit"
 }
 
 dependencies {
