@@ -47,4 +47,4 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-m2
 
-      - uses: gradle/wrapper-validation-action@v3
+      - uses: gradle/actions/wrapper-validation@v3
