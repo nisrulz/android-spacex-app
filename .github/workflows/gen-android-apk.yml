@@ -5,7 +5,7 @@ env:
 
 on:
   # Allows to run this workflow automatically when a tag is pushed
-  create:
+  push:
     tags:
       - "*"
 
@@ -30,6 +30,16 @@ jobs:
             ~/.gradle/caches
             ~/.gradle/wrapper
           key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle*') }}
+
+      - name: Cache dependencies
+        uses: actions/cache@v4
+        with:
+          path: |
+            ~/.gradle/caches/modules-2
+            ~/.gradle/caches/jars-3
+          key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle*', '**/gradle-wrapper.properties') }}
+          restore-keys: |
+            ${{ runner.os }}-gradle-
 
       - name: Change wrapper permissions
         run: chmod +x ./gradlew
