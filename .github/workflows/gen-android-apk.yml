@@ -7,7 +7,7 @@ on:
   # Allows to run this workflow automatically when a tag is pushed
   push:
     tags:
-      - "*"
+      - 'v*'
 
 jobs:
   build:
