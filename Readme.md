@@ -40,6 +40,7 @@ An Offline first Android app to consume the SpaceX Backend API [`https://github.
 ### Navigation
 
 - [Jetpack Compose Navigation](https://developer.android.com/jetpack/compose/navigation)
+  - [Type Safe Navigation](https://github.com/nisrulz/android-spacex-app/pull/37)
 
 ### Networking
 
