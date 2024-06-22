@@ -6,6 +6,7 @@ plugins {
     alias(libs.plugins.spacexapi.android.testing)
 
     alias(libs.plugins.spacexapi.android.compose)
+    alias(libs.plugins.spacexapi.android.compose.navigation)
 }
 android {
     namespace = "${ApplicationInfo.BASE_NAMESPACE}.presentation"
