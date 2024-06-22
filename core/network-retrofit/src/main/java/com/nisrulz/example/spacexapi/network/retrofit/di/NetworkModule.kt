@@ -6,9 +6,6 @@ import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
-import java.io.File
-import java.util.concurrent.TimeUnit
-import javax.inject.Singleton
 import kotlinx.serialization.json.Json
 import okhttp3.Cache
 import okhttp3.Interceptor
@@ -18,6 +15,9 @@ import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Converter
 import retrofit2.Retrofit
 import retrofit2.converter.kotlinx.serialization.asConverterFactory
+import java.io.File
+import java.util.concurrent.TimeUnit
+import javax.inject.Singleton
 
 @Module
 @InstallIn(SingletonComponent::class)
@@ -31,20 +31,16 @@ class NetworkModule {
     @Provides
     @Singleton
     fun provideRetrofit(okHttpClient: OkHttpClient, jsonConverter: Converter.Factory): Retrofit {
-        return Retrofit.Builder()
-            .baseUrl(SpaceXLaunchesApi.BASE_URL)
-            .addConverterFactory(jsonConverter)
-            .client(okHttpClient)
-            .build()
+        return Retrofit.Builder().baseUrl(SpaceXLaunchesApi.BASE_URL)
+            .addConverterFactory(jsonConverter).client(okHttpClient).build()
     }
 
     @Provides
     @Singleton
     fun provideConvertorFactory(): Converter.Factory {
-        val json =
-            Json {
-                coerceInputValues = true
-            }
+        val json = Json {
+            coerceInputValues = true
+        }
         return json.asConverterFactory("application/json".toMediaType())
     }
 
@@ -54,15 +50,26 @@ class NetworkModule {
         cacheLoggingInterceptor: Interceptor,
         httpLoggingInterceptor: HttpLoggingInterceptor,
         cache: Cache
-    ) = OkHttpClient
-        .Builder()
-        .cache(cache)
-        .connectTimeout(10, TimeUnit.SECONDS)
-        .readTimeout(10, TimeUnit.SECONDS)
-        .writeTimeout(10, TimeUnit.SECONDS)
-        .addInterceptor(cacheLoggingInterceptor)
-        .addInterceptor(httpLoggingInterceptor)
-        .build()
+    ): OkHttpClient {
+        val okhttpBuilder = OkHttpClient.Builder()
+
+        with(okhttpBuilder) {
+            // Cache
+            cache(cache)
+
+            // Timeout
+            val timeOutInSeconds = 10L
+            connectTimeout(timeOutInSeconds, TimeUnit.SECONDS)
+            readTimeout(timeOutInSeconds, TimeUnit.SECONDS)
+            writeTimeout(timeOutInSeconds, TimeUnit.SECONDS)
+
+            // Interceptors
+            addInterceptor(cacheLoggingInterceptor)
+            addInterceptor(httpLoggingInterceptor)
+        }
+
+        return okhttpBuilder.build()
+    }
 
     @Provides
     @Singleton
@@ -79,13 +86,11 @@ class NetworkModule {
         val response = chain.proceed(request)
         if (response.cacheResponse != null) {
             println(
-                "🧠 Successful Response from MEMORY_CACHE\n" +
-                    "\t${request.method} ${request.url}"
+                "🧠 Successful Response from MEMORY_CACHE\n" + "\t${request.method} ${request.url}"
             )
         } else if (response.networkResponse != null) {
             println(
-                "☁️ Successful Response from NETWORK\n" +
-                    "\t${request.method} ${request.url}"
+                "☁️ Successful Response from NETWORK\n" + "\t${request.method} ${request.url}"
             )
         }
         return@Interceptor response
