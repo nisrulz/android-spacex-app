@@ -27,3 +27,14 @@ internal fun Project.configureAndroidCompose() = configure<LibraryExtension> {
         enableStrongSkippingMode = true
     }
 }
+
+/**
+ * Configure Compose Navigation options
+ */
+internal fun Project.configureAndroidComposeNavigation() = configure<LibraryExtension> {
+
+    dependencies {
+        add("implementation", catalogLibrary("navigation-compose"))
+        add("implementation", catalogLibrary("kotlinx-serialization-json"))
+    }
+}

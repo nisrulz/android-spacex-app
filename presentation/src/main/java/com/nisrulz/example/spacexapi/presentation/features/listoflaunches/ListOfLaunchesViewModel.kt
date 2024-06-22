@@ -7,14 +7,12 @@ import com.nisrulz.example.spacexapi.analytics.InUseAnalytics
 import com.nisrulz.example.spacexapi.analytics.trackNavigateToDetail
 import com.nisrulz.example.spacexapi.analytics.trackScreenListOfLaunches
 import com.nisrulz.example.spacexapi.domain.model.LaunchInfo
-import com.nisrulz.example.spacexapi.domain.usecase.GetAllBookmarkedLaunches
 import com.nisrulz.example.spacexapi.domain.usecase.GetAllLaunches
 import com.nisrulz.example.spacexapi.domain.usecase.ToggleBookmarkLaunchInfo
 import com.nisrulz.example.spacexapi.logger.InUseLoggers
 import com.nisrulz.example.spacexapi.presentation.features.listoflaunches.ListOfLaunchesViewModel.UiEvent.NavigateToDetails
 import com.nisrulz.example.spacexapi.presentation.features.listoflaunches.ListOfLaunchesViewModel.UiEvent.ShowSnackBar
 import dagger.hilt.android.lifecycle.HiltViewModel
-import javax.inject.Inject
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -23,15 +21,14 @@ import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
 @HiltViewModel
 class ListOfLaunchesViewModel
-@Inject
-constructor(
+@Inject constructor(
     private val coroutineDispatcher: CoroutineDispatcher,
     private val getAllLaunches: GetAllLaunches,
     private val bookmarkLaunchInfo: ToggleBookmarkLaunchInfo,
-    private val getAllBookmarkedLaunches: GetAllBookmarkedLaunches,
     private val logger: InUseLoggers,
     private val analytics: InUseAnalytics
 ) : ViewModel() {
@@ -50,8 +47,7 @@ constructor(
 
     @VisibleForTesting
     fun getListOfLaunches() = viewModelScope.launch(coroutineDispatcher) {
-        getAllLaunches()
-            .onEach {
+        getAllLaunches().onEach {
                 handleListOfLaunches(it)
             }.catch {
                 setError(it.message ?: "Error")

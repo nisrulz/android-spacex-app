@@ -32,7 +32,7 @@ compose-bom = "2024.06.00"
 #endregion
 
 # Navigation
-navigationCompose = "2.7.7"
+navigationCompose = "2.8.0-beta03"
 
 #region ---- Hilt
 hilt = "2.51.1"
@@ -161,6 +161,7 @@ hilt = { id = "com.google.dagger.hilt.android", version.ref = "hilt" }
 spacexapi-android-application = { id = "spacexapi.android.application", version = "unspecified" }
 spacexapi-android-library = { id = "spacexapi.android.library", version = "unspecified" }
 spacexapi-android-compose = { id = "spacexapi.android.compose", version = "unspecified" }
+spacexapi-android-compose-navigation = { id = "spacexapi.android.compose.navigation", version = "unspecified" }
 spacexapi-android-testing = { id = "spacexapi.android.testing", version = "unspecified" }
 spacexapi-android-app-hilt = { id = "spacexapi.android.app.hilt", version = "unspecified" }
 spacexapi-android-lib-hilt = { id = "spacexapi.android.lib.hilt", version = "unspecified" }

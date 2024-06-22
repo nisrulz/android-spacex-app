@@ -2,43 +2,45 @@ package com.nisrulz.example.spacexapi.presentation.navigation
 
 import androidx.compose.runtime.Composable
 import androidx.navigation.compose.NavHost
+import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
-import com.nisrulz.example.spacexapi.presentation.navigation.NavigationRoute.bookmarkScreen
-import com.nisrulz.example.spacexapi.presentation.navigation.NavigationRoute.detailsScreen
-import com.nisrulz.example.spacexapi.presentation.navigation.NavigationRoute.homeScreen
-import com.nisrulz.example.spacexapi.presentation.navigation.NavigationRoute.navigateBack
-import com.nisrulz.example.spacexapi.presentation.navigation.NavigationRoute.navigateToBookmarks
-import com.nisrulz.example.spacexapi.presentation.navigation.NavigationRoute.navigateToLaunchDetail
+import androidx.navigation.toRoute
+import com.nisrulz.example.spacexapi.presentation.features.bookmarkedlaunches.BookmarkedLaunchesScreen
+import com.nisrulz.example.spacexapi.presentation.features.launchdetail.LaunchDetailScreen
+import com.nisrulz.example.spacexapi.presentation.features.listoflaunches.ListOfLaunchesScreen
 
 @Composable
 fun AppNavigation() {
     val navController = rememberNavController()
+
     NavHost(
-        navController = navController,
-        startDestination = NavigationRoute.HOME_ROUTE
+        navController = navController, startDestination = RouteHome
     ) {
-        homeScreen(
-            onNavigateToDetails = { launchId ->
-                navController.navigateToLaunchDetail(launchId)
-            },
-            onNavigateToBookmarks = {
-                navController.navigateToBookmarks()
-            }
-        )
+        composable<RouteHome> {
+            ListOfLaunchesScreen(navigateToDetails = { launchId ->
+                navController.navigate(RouteDetails(launchId))
+            }, navigateToBookmarks = {
+                navController.navigate(RouteBookmark)
+            })
 
-        bookmarkScreen(
-            onNavigateToDetails = { launchId ->
-                navController.navigateToLaunchDetail(launchId)
-            },
-            onBackAction = {
-                navController.navigateBack()
-            }
-        )
+        }
 
-        detailsScreen(
-            onBackAction = {
-                navController.navigateBack()
-            }
-        )
+        composable<RouteBookmark> {
+            BookmarkedLaunchesScreen(navigateToDetails = { launchId ->
+                navController.navigate(RouteDetails(launchId))
+            }, onBackAction = {
+                navController.navigate(RouteHome)
+            })
+
+        }
+
+        composable<RouteDetails> { backStackEntry ->
+            val id = backStackEntry.toRoute<RouteDetails>().launchId
+
+            LaunchDetailScreen(launchId = id, onBackAction = {
+                navController.navigate(RouteHome)
+            })
+
+        }
     }
 }

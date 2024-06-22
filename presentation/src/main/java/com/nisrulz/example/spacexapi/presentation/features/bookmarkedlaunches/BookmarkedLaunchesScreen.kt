@@ -20,7 +20,7 @@ import kotlinx.coroutines.flow.receiveAsFlow
 @Composable
 fun BookmarkedLaunchesScreen(
     viewModel: BookmarkedLaunchesViewModel = hiltViewModel(),
-    navigateBack: EmptyCallback = {},
+    onBackAction: EmptyCallback = {},
     navigateToDetails: SingleValueCallback<String> = {}
 ) {
     val snackbarHostState = remember { SnackbarHostState() }
@@ -35,7 +35,7 @@ fun BookmarkedLaunchesScreen(
             // uncompleted processing.
             eventFlow.receiveAsFlow().collectLatest { event ->
                 when (event) {
-                    BookmarkedLaunchesViewModel.UiEvent.NavigateBack -> navigateBack()
+                    BookmarkedLaunchesViewModel.UiEvent.NavigateBack -> onBackAction()
                     is BookmarkedLaunchesViewModel.UiEvent.NavigateToDetails -> {
                         navigateToDetails(event.launchId)
                     }
@@ -63,8 +63,7 @@ fun BookmarkedLaunchesScreen(
                 viewModel.navigateBack()
             }
         } else {
-            BookmarkedLaunchesListComponent(
-                state = state,
+            BookmarkedLaunchesListComponent(state = state,
                 snackbarHostState = snackbarHostState,
                 navigateToDetails = {
                     viewModel.navigateToDetails(it)
@@ -74,8 +73,7 @@ fun BookmarkedLaunchesScreen(
                 },
                 navigateBack = {
                     viewModel.navigateBack()
-                }
-            )
+                })
         }
     }
 }
