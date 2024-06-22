@@ -4,7 +4,6 @@ import app.cash.turbine.test
 import com.google.common.truth.Truth.assertThat
 import com.nisrulz.example.spacexapi.analytics.InUseAnalytics
 import com.nisrulz.example.spacexapi.analytics.contract.AnalyticsEvent
-import com.nisrulz.example.spacexapi.domain.usecase.GetAllBookmarkedLaunches
 import com.nisrulz.example.spacexapi.domain.usecase.GetAllLaunches
 import com.nisrulz.example.spacexapi.domain.usecase.ToggleBookmarkLaunchInfo
 import com.nisrulz.example.spacexapi.logger.InUseLoggers
@@ -29,7 +28,6 @@ class ListOfLaunchesViewModelTest {
     private lateinit var sut: ListOfLaunchesViewModel
     private lateinit var getAllLaunches: GetAllLaunches
     private lateinit var bookmarkLaunchInfo: ToggleBookmarkLaunchInfo
-    private lateinit var getAllBookmarkedLaunches: GetAllBookmarkedLaunches
     private lateinit var logger: InUseLoggers
     private lateinit var analytics: InUseAnalytics
 
@@ -37,7 +35,6 @@ class ListOfLaunchesViewModelTest {
     fun setup() {
         getAllLaunches = mockk()
         bookmarkLaunchInfo = mockk()
-        getAllBookmarkedLaunches = mockk()
 
         logger = mockk {
             every { log(any<String>()) } just runs
@@ -50,7 +47,6 @@ class ListOfLaunchesViewModelTest {
             coroutineDispatcher = testDispatcher,
             getAllLaunches = getAllLaunches,
             bookmarkLaunchInfo = bookmarkLaunchInfo,
-            getAllBookmarkedLaunches = getAllBookmarkedLaunches,
             logger = logger,
             analytics = analytics
         )
