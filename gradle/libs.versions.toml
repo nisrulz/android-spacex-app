@@ -59,7 +59,7 @@ espresso-core = "3.5.1"
 truth = "1.4.2"
 turbineVer = "1.1.0"
 mockkVersion = "1.13.11"
-junitKtx = "1.1.5"
+junitKtx = "1.2.0"
 coreTesting = "2.2.0"
 kotlinxCoroutinesTest = "1.8.1"
 
