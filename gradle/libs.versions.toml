@@ -23,7 +23,7 @@ material3 = "1.10.0"
 
 #region ---- Kotlin
 kotlinxCoroutines = "1.8.1"
-kotlinxSerializationJson = "1.7.0"
+kotlinxSerializationJson = "1.7.1"
 #endregion
 
 #region ---- Jetpack Compose
