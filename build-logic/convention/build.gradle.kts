@@ -52,6 +52,12 @@ gradlePlugin {
                 "com.nisrulz.example.spacexapi.TestingConventionPlugin"
         }
 
+        register("jacoco") {
+            id = "spacexapi.android.jacoco"
+            implementationClass =
+                "com.nisrulz.example.spacexapi.JacocoConventionPlugin"
+        }
+
         register("hiltApp") {
             id = "spacexapi.android.app.hilt"
             implementationClass =
