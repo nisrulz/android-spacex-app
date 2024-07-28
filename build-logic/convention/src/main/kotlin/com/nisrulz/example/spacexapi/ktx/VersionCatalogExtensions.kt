@@ -11,8 +11,12 @@ import org.gradle.kotlin.dsl.getByType
 private val Project.catalog
     get() = extensions.getByType<VersionCatalogsExtension>()
 
-private val Project.libs: VersionCatalog
+internal val Project.libs: VersionCatalog
     get() = catalog.named("libs")
+
+
+internal fun Project.catalogVersion(alias: String): String =
+    libs.findVersion(alias).get().toString()
 
 internal fun Project.catalogLibrary(alias: String): Provider<MinimalExternalModuleDependency> =
     libs.findLibrary(alias).get()
