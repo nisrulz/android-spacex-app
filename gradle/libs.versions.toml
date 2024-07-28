@@ -62,6 +62,7 @@ mockkVersion = "1.13.12"
 junitKtx = "1.2.1"
 coreTesting = "2.2.0"
 kotlinxCoroutinesTest = "1.8.1"
+jacoco = "0.8.12"
 
 [libraries]
 # build-logic
@@ -142,6 +143,7 @@ androidx-junit-ktx = { group = "androidx.test.ext", name = "junit-ktx", version.
 testing-core = { group = "androidx.arch.core", name = "core-testing", version.ref = "coreTesting" }
 kotlinx-coroutines-test = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-test", version.ref = "kotlinxCoroutinesTest" }
 turbine = { module = "app.cash.turbine:turbine", version.ref = "turbineVer" }
+jacoco = { module = "org.jacoco:org.jacoco.core", version.ref = "jacoco" }
 
 [plugins]
 
