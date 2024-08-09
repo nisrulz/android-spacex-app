@@ -21,6 +21,9 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
+        with:
+          fetch-depth: 0 # This will checkout the latest commit
+          ref: refs/pull/${GITHUB_PR_ID}/head # This will checkout the PR branch and latest commit
 
       # Your APK building commands here...
       - name: Set Up JDK
@@ -44,3 +47,5 @@ jobs:
         with:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           path: app-release.apk
+          comment: "Build Successful! APK uploaded to artifacts.
+            [Check it out](https://github.com/{GITHUB_actor}/{GITHUB_repository}/actions/runs/{GITHUB_RUN_ID})"
