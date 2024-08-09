@@ -76,11 +76,11 @@ jobs:
           path: app/build/outputs/apk/debug/app-debug.apk
           retention-days: ${{ ARTIFACT_RETENTION_DAYS }}
 
-      - name: Comment on PR
-        id: comment-on-pr
-        uses: marocchino/sticky-pull-request-comment@v2
-        with:
+      - name: Comment in PR
+        env:
+          URL: ${{ github.event.pull_request.comments_url }}
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          path: app-debug.apk
-          comment: "Build Successful! APK uploaded to artifacts.
-            [Check it out](https://github.com/{GITHUB_actor}/{GITHUB_repository}/actions/runs/{GITHUB_RUN_ID})"
+          APK_LINK: https://github.com/${GITHUB_actor}/${GITHUB_repository}/pull/${GITHUB_PR_ID}
+        run: |
+          curl -X POST $URL -H "Content-Type: application/json" -H "Authorization: token $GITHUB_TOKEN" \\\\
+            --data '{"body": "Build Successful! APK uploaded to artifacts. [Check it out]($APK_LINK)" }'
