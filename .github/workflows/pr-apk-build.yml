@@ -4,9 +4,14 @@ env:
   main_project_module: app
 
 on:
+  # Allows to run this workflow when a Pull Request is made with the set target branch
   pull_request:
-    branches: ['main']
-    types: [labeled]
+    paths-ignore:
+      - "**/*.md"
+    branches:
+      - main
+  # Allows to run this workflow manually from the Actions tab
+  workflow_dispatch:
 
 jobs:
   build-and-comment:
