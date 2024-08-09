@@ -14,7 +14,7 @@ on:
   workflow_dispatch:
 
 jobs:
-  build-and-comment:
+  checkout-code-and-set-up-jdk:
     if: ${{ contains(github.event.pull_request.labels.*.name, 'Build APK') }}
     runs-on: ubuntu-latest
 
@@ -25,13 +25,17 @@ jobs:
           fetch-depth: 0 # This will checkout the latest commit
           ref: refs/pull/${GITHUB_PR_ID}/head # This will checkout the PR branch and latest commit
 
-      # Your APK building commands here...
       - name: Set Up JDK
         uses: actions/setup-java@v4
         with:
           distribution: "temurin"
           java-version: "17"
 
+  build-and-upload-apk:
+    needs: checkout-code-and-set-up-jdk
+    runs-on: ubuntu-latest
+
+    steps:
       - name: Build APK
         run: ./gradlew assembleRelease
 
@@ -42,6 +46,11 @@ jobs:
           path: app/build/outputs/apk/release/app-release.apk
           retention-days: 7  # Retain the artifact for 7 days
 
+  comment-on-pr:
+    needs: build-and-upload-apk
+    runs-on: ubuntu-latest
+
+    steps:
       - name: Comment on PR
         uses: marocchino/sticky-pull-request-comment@v2
         with:
