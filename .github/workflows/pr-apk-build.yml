@@ -1,28 +1,15 @@
 name: Build APK for labeled PR
 
 env:
-  # The main project module
   MAIN_PROJECT_MODULE: "app"
-
-  # The JDK version for building the app
   JAVA_VERSION: "17"
 
-  # The distribution name for the JDK
-  JDK_DISTRIBUTION: "temurin"
-
-  # Retain artifact for x days
-  ARTIFACT_RETENTION_DAYS: "7"
-
 on:
-  # Allows to run this workflow when a Pull Request is made with the set target branch
   pull_request:
     paths-ignore:
       - "**/*.md"
     branches:
       - main
-
-  # Allows to run this workflow manually from the Actions tab
-  workflow_dispatch:
 
 jobs:
   build-and-upload-apk:
@@ -37,36 +24,15 @@ jobs:
           ref: ${{ github.head_ref }}
           fetch-depth: 0
 
-      - name: Cache JDK
-        id: cache-jdk
-        uses: actions/cache@v4
-        with:
-          path: /home/linuxbrew/.linuxbrew/lib/jvm/java/17
-          key: java-17-cache-${{ hashFiles("${GITHUB_WORKSPACE}/gradle-wrapper.properties") }}
-          restorable-keys: |
-            # Cache JDK versions
-            "java-17-cache"
-
       - name: Set Up JDK
         id: set-up-jdk
         uses: actions/setup-java@v4
         with:
-          distribution: ${{ JDK_DISTRIBUTION }}
-          java-version: ${{ JAVA_VERSION }}
+          distribution: temurin
+          java-version: ${JAVA_VERSION}
 
       - name: Build APK
         run: ./gradlew assembleDebug
-
-      # Cache build outputs
-      - name: Cache build outputs
-        id: cache-build-outputs
-        uses: actions/cache@v2
-        with:
-          path: app/build/outputs/apk/debug/
-          key: build-output-cache-${{ hashFiles("${GITHUB_WORKSPACE}/gradle-wrapper.properties") }}
-          restorable-keys: |
-            # Cache build outputs for this project
-            "build-output-cache"
 
       - name: Upload APK
         id: upload-apk
@@ -74,7 +40,7 @@ jobs:
         with:
           name: app-debug.apk
           path: app/build/outputs/apk/debug/app-debug.apk
-          retention-days: ${{ ARTIFACT_RETENTION_DAYS }}
+          retention-days: 7
 
       - name: Comment in PR
         env:
