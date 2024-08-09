@@ -1,7 +1,17 @@
 name: Build APK for labeled PR
 
 env:
-  main_project_module: app
+  # The main project module
+  MAIN_PROJECT_MODULE: "app"
+
+  # The JDK version for building the app
+  JAVA_VERSION: "17"
+
+  # The distribution name for the JDK
+  JDK_DISTRIBUTION: "temurin"
+
+  # Retain artifact for x days
+  ARTIFACT_RETENTION_DAYS: "7"
 
 on:
   # Allows to run this workflow when a Pull Request is made with the set target branch
@@ -10,41 +20,67 @@ on:
       - "**/*.md"
     branches:
       - main
+
   # Allows to run this workflow manually from the Actions tab
   workflow_dispatch:
 
 jobs:
-  build-upload-apk-and-comment-on-pr:
+  build-and-upload-apk:
     if: ${{ contains(github.event.pull_request.labels.*.name, 'Build APK') }}
     runs-on: ubuntu-latest
 
     steps:
       - name: Checkout code at the latest commit in branch
+        id: checkout-code
         uses: actions/checkout@v4
         with:
           ref: ${{ github.head_ref }}
           fetch-depth: 0
 
+      - name: Cache JDK
+        id: cache-jdk
+        uses: actions/cache@v4
+        with:
+          path: /home/linuxbrew/.linuxbrew/lib/jvm/java/17
+          key: java-17-cache-${{ hashFiles("${GITHUB_WORKSPACE}/gradle-wrapper.properties") }}
+          restorable-keys: |
+            # Cache JDK versions
+            "java-17-cache"
+
       - name: Set Up JDK
+        id: set-up-jdk
         uses: actions/setup-java@v4
         with:
-          distribution: "temurin"
-          java-version: "17"
+          distribution: ${{ JDK_DISTRIBUTION }}
+          java-version: ${{ JAVA_VERSION }}
 
       - name: Build APK
-        run: ./gradlew assembleRelease
+        run: ./gradlew assembleDebug
+
+      # Cache build outputs
+      - name: Cache build outputs
+        id: cache-build-outputs
+        uses: actions/cache@v2
+        with:
+          path: app/build/outputs/apk/debug/
+          key: build-output-cache-${{ hashFiles("${GITHUB_WORKSPACE}/gradle-wrapper.properties") }}
+          restorable-keys: |
+            # Cache build outputs for this project
+            "build-output-cache"
 
       - name: Upload APK
+        id: upload-apk
         uses: actions/upload-artifact@v4
         with:
-          name: app-release.apk
-          path: app/build/outputs/apk/release/app-release.apk
-          retention-days: 7  # Retain the artifact for 7 days
+          name: app-debug.apk
+          path: app/build/outputs/apk/debug/app-debug.apk
+          retention-days: ${{ ARTIFACT_RETENTION_DAYS }}
 
       - name: Comment on PR
+        id: comment-on-pr
         uses: marocchino/sticky-pull-request-comment@v2
         with:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          path: app-release.apk
+          path: app-debug.apk
           comment: "Build Successful! APK uploaded to artifacts.
             [Check it out](https://github.com/{GITHUB_actor}/{GITHUB_repository}/actions/runs/{GITHUB_RUN_ID})"
