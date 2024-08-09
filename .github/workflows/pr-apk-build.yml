@@ -25,11 +25,33 @@ jobs:
           fetch-depth: 0
 
       - name: Set Up JDK
-        id: set-up-jdk
         uses: actions/setup-java@v4
         with:
-          distribution: temurin
-          java-version: ${JAVA_VERSION}
+          distribution: "temurin"
+          java-version: "17"
+          cache: "gradle"
+
+      - name: Cache Gradle and wrapper
+        uses: actions/cache@v4
+        with:
+          path: |
+            ~/.gradle/caches
+            ~/.gradle/wrapper
+          key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle*') }}
+          restore-keys: |
+            ${{ runner.os }}-gradle-
+
+      - name: Cache dependencies
+        uses: actions/cache@v4
+        with:
+          path: |
+            ~/.m2
+          key: ${{ runner.os }}-m2-${{ hashFiles('**/pom.xml') }}
+          restore-keys: |
+            ${{ runner.os }}-m2
+
+      - name: Change wrapper permissions
+        run: chmod +x ./gradlew
 
       - name: Build APK
         run: ./gradlew assembleDebug
