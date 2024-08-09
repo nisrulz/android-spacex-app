@@ -1,16 +1,31 @@
-name: Test Label Event
+name: Build APK on Label Add
 
 on:
+  # Allows to run this workflow when a Pull Request is made with the set target branch
   pull_request:
-    types: [labeled]
+    paths-ignore:
+      - "**/*.md"
+    branches:
+      - main
+  # Allows to run this workflow manually from the Actions tab
+  workflow_dispatch:
 
 jobs:
-  test-label-event:
+  build-apk:
     runs-on: ubuntu-latest
     steps:
-      - name: Set Label Name
-        run: echo "LABEL_NAME=${{ github.event.label.name }}" >> $GITHUB_ENV
-        
-      - name: Check Label Event
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      # Your APK building commands here...
+
+      # Check if the label "Build APK" was added to the PR
+      - name: Get labels
         run: |
-          echo 'Label event triggered: '${{ LABEL_NAME }}
+          LABELS=$(git -c user.name=github-actions -c user.email=github-actions@users.noreply.github.com show HEAD --pretty --format=%s)
+          if echo "$LABELS" | grep -q "Build APK"; then
+            echo "The label 'Build APK' was added to the PR."
+          else
+            echo "Error: The label 'Build APK' was not added to the PR."
+            exit 1
+          fi
