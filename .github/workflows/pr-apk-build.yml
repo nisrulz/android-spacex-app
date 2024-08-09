@@ -22,8 +22,13 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
         with:
-          fetch-depth: 0 # This will checkout the latest commit
-          ref: ${GITHUB_REF} # This will checkout the PR branch
+          ref: ${{ github.head_ref }}
+          fetch-depth: 0
+      
+      - name: Extract branch name
+        shell: bash
+        run: echo "branch=${GITHUB_HEAD_REF:-${GITHUB_REF#refs/heads/}}" >> $GITHUB_OUTPUT
+        id: extract_branch
 
       - name: Set Up JDK
         uses: actions/setup-java@v4
