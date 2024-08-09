@@ -8,7 +8,9 @@ jobs:
   test-label-event:
     runs-on: ubuntu-latest
     steps:
+      - name: Set Label Name
+        run: echo "LABEL_NAME=${{ github.event.label.name }}" >> $GITHUB_ENV
+        
       - name: Check Label Event
-        run: echo "Label event triggered: ${{ github.event.action }}"
-      - name: Print Event Payload
-        run: echo "Event payload: ${{ toJson(github.event) }}"
+        run: |
+          echo 'Label event triggered: '${{ LABEL_NAME }}
