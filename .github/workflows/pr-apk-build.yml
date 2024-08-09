@@ -1,31 +1,40 @@
-name: Build APK on Label Add
+name: PR labeled builds
+
+env:
+  main_project_module: app
 
 on:
-  # Allows to run this workflow when a Pull Request is made with the set target branch
   pull_request:
-    paths-ignore:
-      - "**/*.md"
-    branches:
-      - main
-  # Allows to run this workflow manually from the Actions tab
-  workflow_dispatch:
+    types: [labeled]
 
 jobs:
-  build-apk:
+  build-and-comment:
+    if: ${{ contains(github.event.pull_request.labels.*.name, 'Build APK') }}
     runs-on: ubuntu-latest
+
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
 
       # Your APK building commands here...
+      - name: Set Up JDK
+        uses: actions/setup-java@v4
+        with:
+          distribution: "temurin"
+          java-version: "17"
 
-      # Check if the label "Build APK" was added to the PR
-      - name: Get labels
-        run: |
-          LABELS=$(git -c user.name=github-actions -c user.email=github-actions@users.noreply.github.com show HEAD --pretty --format=%s)
-          if echo "$LABELS" | grep -q "Build APK"; then
-            echo "The label 'Build APK' was added to the PR."
-          else
-            echo "Error: The label 'Build APK' was not added to the PR."
-            exit 1
-          fi
+      - name: Build APK
+        run: ./gradlew assembleRelease
+
+      - name: Upload APK
+        uses: actions/upload-artifact@v4
+        with:
+          name: app-release.apk
+          path: app/build/outputs/apk/release/app-release.apk
+          retention-days: 7  # Retain the artifact for 7 days
+
+      - name: Comment on PR
+        uses: marocchino/sticky-pull-request-comment@v2
+        with:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          path: app-release.apk
