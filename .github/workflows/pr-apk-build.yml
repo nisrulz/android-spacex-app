@@ -1,13 +1,10 @@
-name: "Validate Gradle Wrapper"
+name: Build APK for labeled PR
+
+env:
+  MAIN_PROJECT_MODULE: "app"
+  JAVA_VERSION: "17"
 
 on:
-  # Allows to run this workflow when a commit it pushed to the branch
-  push:
-    paths-ignore:
-      - "**/*.md"
-    branches:
-      - main
-  # Allows to run this workflow when a Pull Request is made with the set target branch
   pull_request:
     paths-ignore:
       - "**/*.md"
@@ -15,9 +12,10 @@ on:
       - main
 
 jobs:
-  validation:
-    name: "Validation"
+  build-and-upload-apk:
+    if: ${{ contains(github.event.pull_request.labels.*.name, 'Build APK') }}
     runs-on: ubuntu-latest
+
     steps:
       - name: Checkout code at the latest commit in branch
         id: checkout-code
@@ -52,4 +50,25 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-m2
 
-      - uses: gradle/actions/wrapper-validation@v4
+      - name: Change wrapper permissions
+        run: chmod +x ./gradlew
+
+      - name: Build APK
+        run: ./gradlew assembleDebug
+
+      - name: Upload APK
+        id: upload-apk
+        uses: actions/upload-artifact@v4
+        with:
+          name: app-debug.apk
+          path: app/build/outputs/apk/debug/app-debug.apk
+          retention-days: 7
+
+      - name: Comment in PR
+        env:
+          URL: ${{ github.event.pull_request.comments_url }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          APK_LINK: https://github.com/${GITHUB_actor}/${GITHUB_repository}/pull/${GITHUB_PR_ID}
+        run: |
+          curl -X POST $URL -H "Content-Type: application/json" -H "Authorization: token $GITHUB_TOKEN" \\\\
+            --data '{"body": "Build Successful! APK uploaded to artifacts. [Check it out]($APK_LINK)" }'
