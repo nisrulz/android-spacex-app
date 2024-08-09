@@ -23,7 +23,7 @@ jobs:
         uses: actions/checkout@v4
         with:
           fetch-depth: 0 # This will checkout the latest commit
-          ref: refs/pull/${GITHUB_PR_ID}/head # This will checkout the PR branch and latest commit
+          ref: ${GITHUB_REF} # This will checkout the PR branch
 
       - name: Set Up JDK
         uses: actions/setup-java@v4
