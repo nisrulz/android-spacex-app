@@ -1,4 +1,4 @@
-name: PR labeled builds
+name: Build APK for labeled PR
 
 env:
   main_project_module: app
@@ -14,12 +14,12 @@ on:
   workflow_dispatch:
 
 jobs:
-  checkout-code-and-set-up-jdk:
+  build-upload-apk-and-comment-on-pr:
     if: ${{ contains(github.event.pull_request.labels.*.name, 'Build APK') }}
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout code
+      - name: Checkout code at the latest commit in branch
         uses: actions/checkout@v4
         with:
           ref: ${{ github.head_ref }}
@@ -31,11 +31,6 @@ jobs:
           distribution: "temurin"
           java-version: "17"
 
-  build-and-upload-apk:
-    needs: checkout-code-and-set-up-jdk
-    runs-on: ubuntu-latest
-
-    steps:
       - name: Build APK
         run: ./gradlew assembleRelease
 
@@ -46,11 +41,6 @@ jobs:
           path: app/build/outputs/apk/release/app-release.apk
           retention-days: 7  # Retain the artifact for 7 days
 
-  comment-on-pr:
-    needs: build-and-upload-apk
-    runs-on: ubuntu-latest
-
-    steps:
       - name: Comment on PR
         uses: marocchino/sticky-pull-request-comment@v2
         with:
