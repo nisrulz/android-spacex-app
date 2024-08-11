@@ -14,8 +14,6 @@ on:
 jobs:
   build-and-upload-apk:
     runs-on: ubuntu-latest
-    outputs:
-      apkUrl: ${{ steps.upload-artifacts.outputs.artifact-url }}
     steps:
       - name: Checkout code at the latest commit in branch
         id: checkout-code
@@ -63,6 +61,10 @@ jobs:
           name: app-debug.apk
           path: app/build/outputs/apk/debug/app-debug.apk
           retention-days: 7
+      
+      - name: Export APK URL
+        run: |
+          echo "APK_URL=${{ steps.upload-artifacts.outputs.artifact-url }}" >> "$GITHUB_ENV"
 
   comment:
       needs: build-and-upload-apk
@@ -71,12 +73,9 @@ jobs:
         pull-requests: write
       steps:
         - name: Update Comment
-          env:
-            PR_NUMBER: ${{ github.event.number }}
-            APK_URL: "${{ needs.build-and-upload-apk.outputs.apkUrl }}"
           uses: peter-evans/create-or-update-comment@v4
           with:
-            issue-number: ${{ env.PR_NUMBER }}
+            issue-number: ${{ github.event.number }}
             edit-mode: replace
             body: |
               ✅ Build Successful! You can find a link to the downloadable APK below:
