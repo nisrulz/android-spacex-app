@@ -2,14 +2,14 @@
 
 #region ---- Kotlin version dependent
 # https://github.com/JetBrains/kotlin/releases
-kotlin = "2.0.0"
+kotlin = "2.0.10"
 # https://github.com/google/ksp/releases
-ksp = "2.0.0-1.0.24"
+ksp = "2.0.10-1.0.24"
 #endregion
 
 #region ---- Android Core
 agp = "8.5.2"
-androidTools = "31.5.1"
+androidTools = "31.5.2"
 core-ktx = "1.13.1"
 lifecycleVer = "2.8.4"
 appcompat = "1.7.0"
