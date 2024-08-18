@@ -54,45 +54,32 @@ fun ListOfLaunchesSuccessComponent(
             300.dp
         } else {
             8.dp
-        },
-        label = "elevation"
+        }, label = "elevation"
     )
-    Box(
-        modifier = modifier
-            .fillMaxSize()
-            .background(Color.Black)
-            .graphicsLayer {
-                this.shadowElevation = elevation.value.toPx()
-            }
-    ) {
+    Box(modifier = modifier
+        .fillMaxSize()
+        .background(Color.Black)
+        .graphicsLayer {
+            this.shadowElevation = elevation.value.toPx()
+        }) {
         Column {
-            TitleBar(
-                rightNavButtonIcon = R.drawable.bookmarks,
-                rightNavButtonAction = {
-                    navigateToBookmarks()
-                }
-            )
+            TitleBar(rightNavButtonIcon = R.drawable.bookmarks, rightNavButtonAction = {
+                navigateToBookmarks()
+            })
             LazyColumn(modifier = Modifier.fillMaxSize()) {
                 itemsIndexed(state.data) { index, item ->
                     if (index == 0) {
                         Spacer(modifier = Modifier.height(MaterialTheme.dimens.small))
                     }
-                    LaunchInfoItem(
-                        modifier = Modifier
-                            .animateItemPlacement(
-                                animationSpec = tween(
-                                    durationMillis = 500,
-                                    easing = LinearOutSlowInEasing
-                                )
-                            ),
-                        launchInfo = item,
-                        onClick = {
-                            navigateToDetails(it)
-                        },
-                        onBookmark = {
-                            bookmark(it)
-                        }
-                    )
+                    LaunchInfoItem(modifier = Modifier.animateItem(
+                            fadeInSpec = tween(
+                                durationMillis = 500, easing = LinearOutSlowInEasing
+                            )
+                        ), launchInfo = item, onClick = {
+                        navigateToDetails(it)
+                    }, onBookmark = {
+                        bookmark(it)
+                    })
                 }
             }
         }
@@ -100,8 +87,7 @@ fun ListOfLaunchesSuccessComponent(
         // Wire in Snackbar Widget
         SnackbarHost(
             hostState = snackbarHostState,
-            modifier =
-            Modifier
+            modifier = Modifier
                 .fillMaxWidth()
                 .align(Alignment.BottomCenter)
         )
@@ -111,31 +97,25 @@ fun ListOfLaunchesSuccessComponent(
 @Preview
 @Composable
 private fun Preview() {
-    val testLaunchInfo =
-        LaunchInfo(
-            date_local = "",
-            details = "",
-            flight_number = 1,
-            id = "1",
-            logo = "",
-            name = "Name 1",
-            success = false,
-            isBookmarked = false
-        )
+    val testLaunchInfo = LaunchInfo(
+        date_local = "",
+        details = "",
+        flight_number = 1,
+        id = "1",
+        logo = "",
+        name = "Name 1",
+        success = false,
+        isBookmarked = false
+    )
     SpacexAPITheme {
-        ListOfLaunchesSuccessComponent(
-            state =
-            ListOfLaunchesViewModel.UiState(
-                data =
-                listOf(
-                    testLaunchInfo,
-                    testLaunchInfo.copy(name = "Name 2")
-                )
-            ),
+        ListOfLaunchesSuccessComponent(state = ListOfLaunchesViewModel.UiState(
+            data = listOf(
+                testLaunchInfo, testLaunchInfo.copy(name = "Name 2")
+            )
+        ),
             snackbarHostState = SnackbarHostState(),
             navigateToDetails = {},
             bookmark = { },
-            navigateToBookmarks = {}
-        )
+            navigateToBookmarks = {})
     }
 }
