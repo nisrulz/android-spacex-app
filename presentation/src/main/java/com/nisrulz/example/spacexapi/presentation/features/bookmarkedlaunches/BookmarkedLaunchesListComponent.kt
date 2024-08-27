@@ -16,8 +16,6 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.SnackbarHost
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -47,33 +45,24 @@ fun BookmarkedLaunchesListComponent(
             .background(Color.Black)
     ) {
         Column {
-            TitleBar(
-                rightNavButtonIcon = R.drawable.list_all,
-                rightNavButtonAction = {
-                    navigateBack()
-                }
-            )
+            TitleBar(rightNavButtonIcon = R.drawable.list_all, rightNavButtonAction = {
+                navigateBack()
+            })
 
             LazyColumn(modifier = Modifier.fillMaxSize()) {
                 itemsIndexed(state.data) { index, item ->
                     if (index == 0) {
                         Spacer(modifier = Modifier.height(MaterialTheme.dimens.small))
                     }
-                    LaunchInfoItem(
-                        modifier = Modifier.animateItemPlacement(
-                            animationSpec = tween(
-                                durationMillis = 500,
-                                easing = LinearOutSlowInEasing
-                            )
-                        ),
-                        launchInfo = item,
-                        onClick = {
-                            navigateToDetails(it)
-                        },
-                        onBookmark = {
-                            bookmark(it)
-                        }
-                    )
+                    LaunchInfoItem(modifier = Modifier.animateItem(
+                        fadeInSpec = tween(
+                            durationMillis = 500, easing = LinearOutSlowInEasing
+                        )
+                    ), launchInfo = item, onClick = {
+                        navigateToDetails(it)
+                    }, onBookmark = {
+                        bookmark(it)
+                    })
                 }
             }
         }
@@ -81,8 +70,7 @@ fun BookmarkedLaunchesListComponent(
         // Wire in Snackbar Widget
         SnackbarHost(
             hostState = snackbarHostState,
-            modifier =
-            Modifier
+            modifier = Modifier
                 .fillMaxWidth()
                 .align(Alignment.BottomCenter)
         )
@@ -92,27 +80,23 @@ fun BookmarkedLaunchesListComponent(
 @Preview
 @Composable
 private fun Preview() {
-    val testLaunchInfo =
-        LaunchInfo(
-            date_local = "",
-            details = "",
-            flight_number = 1,
-            id = "1",
-            logo = "",
-            name = "Name 1",
-            success = false,
-            isBookmarked = false
-        )
+    val testLaunchInfo = LaunchInfo(
+        date_local = "",
+        details = "",
+        flight_number = 1,
+        id = "1",
+        logo = "",
+        name = "Name 1",
+        success = false,
+        isBookmarked = false
+    )
     SpacexAPITheme {
         BookmarkedLaunchesListComponent(
-            state =
-            BookmarkedLaunchesViewModel.UiState(
+            state = BookmarkedLaunchesViewModel.UiState(
                 data = listOf(
-                    testLaunchInfo,
-                    testLaunchInfo.copy(name = "Name 2")
+                    testLaunchInfo, testLaunchInfo.copy(name = "Name 2")
                 )
-            ),
-            snackbarHostState = SnackbarHostState()
+            ), snackbarHostState = SnackbarHostState()
         )
     }
 }
