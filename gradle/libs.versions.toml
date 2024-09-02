@@ -8,7 +8,7 @@ ksp = "2.0.20-1.0.24"
 #endregion
 
 #region ---- Android Core
-agp = "8.5.2"
+agp = "8.6.0"
 androidTools = "31.6.0"
 core-ktx = "1.13.1"
 lifecycleVer = "2.8.4"
@@ -23,7 +23,7 @@ material3 = "1.10.0"
 
 #region ---- Kotlin
 kotlinxCoroutines = "1.8.1"
-kotlinxSerializationJson = "1.7.1"
+kotlinxSerializationJson = "1.7.2"
 #endregion
 
 #region ---- Jetpack Compose
