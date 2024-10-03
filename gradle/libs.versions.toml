@@ -9,9 +9,9 @@ ksp = "2.0.20-1.0.25"
 
 #region ---- Android Core
 agp = "8.6.1"
-androidTools = "31.6.1"
+androidTools = "31.7.0"
 core-ktx = "1.13.1"
-lifecycleVer = "2.8.5"
+lifecycleVer = "2.8.6"
 appcompat = "1.7.0"
 #endregion
 
@@ -28,11 +28,11 @@ kotlinxSerializationJson = "1.7.3"
 
 #region ---- Jetpack Compose
 activity-compose = "1.9.2"
-compose-bom = "2024.09.02"
+compose-bom = "2024.09.03"
 #endregion
 
 # Navigation
-navigationCompose = "2.8.1"
+navigationCompose = "2.8.2"
 
 #region ---- Hilt
 hilt = "2.52"
