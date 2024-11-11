@@ -4,14 +4,14 @@
 # https://github.com/JetBrains/kotlin/releases
 kotlin = "2.0.21"
 # https://github.com/google/ksp/releases
-ksp = "2.0.21-1.0.26"
+ksp = "2.0.21-1.0.27"
 #endregion
 
 #region ---- Android Core
 agp = "8.7.1"
-androidTools = "31.7.1"
+androidTools = "31.7.2"
 core-ktx = "1.15.0"
-lifecycleVer = "2.8.6"
+lifecycleVer = "2.8.7"
 appcompat = "1.7.0"
 #endregion
 
@@ -28,7 +28,7 @@ kotlinxSerializationJson = "1.7.3"
 
 #region ---- Jetpack Compose
 activity-compose = "1.9.3"
-compose-bom = "2024.10.00"
+compose-bom = "2024.10.01"
 #endregion
 
 # Navigation
