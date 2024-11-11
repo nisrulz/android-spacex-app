@@ -10,7 +10,7 @@ ksp = "2.0.21-1.0.27"
 #region ---- Android Core
 agp = "8.7.2"
 androidTools = "31.7.2"
-core-ktx = "1.13.1"
+core-ktx = "1.15.0"
 lifecycleVer = "2.8.7"
 appcompat = "1.7.0"
 #endregion
