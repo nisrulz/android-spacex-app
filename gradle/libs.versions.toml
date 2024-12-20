@@ -61,7 +61,7 @@ turbineVer = "1.2.0"
 mockkVersion = "1.13.13"
 junitKtx = "1.2.1"
 coreTesting = "2.2.0"
-kotlinxCoroutinesTest = "1.9.0"
+kotlinxCoroutinesTest = "1.10.0"
 jacoco = "0.8.12"
 
 [libraries]
