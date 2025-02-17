@@ -4,7 +4,7 @@
 # https://github.com/JetBrains/kotlin/releases
 kotlin = "2.1.10"
 # https://github.com/google/ksp/releases
-ksp = "2.1.10-1.0.29"
+ksp = "2.1.10-1.0.30"
 #endregion
 
 #region ---- Android Core
