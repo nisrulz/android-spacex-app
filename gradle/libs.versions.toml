@@ -32,7 +32,7 @@ compose-bom = "2025.02.00"
 #endregion
 
 # Navigation
-navigationCompose = "2.8.7"
+navigationCompose = "2.8.8"
 
 #region ---- Hilt
 hilt = "2.55"
