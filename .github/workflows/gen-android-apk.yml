@@ -1,4 +1,4 @@
-name: Release APK
+name: "Release APK"
 
 env:
   main_project_module: app
@@ -20,6 +20,9 @@ jobs:
         with:
           ref: ${{ github.head_ref }}
           fetch-depth: 0
+      
+      - name: Setup and validate gradle wrapper # Will automatically perform wrapper validation on each execution.
+        uses: gradle/actions/setup-gradle@v4
 
       - name: Set Up JDK
         uses: actions/setup-java@v4
@@ -45,9 +48,6 @@ jobs:
           key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle*', '**/gradle-wrapper.properties') }}
           restore-keys: |
             ${{ runner.os }}-gradle-
-
-      - name: Change wrapper permissions
-        run: chmod +x ./gradlew
 
       - name: Run tests
         run: ./gradlew test
