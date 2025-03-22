@@ -1,14 +1,15 @@
-name: "Unit tests"
+name: "Run unit tests"
 
 on:
-  # Allows to run this workflow when a commit it pushed to the branch
+  # Allows to run this workflow when a commit it pushed to the specified branches
   push:
     paths-ignore:
       - "**/*.md"
     branches:
       - main
-  # Allows to run this workflow when a Pull Request is made with the set target branch
+  # Allows to run this workflow when a Pull Request is made with the set target branches
   pull_request:
+    #
     paths-ignore:
       - "**/*.md"
     branches:
@@ -27,6 +28,10 @@ jobs:
         with:
           ref: ${{ github.head_ref }}
           fetch-depth: 0
+      
+      - name: Setup and validate gradle wrapper
+        # Will automatically perform wrapper validation on each execution.
+        uses: gradle/actions/setup-gradle@v4
 
       - name: Set Up JDK
         uses: actions/setup-java@v4
@@ -53,9 +58,6 @@ jobs:
           key: ${{ runner.os }}-m2-${{ hashFiles('**/pom.xml') }}
           restore-keys: |
             ${{ runner.os }}-m2
-
-      - name: Change wrapper permissions
-        run: chmod +x ./gradlew
 
       - name: Run unit tests
         run: ./gradlew testReleaseUnitTest
