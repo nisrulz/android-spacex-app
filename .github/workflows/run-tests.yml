@@ -17,6 +17,11 @@ on:
   # Allows to run this workflow manually from the Actions tab
   workflow_dispatch:
 
+concurrency:
+  # Limit concurrency to 1 for PRs. 'main' concurrency isn't limited.
+  group: ${{ github.head_ref || github.run_id }}
+  cancel-in-progress: true
+
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -28,7 +33,7 @@ jobs:
         with:
           ref: ${{ github.head_ref }}
           fetch-depth: 0
-      
+
       - name: Setup and validate gradle wrapper
         # Will automatically perform wrapper validation on each execution.
         uses: gradle/actions/setup-gradle@v4
