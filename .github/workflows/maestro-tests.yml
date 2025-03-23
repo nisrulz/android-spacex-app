@@ -1,0 +1,77 @@
+name: Maestro Android Tests
+
+on:
+  workflow_dispatch:
+    inputs:
+      APP_ID:
+        description: "Application ID to test"
+        required: false
+        default: "com.nisrulz.example.spacexapi"
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code at the latest commit in branch
+        id: checkout-code
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ github.head_ref }}
+          fetch-depth: 0
+
+      - name: Setup and validate gradle wrapper
+        # Will automatically perform wrapper validation on each execution.
+        uses: gradle/actions/setup-gradle@v4
+
+      - name: Set Up JDK
+        uses: actions/setup-java@v4
+        with:
+          distribution: "temurin"
+          java-version: "17"
+          cache: "gradle"
+
+      - name: Cache Gradle and wrapper
+        uses: actions/cache@v4
+        with:
+          path: |
+            ~/.gradle/caches
+            ~/.gradle/wrapper
+          key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle*') }}
+          restore-keys: |
+            ${{ runner.os }}-gradle-
+
+      - name: Cache dependencies
+        uses: actions/cache@v4
+        with:
+          path: |
+            ~/.m2
+          key: ${{ runner.os }}-m2-${{ hashFiles('**/pom.xml') }}
+          restore-keys: |
+            ${{ runner.os }}-m2
+
+      - name: Build debug APK
+        run: ./gradlew assembleDebug
+
+      - name: Start Android Emulator
+        uses: reactivecircus/android-emulator-runner@v2
+        with:
+          api-level: 33
+          arch: x86_64
+          profile: pixel_6_pro
+          script: echo "Emulator started"
+
+      - name: Install Maestro CLI
+        run: |
+          curl -Ls "https://get.maestro.mobile.dev" | bash
+          echo "$HOME/.maestro/bin" >> $GITHUB_PATH
+
+      - name: Install APK
+        run: adb install app/build/outputs/apk/debug/app-debug.apk
+
+      - name: Run Maestro Tests
+        run: |
+          maestro test -e APP_ID="${{ github.event.inputs.APP_ID }}" .maestro/
