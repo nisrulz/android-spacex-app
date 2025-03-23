@@ -1,5 +1,6 @@
 package com.nisrulz.example.spacexapi.data.repository
 
+import com.nisrulz.example.spacexapi.common.contract.utils.NetworkUtils
 import com.nisrulz.example.spacexapi.data.mapper.mapToDomainModel
 import com.nisrulz.example.spacexapi.data.mapper.mapToDomainModelList
 import com.nisrulz.example.spacexapi.data.mapper.toEntityList
@@ -13,27 +14,25 @@ import kotlinx.coroutines.flow.map
 
 class LaunchesRepositoryImpl(
     private val localDataSource: LocalDataSource,
-    private val remoteDataSource: RemoteDataSource
+    private val remoteDataSource: RemoteDataSource,
+    private val networkUtils: NetworkUtils
 ) : LaunchesRepository {
     override suspend fun getListOfLaunches(): Flow<List<LaunchInfo>> {
-        // 1. Get list of all bookmarked launches
-        val localBookmarkedLaunches = getAllBookmarked().first()
+        if (networkUtils.isInternetAvailable()) {
+            val localBookmarkedLaunches = getAllBookmarked().first()
 
-        // 2. Fetch list of launches from remote API
-        val apiResponse = remoteDataSource.getAllLaunches()
+            val apiResponse = remoteDataSource.getAllLaunches()
 
-        // 3. Update local db with updated remote response
-        if (apiResponse.isNotEmpty()) {
-            localDataSource.deleteAll()
-            localDataSource.insertAll(apiResponse.toEntityList())
+            if (apiResponse.isNotEmpty()) {
+                localDataSource.deleteAll()
+                localDataSource.insertAll(apiResponse.toEntityList())
 
-            // Update bookmarked state
-            localBookmarkedLaunches.forEach { bookmarked ->
-                setBookmark(bookmarked.id, bookmarked.isBookmarked)
+                localBookmarkedLaunches.forEach { bookmarked ->
+                    setBookmark(bookmarked.id, bookmarked.isBookmarked)
+                }
             }
         }
 
-        // 4. Fetch the list of launches from local db
         return localDataSource.getAll().map { it.mapToDomainModelList() }
     }
 
