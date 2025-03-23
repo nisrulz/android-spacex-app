@@ -18,26 +18,21 @@ class LaunchesRepositoryImpl(
     private val networkUtils: NetworkUtils
 ) : LaunchesRepository {
     override suspend fun getListOfLaunches(): Flow<List<LaunchInfo>> {
-        // 1. Get list of all bookmarked launches
-        val localBookmarkedLaunches = getAllBookmarked().first()
-
         if (networkUtils.isInternetAvailable()) {
-            // 2. Fetch list of launches from remote API
+            val localBookmarkedLaunches = getAllBookmarked().first()
+
             val apiResponse = remoteDataSource.getAllLaunches()
 
-            // 3. Update local db with updated remote response
             if (apiResponse.isNotEmpty()) {
                 localDataSource.deleteAll()
                 localDataSource.insertAll(apiResponse.toEntityList())
 
-                // Update bookmarked state
                 localBookmarkedLaunches.forEach { bookmarked ->
                     setBookmark(bookmarked.id, bookmarked.isBookmarked)
                 }
             }
         }
 
-        // 4. Fetch the list of launches from local db
         return localDataSource.getAll().map { it.mapToDomainModelList() }
     }
 
