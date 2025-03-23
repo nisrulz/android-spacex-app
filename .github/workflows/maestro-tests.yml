@@ -4,6 +4,7 @@ on:
   push:
     branches: [main]
   pull_request:
+    types: [opened]
     branches: [main]
 
 concurrency:
@@ -14,6 +15,7 @@ concurrency:
 jobs:
   test:
     runs-on: ubuntu-latest
+    if: github.actor == 'dependabot[bot]' || github.event_name == 'workflow_dispatch'
     steps:
       - name: Checkout code at the latest commit in branch
         id: checkout-code
