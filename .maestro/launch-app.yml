@@ -1,0 +1,6 @@
+appId: ${APP_ID}
+---
+- launchApp
+- assertVisible: "SpaceX Launches"
+- assertVisible: "Right Action Button"
+- assertVisible: "Bookmark"
