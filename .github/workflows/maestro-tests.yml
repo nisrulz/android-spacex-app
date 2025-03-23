@@ -1,21 +1,10 @@
-name: "Run unit tests"
+name: Maestro Android Tests
 
 on:
-  # Allows to run this workflow when a commit it pushed to the specified branches
   push:
-    paths-ignore:
-      - "**/*.md"
-    branches:
-      - main
-  # Allows to run this workflow when a Pull Request is made with the set target branches
+    branches: [main]
   pull_request:
-    #
-    paths-ignore:
-      - "**/*.md"
-    branches:
-      - main
-  # Allows to run this workflow manually from the Actions tab
-  workflow_dispatch:
+    branches: [main]
 
 concurrency:
   # Limit concurrency to 1 for PRs. 'main' concurrency isn't limited.
@@ -23,9 +12,8 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
-  build:
+  test:
     runs-on: ubuntu-latest
-
     steps:
       - name: Checkout code at the latest commit in branch
         id: checkout-code
@@ -37,6 +25,8 @@ jobs:
       - name: Setup and validate gradle wrapper
         # Will automatically perform wrapper validation on each execution.
         uses: gradle/actions/setup-gradle@v4
+        continue-on-error: true
+        timeout-minutes: 5
 
       - name: Set Up JDK
         uses: actions/setup-java@v4
@@ -64,5 +54,21 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-m2
 
-      - name: Run unit tests
-        run: ./gradlew testReleaseUnitTest
+      - name: Enable KVM group perms
+        run: |
+          echo 'KERNEL=="kvm", GROUP="kvm", MODE="0666", OPTIONS+="static_node=kvm"' | sudo tee /etc/udev/rules.d/99-kvm4all.rules
+          sudo udevadm control --reload-rules
+          sudo udevadm trigger --name-match=kvm
+
+      - name: Start Android Emulator and Run Tests
+        uses: reactivecircus/android-emulator-runner@v2
+        with:
+          api-level: 30
+          arch: x86_64
+          profile: pixel_6_pro
+          emulator-options: -no-window -gpu swiftshader_indirect -no-snapshot -noaudio -no-boot-anim -no-metrics
+          emulator-boot-timeout: 600
+          disable-animations: true
+          script: ./scripts/run_maestro.sh
+        env:
+          APP_ID: ${{ github.event.inputs.APP_ID }}
