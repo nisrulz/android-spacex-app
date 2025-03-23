@@ -25,6 +25,7 @@ dependencies {
     api(projects.domain)
     implementation(projects.core.networkRetrofit)
     implementation(projects.core.storageRoomdb)
+    implementation(projects.core.common)
 
     // Lifecycle
     implementation(libs.lifecycle.viewmodel.ktx)
