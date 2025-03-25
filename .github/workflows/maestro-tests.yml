@@ -4,8 +4,9 @@ on:
   push:
     branches: [main]
   pull_request:
-    types: [opened]
-    branches: [main]
+    types: [opened, synchronize, reopened]
+    branches:
+      - dependabot/**
 
 concurrency:
   # Limit concurrency to 1 for PRs. 'main' concurrency isn't limited.
@@ -15,7 +16,6 @@ concurrency:
 jobs:
   test:
     runs-on: ubuntu-latest
-    if: github.actor == 'dependabot[bot]' || github.event_name == 'workflow_dispatch'
     steps:
       - name: Checkout code at the latest commit in branch
         id: checkout-code
@@ -72,5 +72,3 @@ jobs:
           emulator-boot-timeout: 600
           disable-animations: true
           script: ./scripts/run_maestro.sh
-        env:
-          APP_ID: ${{ github.event.inputs.APP_ID }}
