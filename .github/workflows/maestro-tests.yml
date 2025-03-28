@@ -81,4 +81,7 @@ jobs:
           emulator-options: -no-window -gpu swiftshader_indirect -no-snapshot -noaudio -no-boot-anim -no-metrics
           emulator-boot-timeout: 600
           disable-animations: true
-          script: ./scripts/run_maestro.sh
+          script: |
+            ./scripts/setup_maestro.sh
+            ./scripts/install_app.sh
+            ./scripts/run_maestro.sh
