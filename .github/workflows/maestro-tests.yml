@@ -25,7 +25,10 @@ concurrency:
 jobs:
   test:
     runs-on: ubuntu-latest
-    if: github.actor == 'dependabot[bot]'
+    permissions: # Specify the required permissions
+      issues: write # For writing comments on issues and pull requests
+      pull-requests: write # For interacting with pull request data
+    # if: github.actor == 'dependabot[bot]'
     steps:
       - name: Checkout code at the latest commit in branch
         id: checkout-code
@@ -91,7 +94,6 @@ jobs:
         if: always()
         with:
           script: |
-            const { context, github } = require('@actions/github');
             const fs = require('fs');
             const pr_number = context.payload.pull_request.number;
 
