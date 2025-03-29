@@ -25,7 +25,10 @@ concurrency:
 jobs:
   test:
     runs-on: ubuntu-latest
-    if: github.actor == 'dependabot[bot]'
+    permissions: # Specify the required permissions
+      issues: write # For writing comments on issues and pull requests
+      pull-requests: write # For interacting with pull request data
+    # if: github.actor == 'dependabot[bot]'
     steps:
       - name: Checkout code at the latest commit in branch
         id: checkout-code
@@ -81,4 +84,26 @@ jobs:
           emulator-options: -no-window -gpu swiftshader_indirect -no-snapshot -noaudio -no-boot-anim -no-metrics
           emulator-boot-timeout: 600
           disable-animations: true
-          script: ./scripts/run_maestro.sh
+          script: |
+            ./scripts/setup_maestro.sh
+            ./scripts/install_app.sh
+            ./scripts/run_maestro.sh
+
+      - name: Create comment with test results
+        uses: actions/github-script@v6
+        if: always()
+        with:
+          script: |
+            const fs = require('fs');
+            const pr_number = context.payload.pull_request.number;
+
+            // Read test results from file
+            const testResults = fs.readFileSync('./test_results.txt', 'utf-8');
+
+            // Create comment in the PR
+            await github.rest.issues.createComment({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              issue_number: pr_number,
+              body: `### Test Results\n${testResults}`
+            });
