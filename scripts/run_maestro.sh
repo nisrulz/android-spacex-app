@@ -9,7 +9,4 @@ export PATH="$PATH":"$HOME/.maestro/bin"
 
 export APP_ID="com.nisrulz.example.spacexapi"
 
-maestro test -e APP_ID=$APP_ID .maestro/ --format junit
-
-# Process results
-python3 ./scripts/process_maestro_results.py
+maestro test -e APP_ID=$APP_ID .maestro/ --format html
