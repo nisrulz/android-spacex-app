@@ -9,7 +9,10 @@ export PATH="$PATH":"$HOME/.maestro/bin"
 
 export APP_ID="com.nisrulz.example.spacexapi"
 
-maestro test -e APP_ID=$APP_ID .maestro/ --format junit
+maestro test -e APP_ID=$APP_ID .maestro/ --format html
 
-# Process results
-python3 ./scripts/process_maestro_results.py
+# Get the current timestamp (ddmmyy_hhmmss)
+timestamp=$(date +'%d%m%y_%H%M%S')
+
+# Rename the output file with a timestamp
+mv report.html "maestro_test_result_${timestamp}.html"
