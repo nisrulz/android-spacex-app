@@ -28,6 +28,7 @@ jobs:
     permissions: # Specify the required permissions
       issues: write # For writing comments on issues and pull requests
       pull-requests: write # For interacting with pull request data
+      pages: write # Needed to push changes to the gh-pages branch
     # if: github.actor == 'dependabot[bot]'
     steps:
       - name: Checkout code at the latest commit in branch
@@ -89,25 +90,57 @@ jobs:
             ./scripts/install_app.sh
             ./scripts/run_maestro.sh
       
-      - name: Upload Test Report
-        uses: actions/upload-artifact@v4
+      - name: Deploy Test Report to GitHub Pages
+        uses: peaceiris/actions-gh-pages@v4
         with:
-          name: test-report
-          path: ./report.html
+          personal_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./ # Directory containing the renamed file
+          publish_branch: gh-pages
+          keep_files: true
 
-
-      - name: Create comment with test report link
+      - name: Create or Update Pull Request Comment
         uses: actions/github-script@v6
         if: always()
         with:
           script: |
             const pr_number = context.payload.pull_request.number;
 
-            // Create a comment with a link to the artifact
-            await github.rest.issues.createComment({
+            // Define the identifier to search for the comment
+            const commentIdentifier = "### Test Report";
+
+            // Fetch all comments on the pull request
+            const comments = await github.rest.issues.listComments({
               owner: context.repo.owner,
               repo: context.repo.repo,
               issue_number: pr_number,
-              body: `### Test Report\nThe test report has been generated and can be downloaded from the workflow run's artifacts.\n\nYou can find it [here](https://github.com/${context.repo.owner}/${context.repo.repo}/actions/runs/${context.runId}).`
             });
 
+            // Search for the comment containing the identifier
+            const existingComment = comments.data.find(comment =>
+              comment.body.startsWith(commentIdentifier)
+            );
+
+            // Generate the timestamp and report URL
+            const timestamp = new Date().toLocaleString("en-GB").replace(/\/|,|:/g, "").replace(" ", "_").trim();
+            const report_url = `https://${context.repo.owner}.github.io/${context.repo.repo}/maestro_test_result_${timestamp}.html`;
+
+            // Content for the test report comment
+            const commentBody = `${commentIdentifier}\nYou can view the latest test report [here](${report_url}).`;
+
+            if (existingComment) {
+              // Update the existing comment
+              await github.rest.issues.updateComment({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                comment_id: existingComment.id,
+                body: commentBody,
+              });
+            } else {
+              // Create a new comment if no existing comment is found
+              await github.rest.issues.createComment({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                issue_number: pr_number,
+                body: commentBody,
+              });
+            }
