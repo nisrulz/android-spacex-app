@@ -1,12 +1,6 @@
 name: Maestro Android Tests
 
 on:
-  # Allows to run this workflow when a commit it pushed to the specified branches
-  push:
-    paths-ignore:
-      - "**/*.md"
-    branches:
-      - main
   # Allows to run this workflow when a Pull Request is made with the set target branches
   pull_request:
     #
