@@ -22,7 +22,7 @@ jobs:
     permissions: # Specify the required permissions
       issues: write # For writing comments on issues and pull requests
       pull-requests: write # For interacting with pull request data
-    # if: github.actor == 'dependabot[bot]'
+    if: github.actor == 'dependabot[bot]'
     steps:
       - name: Checkout code at the latest commit in branch
         id: checkout-code
@@ -99,5 +99,5 @@ jobs:
               owner: context.repo.owner,
               repo: context.repo.repo,
               issue_number: pr_number,
-              body: `### Test Results\n${testResults}`
+              body: `### Maestro Test Results\n${testResults}`
             });
