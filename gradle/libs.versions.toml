@@ -42,7 +42,7 @@ hiltExt = "1.2.0"
 
 #region ---- Retrofit
 okhttp = "4.12.0"
-retrofit-bom = "2.11.0"
+retrofit-bom = "3.0.0"
 #endregion
 
 #region ---- Room
