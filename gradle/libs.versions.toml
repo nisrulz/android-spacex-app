@@ -12,7 +12,7 @@ agp = "8.10.1"
 androidTools = "31.10.1"
 core-ktx = "1.16.0"
 lifecycleVer = "2.9.0"
-appcompat = "1.7.0"
+appcompat = "1.7.1"
 #endregion
 
 # Logs
