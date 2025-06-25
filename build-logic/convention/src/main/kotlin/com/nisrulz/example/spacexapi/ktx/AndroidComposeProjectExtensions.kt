@@ -27,7 +27,6 @@ internal fun Project.configureAndroidCompose() = configure<LibraryExtension> {
         includeSourceInformation.set(true)
         featureFlags.set(
             setOf(
-                ComposeFeatureFlag.StrongSkipping.disabled(),
                 ComposeFeatureFlag.OptimizeNonSkippingGroups
             )
         )
