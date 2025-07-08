@@ -41,7 +41,7 @@ hiltExt = "1.2.0"
 #endregion
 
 #region ---- Retrofit
-okhttp = "4.12.0"
+okhttp = "5.1.0"
 retrofit-bom = "3.0.0"
 #endregion
 
