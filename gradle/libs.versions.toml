@@ -28,7 +28,7 @@ kotlinxSerializationJson = "1.9.0"
 
 #region ---- Jetpack Compose
 activity-compose = "1.10.1"
-compose-bom = "2025.06.01"
+compose-bom = "2025.07.00"
 #endregion
 
 # Navigation
