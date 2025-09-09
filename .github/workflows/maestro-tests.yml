@@ -84,7 +84,7 @@ jobs:
             ./scripts/run_maestro.sh
 
       - name: Create comment with test results
-        uses: actions/github-script@v7
+        uses: actions/github-script@v8
         if: always()
         with:
           script: |
