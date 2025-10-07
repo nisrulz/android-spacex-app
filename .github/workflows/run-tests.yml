@@ -36,7 +36,7 @@ jobs:
 
       - name: Setup and validate gradle wrapper
         # Will automatically perform wrapper validation on each execution.
-        uses: gradle/actions/setup-gradle@v4
+        uses: gradle/actions/setup-gradle@v5
 
       - name: Set Up JDK
         uses: actions/setup-java@v5
