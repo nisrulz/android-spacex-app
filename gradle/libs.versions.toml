@@ -46,7 +46,7 @@ retrofit-bom = "3.0.0"
 #endregion
 
 #region ---- Room
-room = "2.8.3"
+room = "2.8.4"
 #endregion
 
 # Coil
