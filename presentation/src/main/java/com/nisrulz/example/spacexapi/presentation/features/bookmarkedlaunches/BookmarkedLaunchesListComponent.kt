@@ -3,7 +3,6 @@ package com.nisrulz.example.spacexapi.presentation.features.bookmarkedlaunches
 import androidx.compose.animation.core.LinearOutSlowInEasing
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.ExperimentalFoundationApi
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
@@ -18,7 +17,6 @@ import androidx.compose.material3.SnackbarHostState
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import com.nisrulz.example.spacexapi.common.contract.utils.EmptyCallback
 import com.nisrulz.example.spacexapi.common.contract.utils.SingleValueCallback
@@ -40,9 +38,7 @@ fun BookmarkedLaunchesListComponent(
     navigateBack: EmptyCallback = {}
 ) {
     Box(
-        modifier = modifier
-            .fillMaxSize()
-            .background(Color.Black)
+        modifier = modifier.fillMaxSize()
     ) {
         Column {
             TitleBar(rightNavButtonIcon = R.drawable.list_all, rightNavButtonAction = {
@@ -54,7 +50,8 @@ fun BookmarkedLaunchesListComponent(
                     if (index == 0) {
                         Spacer(modifier = Modifier.height(MaterialTheme.dimens.small))
                     }
-                    LaunchInfoItem(modifier = Modifier.animateItem(
+                    LaunchInfoItem(
+                        modifier = Modifier.animateItem(
                         fadeInSpec = tween(
                             durationMillis = 500, easing = LinearOutSlowInEasing
                         )
