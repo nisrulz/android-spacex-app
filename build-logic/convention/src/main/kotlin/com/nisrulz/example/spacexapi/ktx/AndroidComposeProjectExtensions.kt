@@ -4,8 +4,6 @@ import com.android.build.api.dsl.LibraryExtension
 import org.gradle.api.Project
 import org.gradle.kotlin.dsl.configure
 import org.gradle.kotlin.dsl.dependencies
-import org.jetbrains.kotlin.compose.compiler.gradle.ComposeCompilerGradlePluginExtension
-import org.jetbrains.kotlin.compose.compiler.gradle.ComposeFeatureFlag
 
 /**
  * Configure Compose-specific options
@@ -21,15 +19,6 @@ internal fun Project.configureAndroidCompose() = configure<LibraryExtension> {
         add("androidTestImplementation", platform(bom))
         add("implementation", catalogLibrary("ui-tooling-preview"))
         add("debugImplementation", catalogLibrary("ui-tooling"))
-    }
-
-    extensions.configure<ComposeCompilerGradlePluginExtension> {
-        includeSourceInformation.set(true)
-        featureFlags.set(
-            setOf(
-                ComposeFeatureFlag.OptimizeNonSkippingGroups
-            )
-        )
     }
 }
 
