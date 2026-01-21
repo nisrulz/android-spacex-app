@@ -65,4 +65,4 @@ jobs:
             ${{ runner.os }}-m2
 
       - name: Run unit tests
-        run: ./gradlew testReleaseUnitTest
+        run: ./gradlew testDebugUnitTest
