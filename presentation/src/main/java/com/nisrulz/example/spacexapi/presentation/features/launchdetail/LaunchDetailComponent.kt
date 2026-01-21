@@ -1,6 +1,5 @@
 package com.nisrulz.example.spacexapi.presentation.features.launchdetail
 
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
@@ -44,10 +43,7 @@ fun LaunchDetailSuccessComponent(
     navigateBack: EmptyCallback = {}
 ) {
     Box(
-        modifier =
-        modifier
-            .fillMaxSize()
-            .background(Color.Black)
+        modifier = modifier.fillMaxSize()
     ) {
         state.data?.apply {
             Column(
@@ -69,77 +65,77 @@ fun LaunchDetailSuccessComponent(
                 ) {
                     AsyncImage(
                         model =
-                        ImageRequest.Builder(LocalContext.current)
-                            .data(logo)
-                            .crossfade(true)
-                            .build(),
+                            ImageRequest.Builder(LocalContext.current)
+                                .data(logo)
+                                .crossfade(true)
+                                .build(),
                         placeholder = painterResource(R.drawable.placeholder),
                         contentDescription = stringResource(R.string.logo_description),
                         contentScale = ContentScale.Crop,
                         modifier =
-                        Modifier
-                            .fillMaxHeight(0.5f)
-                            .padding(48.dp)
-                            .fillMaxWidth()
+                            Modifier
+                                .fillMaxHeight(0.5f)
+                                .padding(48.dp)
+                                .fillMaxWidth()
                     )
 
                     Text(
                         text = "LAUNCH $flight_number",
                         style =
-                        TextStyle(
-                            color = MaterialTheme.colorScheme.primary,
-                            fontSize = 16.sp,
-                            fontStyle = FontStyle.Italic,
-                            fontWeight = FontWeight.Bold
-                        )
+                            TextStyle(
+                                color = MaterialTheme.colorScheme.primary,
+                                fontSize = 16.sp,
+                                fontStyle = FontStyle.Italic,
+                                fontWeight = FontWeight.Bold
+                            )
                     )
                     Text(
                         text = name,
                         style =
-                        TextStyle(
-                            color = MaterialTheme.colorScheme.inversePrimary,
-                            fontSize = 24.sp,
-                            fontWeight = FontWeight.ExtraBold
-                        )
+                            TextStyle(
+                                color = MaterialTheme.colorScheme.inversePrimary,
+                                fontSize = 24.sp,
+                                fontWeight = FontWeight.ExtraBold
+                            )
                     )
                     Spacer(modifier = Modifier.padding(16.dp))
 
                     Text(
                         text = "Date: ${getFormattedDate()}",
                         style =
-                        TextStyle(
-                            color = Color.White,
-                            fontSize = 14.sp,
-                            fontWeight = FontWeight.Medium
-                        )
+                            TextStyle(
+                                color = Color.White,
+                                fontSize = 14.sp,
+                                fontWeight = FontWeight.Medium
+                            )
                     )
                     Spacer(modifier = Modifier.padding(16.dp))
                     Text(
                         text = "Details",
                         style =
-                        TextStyle(
-                            color = Color.White,
-                            fontSize = 14.sp,
-                            fontWeight = FontWeight.Medium
-                        )
+                            TextStyle(
+                                color = Color.White,
+                                fontSize = 14.sp,
+                                fontWeight = FontWeight.Medium
+                            )
                     )
                     Text(
                         text = getDetailsString(),
                         style =
-                        TextStyle(
-                            color = Color.White
-                        )
+                            TextStyle(
+                                color = Color.White
+                            )
                     )
                     Spacer(modifier = Modifier.padding(16.dp))
 
                     Text(
                         text = "Was Successful: ${wasSuccessfulString()}",
                         style =
-                        TextStyle(
-                            color = MaterialTheme.colorScheme.inversePrimary,
-                            fontSize = 14.sp,
-                            fontWeight = FontWeight.Medium
-                        )
+                            TextStyle(
+                                color = MaterialTheme.colorScheme.inversePrimary,
+                                fontSize = 14.sp,
+                                fontWeight = FontWeight.Medium
+                            )
                     )
                 }
             }
@@ -149,9 +145,9 @@ fun LaunchDetailSuccessComponent(
         SnackbarHost(
             hostState = snackbarHostState,
             modifier =
-            Modifier
-                .fillMaxWidth()
-                .align(Alignment.BottomCenter)
+                Modifier
+                    .fillMaxWidth()
+                    .align(Alignment.BottomCenter)
         )
     }
 }
@@ -162,19 +158,19 @@ private fun Preview() {
     SpacexAPITheme {
         LaunchDetailSuccessComponent(
             state =
-            LaunchDetailViewModel.UiState(
-                data =
-                LaunchInfo(
-                    date_local = "2023-1-19",
-                    details = "Some Details",
-                    flight_number = 1,
-                    id = "1",
-                    logo = "",
-                    name = "Flight Preview Name",
-                    success = false,
-                    isBookmarked = false
-                )
-            ),
+                LaunchDetailViewModel.UiState(
+                    data =
+                        LaunchInfo(
+                            date_local = "2023-1-19",
+                            details = "Some Details",
+                            flight_number = 1,
+                            id = "1",
+                            logo = "",
+                            name = "Flight Preview Name",
+                            success = false,
+                            isBookmarked = false
+                        )
+                ),
             snackbarHostState = SnackbarHostState()
         )
     }

@@ -1,10 +1,8 @@
 package com.nisrulz.example.spacexapi
 
-import com.android.build.api.dsl.LibraryExtension
-import com.nisrulz.example.spacexapi.ktx.configureHilt
+import com.nisrulz.example.spacexapi.ktx.configureHiltLibrary
 import org.gradle.api.Plugin
 import org.gradle.api.Project
-import org.gradle.kotlin.dsl.configure
 
 class HiltLibConventionPlugin : Plugin<Project> {
     override fun apply(target: Project) {
@@ -15,9 +13,7 @@ class HiltLibConventionPlugin : Plugin<Project> {
                 apply("dagger.hilt.android.plugin")
             }
 
-            extensions.configure<LibraryExtension> {
-                configureHilt(this)
-            }
+            configureHiltLibrary()
         }
     }
 }

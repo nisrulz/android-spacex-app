@@ -1,60 +1,47 @@
 package com.nisrulz.example.spacexapi.ktx
 
 import com.android.build.api.dsl.ApplicationExtension
-import com.android.build.api.dsl.CommonExtension
 import com.android.build.api.dsl.LibraryExtension
 import com.nisrulz.example.spacexapi.info.ApplicationInfo
 import com.nisrulz.example.spacexapi.info.BuildSdkInfo
 import org.gradle.api.Project
 import org.gradle.kotlin.dsl.configure
-import org.jetbrains.kotlin.gradle.dsl.kotlinExtension
+import org.jetbrains.kotlin.gradle.dsl.JvmTarget
+import org.jetbrains.kotlin.gradle.dsl.KotlinAndroidProjectExtension
 
 /**
  * Set JVM toolchain
  */
-private fun Project.configureKotlin(commonExtension: CommonExtension<*, *, *, *, *, *>) =
-    commonExtension.apply {
-        // https://kotlinlang.org/docs/gradle-configure-project.html#gradle-java-toolchains-support
-        // Note: Setting a toolchain via the kotlin extension updates the toolchain for Java compile
-        // tasks as well.
-        kotlinExtension.jvmToolchain(BuildSdkInfo.JVM_TARGET)
-    }
-
-/**
- * Common configuration for Android modules
- */
-private fun Project.configureAndroid(commonExtension: CommonExtension<*, *, *, *, *, *>) =
-    commonExtension.apply {
-        compileSdk = BuildSdkInfo.COMPILE_SDK_VERSION
-
-        defaultConfig {
-            minSdk = BuildSdkInfo.MIN_SDK_VERSION
-
-            testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+private fun Project.configureKotlin() {
+    extensions.configure(KotlinAndroidProjectExtension::class.java) {
+        compilerOptions {
+            jvmTarget.set(JvmTarget.fromTarget(BuildSdkInfo.JVM_TARGET.toString()))
         }
-
-        configureKotlin(this)
+        jvmToolchain(BuildSdkInfo.JVM_TARGET)
     }
+}
+
 
 /**
- *  Configuration for Android Application
+ * Configuration for Android Application
  */
 internal fun Project.configureAndroidApp() = configure<ApplicationExtension> {
-    configureAndroid(this)
+
+    compileSdk = BuildSdkInfo.COMPILE_SDK_VERSION
 
     defaultConfig {
+        minSdk = BuildSdkInfo.MIN_SDK_VERSION
+        testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         targetSdk = BuildSdkInfo.TARGET_SDK_VERSION
-
         versionCode = ApplicationInfo.VERSION_CODE
         versionName = ApplicationInfo.VERSION_NAME
-
         vectorDrawables.useSupportLibrary = true
     }
 
+    configureKotlin()
+
     packaging {
-        resources {
-            excludes += "/META-INF/{AL2.0,LGPL2.1}"
-        }
+        resources.excludes += "/META-INF/{AL2.0,LGPL2.1}"
     }
 
     buildFeatures {
@@ -72,12 +59,19 @@ internal fun Project.configureAndroidApp() = configure<ApplicationExtension> {
     }
 }
 
+/**
+ * Configuration for Android Library
+ */
 internal fun Project.configureAndroidLibrary() = configure<LibraryExtension> {
-    configureAndroid(this)
+    compileSdk = BuildSdkInfo.COMPILE_SDK_VERSION
 
     defaultConfig {
+        minSdk = BuildSdkInfo.MIN_SDK_VERSION
+        testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         consumerProguardFiles("consumer-rules.pro")
     }
+
+    configureKotlin()
 
     buildTypes {
         release {

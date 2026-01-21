@@ -1,6 +1,5 @@
 package com.nisrulz.example.spacexapi.presentation.features.components
 
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
@@ -16,11 +15,9 @@ import com.nisrulz.example.spacexapi.presentation.theme.dimens
 @Composable
 fun LoadingComponent(modifier: Modifier = Modifier) {
     Box(
-        modifier =
-            modifier
-                .fillMaxSize()
-                .padding(MaterialTheme.dimens.small)
-                .background(MaterialTheme.colorScheme.background),
+        modifier = modifier
+            .fillMaxSize()
+            .padding(MaterialTheme.dimens.small),
     ) {
         CircularProgressIndicator(
             modifier =
