@@ -24,18 +24,14 @@ fun LaunchDetailScreen(
     val snackbarHostState = remember { SnackbarHostState() }
     val state by viewModel.uiState.collectAsStateWithLifecycle()
 
-    LaunchedEffect(true) {
-        with(viewModel) {
-            // Analytics
-            trackScreenEntered()
+    LaunchedEffect(viewModel, launchId) {
+        // Fetch data for this specific launch
+        viewModel.getLaunchInfoDetails(launchId)
 
-            getLaunchInfoDetails(launchId)
-
-            eventFlow.receiveAsFlow().collectLatest {
-                when (it) {
-                    is ShowSnackBar -> {
-                        snackbarHostState.showSnackbar(message = it.message)
-                    }
+        viewModel.eventFlow.receiveAsFlow().collectLatest {
+            when (it) {
+                is ShowSnackBar -> {
+                    snackbarHostState.showSnackbar(message = it.message)
                 }
             }
         }

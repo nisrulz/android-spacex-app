@@ -25,20 +25,14 @@ fun BookmarkedLaunchesScreen(
     val snackbarHostState = remember { SnackbarHostState() }
     val state by viewModel.uiState.collectAsStateWithLifecycle()
 
-    LaunchedEffect(true) {
-        with(viewModel) {
-            // Analytics
-            getListOfBookmarkedLaunches()
+    LaunchedEffect(viewModel) {
 
-            // collectLatest() Consumes only the most recent value, cancelling any previous
-            // uncompleted processing.
-            eventFlow.receiveAsFlow().collectLatest { event ->
-                when (event) {
-                    is BookmarkedLaunchesViewModel.UiEvent.ShowSnackBar -> {
-                        snackbarHostState.showSnackbar(
-                            message = event.message
-                        )
-                    }
+        viewModel.eventFlow.receiveAsFlow().collectLatest { event ->
+            when (event) {
+                is BookmarkedLaunchesViewModel.UiEvent.ShowSnackBar -> {
+                    snackbarHostState.showSnackbar(
+                        message = event.message
+                    )
                 }
             }
         }

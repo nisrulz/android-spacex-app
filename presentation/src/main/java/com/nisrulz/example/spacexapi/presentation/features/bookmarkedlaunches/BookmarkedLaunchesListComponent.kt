@@ -46,20 +46,23 @@ fun BookmarkedLaunchesListComponent(
             })
 
             LazyColumn(modifier = Modifier.fillMaxSize()) {
-                itemsIndexed(state.data) { index, item ->
+                itemsIndexed(
+                    items = state.data,
+                    key = { _, item -> item.id } // Stable key for better performance
+                ) { index, item ->
                     if (index == 0) {
                         Spacer(modifier = Modifier.height(MaterialTheme.dimens.small))
                     }
                     LaunchInfoItem(
                         modifier = Modifier.animateItem(
-                        fadeInSpec = tween(
-                            durationMillis = 500, easing = LinearOutSlowInEasing
-                        )
-                    ), launchInfo = item, onClick = {
-                        navigateToDetails(it)
-                    }, onBookmark = {
-                        bookmark(it)
-                    })
+                            fadeInSpec = tween(
+                                durationMillis = 250, easing = LinearOutSlowInEasing
+                            )
+                        ),
+                        launchInfo = item,
+                        onClick = navigateToDetails,
+                        onBookmark = bookmark
+                    )
                 }
             }
         }

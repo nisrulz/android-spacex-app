@@ -39,10 +39,17 @@ class ListOfLaunchesViewModel
      When a new value is sent to the channel, if the previous value has not been consumed yet,
      it will be discarded and replaced with the new value.
      This behavior can be useful in certain scenarios where one only care about the latest
-     value and don’t want to process outdated values.
+     value and don't want to process outdated values.
      */
     var eventFlow: Channel<UiEvent> = Channel(Channel.CONFLATED)
         private set
+
+    init {
+        // Track screen entered
+        trackScreenEntered()
+        // Fetch data when ViewModel is created
+        getListOfLaunches()
+    }
 
     @VisibleForTesting
     fun getListOfLaunches() = viewModelScope.launch(coroutineDispatcher) {

@@ -37,6 +37,7 @@ constructor(
         if (launchId.isNullOrBlank()) {
             setError("No Data")
         } else {
+            trackScreenEntered()
             update(getLaunchDetail(launchId))
         }
     }
