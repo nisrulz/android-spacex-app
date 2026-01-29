@@ -5,11 +5,16 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import com.nisrulz.example.spacexapi.presentation.features.bookmarkedlaunches.BookmarkedLaunchesScreen
+import com.nisrulz.example.spacexapi.presentation.features.bookmarkedlaunches.BookmarkedLaunchesViewModel
 import com.nisrulz.example.spacexapi.presentation.features.launchdetail.LaunchDetailScreen
 import com.nisrulz.example.spacexapi.presentation.features.listoflaunches.ListOfLaunchesScreen
+import com.nisrulz.example.spacexapi.presentation.features.listoflaunches.ListOfLaunchesViewModel
 
 @Composable
 fun AppNavigation(navigationViewModel: NavigationViewModel = hiltViewModel()) {
+    val listOfLaunchesViewModel: ListOfLaunchesViewModel = hiltViewModel()
+    val bookmarkedLaunchesViewModel: BookmarkedLaunchesViewModel = hiltViewModel()
+
     NavDisplay(
         backStack = navigationViewModel.backStack,
         onBack = { navigationViewModel.navigateBack() },
@@ -18,6 +23,7 @@ fun AppNavigation(navigationViewModel: NavigationViewModel = hiltViewModel()) {
         when (route) {
             is NavigationRoute.Home -> {
                 ListOfLaunchesScreen(
+                    viewModel = listOfLaunchesViewModel,
                     navigateToDetails = { id -> navigationViewModel.navigateTo(NavigationRoute.Details(id)) },
                     navigateToBookmarks = { navigationViewModel.navigateTo(NavigationRoute.Bookmarks) }
                 )
@@ -25,6 +31,7 @@ fun AppNavigation(navigationViewModel: NavigationViewModel = hiltViewModel()) {
 
             is NavigationRoute.Bookmarks -> {
                 BookmarkedLaunchesScreen(
+                    viewModel = bookmarkedLaunchesViewModel,
                     navigateToDetails = { id -> navigationViewModel.navigateTo(NavigationRoute.Details(id)) },
                     onBackAction = { navigationViewModel.navigateBack() }
                 )
