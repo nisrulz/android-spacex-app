@@ -13,6 +13,7 @@ androidTools = "32.0.0"
 core-ktx = "1.17.0"
 lifecycleVer = "2.10.0"
 appcompat = "1.7.1"
+navigation3 = "1.0.0"
 #endregion
 
 # Logs
@@ -81,6 +82,11 @@ timber = { module = "com.jakewharton.timber:timber", version.ref = "timber" }
 lifecycle-viewmodel-ktx = { group = "androidx.lifecycle", name = "lifecycle-viewmodel-ktx", version.ref = "lifecycleVer" }
 lifecycle-runtime-ktx = { group = "androidx.lifecycle", name = "lifecycle-runtime-ktx", version.ref = "lifecycleVer" }
 lifecycle-runtime-compose = { group = "androidx.lifecycle", name = "lifecycle-runtime-compose", version.ref = "lifecycleVer" }
+lifecycle-viewmodel-navigation3 = { group = "androidx.lifecycle", name = "lifecycle-viewmodel-navigation3", version.ref = "lifecycleVer" }
+
+# Navigation 3
+navigation3-runtime = { group = "androidx.navigation3", name = "navigation3-runtime", version.ref = "navigation3" }
+navigation3-ui = { group = "androidx.navigation3", name = "navigation3-ui", version.ref = "navigation3" }
 
 # Compose
 activity-compose = { group = "androidx.activity", name = "activity-compose", version.ref = "activity-compose" }
@@ -168,7 +174,8 @@ spacexapi-android-testing = { id = "spacexapi.android.testing", version = "unspe
 spacexapi-android-jacoco = { id = "spacexapi.android.jacoco", version = "unspecified" }
 
 [bundles]
-lifecycle = ["lifecycle-runtime-ktx", "lifecycle-runtime-compose"]
+lifecycle = ["lifecycle-runtime-ktx", "lifecycle-runtime-compose", "lifecycle-viewmodel-navigation3"]
+navigation3 = ["navigation3-runtime", "navigation3-ui"]
 ktx = ["core-ktx", "androidx-junit-ktx"]
 material = ["material", "material3"]
 core = ["appcompat"]

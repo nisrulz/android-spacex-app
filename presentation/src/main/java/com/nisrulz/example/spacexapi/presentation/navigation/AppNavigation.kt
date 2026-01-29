@@ -1,48 +1,61 @@
 package com.nisrulz.example.spacexapi.presentation.navigation
 
+import androidx.compose.animation.fadeIn
+import androidx.compose.animation.fadeOut
+import androidx.compose.animation.togetherWith
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
+import androidx.lifecycle.viewmodel.navigation3.rememberViewModelStoreNavEntryDecorator
+import androidx.navigation3.runtime.NavKey
+import androidx.navigation3.runtime.entryProvider
+import androidx.navigation3.runtime.rememberNavBackStack
+import androidx.navigation3.runtime.rememberSaveableStateHolderNavEntryDecorator
+import androidx.navigation3.ui.NavDisplay
 import com.nisrulz.example.spacexapi.presentation.features.bookmarkedlaunches.BookmarkedLaunchesScreen
-import com.nisrulz.example.spacexapi.presentation.features.bookmarkedlaunches.BookmarkedLaunchesViewModel
 import com.nisrulz.example.spacexapi.presentation.features.launchdetail.LaunchDetailScreen
 import com.nisrulz.example.spacexapi.presentation.features.listoflaunches.ListOfLaunchesScreen
-import com.nisrulz.example.spacexapi.presentation.features.listoflaunches.ListOfLaunchesViewModel
 
 @Composable
-fun AppNavigation(navigationViewModel: NavigationViewModel = hiltViewModel()) {
-    val listOfLaunchesViewModel: ListOfLaunchesViewModel = hiltViewModel()
-    val bookmarkedLaunchesViewModel: BookmarkedLaunchesViewModel = hiltViewModel()
+fun AppNavigation() {
+    // back stack that persists across configuration changes and process death.
+    val backStack = rememberNavBackStack(Home)
 
     NavDisplay(
-        backStack = navigationViewModel.backStack,
-        onBack = { navigationViewModel.navigateBack() },
-        modifier = Modifier.fillMaxSize()
-    ) { route ->
-        when (route) {
-            is NavigationRoute.Home -> {
+        backStack = backStack,
+        onBack = { backStack.removeLastOrNull<NavKey>() },
+        // Essential decorators for state preservation and ViewModel scoping
+        entryDecorators = listOf(
+            rememberSaveableStateHolderNavEntryDecorator(),
+            rememberViewModelStoreNavEntryDecorator()
+        ),
+        // Entry provider using DSL
+        entryProvider = entryProvider {
+            entry<Home> {
                 ListOfLaunchesScreen(
-                    viewModel = listOfLaunchesViewModel,
-                    navigateToDetails = { id -> navigationViewModel.navigateTo(NavigationRoute.Details(id)) },
-                    navigateToBookmarks = { navigationViewModel.navigateTo(NavigationRoute.Bookmarks) }
+                    navigateToDetails = { id -> backStack.add(Details(id)) },
+                    navigateToBookmarks = { backStack.add(Bookmarks) }
                 )
             }
 
-            is NavigationRoute.Bookmarks -> {
+            entry<Bookmarks> {
                 BookmarkedLaunchesScreen(
-                    viewModel = bookmarkedLaunchesViewModel,
-                    navigateToDetails = { id -> navigationViewModel.navigateTo(NavigationRoute.Details(id)) },
-                    onBackAction = { navigationViewModel.navigateBack() }
+                    navigateToDetails = { id -> backStack.add(Details(id)) },
+                    onBackAction = { backStack.removeLastOrNull() }
                 )
             }
 
-            is NavigationRoute.Details -> {
+            entry<Details> { key ->
                 LaunchDetailScreen(
-                    launchId = route.launchId,
-                    onBackAction = { navigationViewModel.navigateBack() }
+                    launchId = key.launchId,
+                    onBackAction = { backStack.removeLastOrNull() }
                 )
             }
-        }
-    }
+        },
+        // Smooth animations
+        transitionSpec = {
+            fadeIn() togetherWith fadeOut()
+        },
+        modifier = Modifier.fillMaxSize()
+    )
 }

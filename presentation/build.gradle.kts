@@ -8,6 +8,7 @@ plugins {
     alias(libs.plugins.spacexapi.android.jacoco)
 
     alias(libs.plugins.spacexapi.android.compose)
+    alias(libs.plugins.kotlin.serialization)
 }
 android {
     namespace = "${ApplicationInfo.BASE_NAMESPACE}.presentation"
@@ -31,4 +32,8 @@ dependencies {
     implementation(libs.bundles.lifecycle)
     implementation(libs.bundles.core)
     implementation(libs.bundles.ktx)
+
+    // Navigation 3
+    implementation(libs.bundles.navigation3)
+    implementation(libs.kotlinx.serialization.json)
 }
