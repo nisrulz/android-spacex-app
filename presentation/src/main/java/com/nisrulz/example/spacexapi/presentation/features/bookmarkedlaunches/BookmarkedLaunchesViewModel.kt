@@ -65,19 +65,12 @@ constructor(
 
     fun showError(message: String) = sendEvent(UiEvent.ShowSnackBar(message))
 
-    fun navigateBack() = sendEvent(UiEvent.NavigateBack)
-
-    fun navigateToDetails(launchId: String) = sendEvent(UiEvent.NavigateToDetails(launchId))
-
     private fun sendEvent(uiEvent: UiEvent) = viewModelScope.launch(coroutineDispatcher) {
         eventFlow.send(uiEvent)
     }
 
     sealed interface UiEvent {
         data class ShowSnackBar(val message: String) : UiEvent
-
-        data class NavigateToDetails(val launchId: String) : UiEvent
-        data object NavigateBack : UiEvent
     }
 
     data class UiState(

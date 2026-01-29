@@ -1,6 +1,5 @@
 package com.nisrulz.example.spacexapi.presentation.features.launchdetail
 
-import androidx.activity.compose.BackHandler
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -12,7 +11,6 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.nisrulz.example.spacexapi.common.contract.utils.EmptyCallback
 import com.nisrulz.example.spacexapi.presentation.features.components.EmptyComponent
 import com.nisrulz.example.spacexapi.presentation.features.components.LoadingComponent
-import com.nisrulz.example.spacexapi.presentation.features.launchdetail.LaunchDetailViewModel.UiEvent.NavigateBack
 import com.nisrulz.example.spacexapi.presentation.features.launchdetail.LaunchDetailViewModel.UiEvent.ShowSnackBar
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.receiveAsFlow
@@ -38,18 +36,9 @@ fun LaunchDetailScreen(
                     is ShowSnackBar -> {
                         snackbarHostState.showSnackbar(message = it.message)
                     }
-
-                    NavigateBack -> onBackAction()
                 }
             }
         }
-    }
-
-    BackHandler(enabled = true) {
-        // Analytics
-        viewModel.trackOnBack()
-
-        viewModel.navigateBack()
     }
 
     with(state) {
@@ -58,13 +47,17 @@ fun LaunchDetailScreen(
             LoadingComponent()
         } else if (data == null) {
             EmptyComponent(message = "No launch info available") {
-                viewModel.navigateBack()
+                onBackAction()
             }
         } else {
             LaunchDetailSuccessComponent(
                 state = state,
                 snackbarHostState = snackbarHostState,
-                navigateBack = { viewModel.navigateBack() }
+                navigateBack = {
+                    // Analytics
+                    viewModel.trackOnBack()
+                    onBackAction()
+                }
             )
         }
     }

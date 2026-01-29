@@ -43,9 +43,6 @@ fun ListOfLaunchesScreen(
                             message = event.message
                         )
                     }
-
-                    is UiEvent.NavigateToDetails -> navigateToDetails(event.launchId)
-                    UiEvent.NavigateToBookmarks -> navigateToBookmarks()
                 }
             }
         }
@@ -61,15 +58,11 @@ fun ListOfLaunchesScreen(
             ListOfLaunchesSuccessComponent(
                 state = state,
                 snackbarHostState = snackbarHostState,
-                navigateToDetails = {
-                    viewModel.navigateToDetails(it)
-                },
+                navigateToDetails = navigateToDetails,
                 bookmark = {
                     viewModel.bookmark(it)
                 },
-                navigateToBookmarks = {
-                    viewModel.onClickBookmarkToolbarIcon()
-                }
+                navigateToBookmarks = navigateToBookmarks
             )
         }
     }
