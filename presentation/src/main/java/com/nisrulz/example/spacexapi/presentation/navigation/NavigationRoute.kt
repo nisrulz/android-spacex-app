@@ -1,13 +1,7 @@
 package com.nisrulz.example.spacexapi.presentation.navigation
 
-import kotlinx.serialization.Serializable
-
-
-@Serializable
-object RouteHome
-
-@Serializable
-object RouteBookmark
-
-@Serializable
-data class RouteDetails(val launchId: String)
+sealed interface NavigationRoute {
+    data object Home : NavigationRoute
+    data object Bookmarks : NavigationRoute
+    data class Details(val launchId: String) : NavigationRoute
+}
