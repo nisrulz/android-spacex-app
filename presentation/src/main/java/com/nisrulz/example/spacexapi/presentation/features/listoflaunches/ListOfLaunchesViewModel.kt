@@ -10,7 +10,6 @@ import com.nisrulz.example.spacexapi.domain.model.LaunchInfo
 import com.nisrulz.example.spacexapi.domain.usecase.GetAllLaunches
 import com.nisrulz.example.spacexapi.domain.usecase.ToggleBookmarkLaunchInfo
 import com.nisrulz.example.spacexapi.logger.InUseLoggers
-import com.nisrulz.example.spacexapi.presentation.features.listoflaunches.ListOfLaunchesViewModel.UiEvent.NavigateToDetails
 import com.nisrulz.example.spacexapi.presentation.features.listoflaunches.ListOfLaunchesViewModel.UiEvent.ShowSnackBar
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.CoroutineDispatcher
@@ -40,10 +39,17 @@ class ListOfLaunchesViewModel
      When a new value is sent to the channel, if the previous value has not been consumed yet,
      it will be discarded and replaced with the new value.
      This behavior can be useful in certain scenarios where one only care about the latest
-     value and don’t want to process outdated values.
+     value and don't want to process outdated values.
      */
     var eventFlow: Channel<UiEvent> = Channel(Channel.CONFLATED)
         private set
+
+    init {
+        // Track screen entered
+        trackScreenEntered()
+        // Fetch data when ViewModel is created
+        getListOfLaunches()
+    }
 
     @VisibleForTesting
     fun getListOfLaunches() = viewModelScope.launch(coroutineDispatcher) {
@@ -63,10 +69,6 @@ class ListOfLaunchesViewModel
         stopLoading()
     }
 
-    fun onClickBookmarkToolbarIcon() {
-        navigateToBookmarks()
-    }
-
     private fun setError(message: String) {
         uiState.update { it.copy(error = message) }
         stopLoading()
@@ -74,13 +76,9 @@ class ListOfLaunchesViewModel
 
     fun showError(message: String) = sendEvent(ShowSnackBar(message))
 
-    fun navigateToDetails(launchId: String) = sendEvent(NavigateToDetails(launchId))
-    private fun navigateToBookmarks() = sendEvent(UiEvent.NavigateToBookmarks)
-
     private fun sendEvent(uiEvent: UiEvent) = viewModelScope.launch(coroutineDispatcher) {
         eventFlow.send(uiEvent)
         logger.log("Ui Event: $uiEvent")
-        analytics.trackNavigateToDetail()
     }
 
     private fun stopLoading() = uiState.update { it.copy(isLoading = false) }
@@ -89,9 +87,6 @@ class ListOfLaunchesViewModel
 
     sealed interface UiEvent {
         data class ShowSnackBar(val message: String) : UiEvent
-
-        data class NavigateToDetails(val launchId: String) : UiEvent
-        data object NavigateToBookmarks : UiEvent
     }
 
     data class UiState(

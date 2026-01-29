@@ -3,12 +3,12 @@ import com.nisrulz.example.spacexapi.info.ApplicationInfo
 plugins {
     alias(libs.plugins.spacexapi.android.library)
     alias(libs.plugins.spacexapi.android.lib.hilt)
-    
+
     alias(libs.plugins.spacexapi.android.testing)
     alias(libs.plugins.spacexapi.android.jacoco)
 
     alias(libs.plugins.spacexapi.android.compose)
-    alias(libs.plugins.spacexapi.android.compose.navigation)
+    alias(libs.plugins.kotlin.serialization)
 }
 android {
     namespace = "${ApplicationInfo.BASE_NAMESPACE}.presentation"
@@ -32,4 +32,8 @@ dependencies {
     implementation(libs.bundles.lifecycle)
     implementation(libs.bundles.core)
     implementation(libs.bundles.ktx)
+
+    // Navigation 3
+    implementation(libs.bundles.navigation3)
+    implementation(libs.kotlinx.serialization.json)
 }

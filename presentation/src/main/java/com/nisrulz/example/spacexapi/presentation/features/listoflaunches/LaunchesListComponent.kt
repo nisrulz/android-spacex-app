@@ -43,42 +43,29 @@ fun ListOfLaunchesSuccessComponent(
     bookmark: SingleValueCallback<LaunchInfo>,
     navigateToBookmarks: EmptyCallback
 ) {
-    val mutableInteractionSource = remember {
-        MutableInteractionSource()
-    }
-    val pressed = mutableInteractionSource.collectIsPressedAsState()
-    val elevation = animateDpAsState(
-        targetValue = if (pressed.value) {
-            300.dp
-        } else {
-            8.dp
-        }, label = "elevation"
-    )
-    Box(
-        modifier = modifier
-            .fillMaxSize()
-            .graphicsLayer {
-                this.shadowElevation = elevation.value.toPx()
-            }) {
+    Box(modifier = modifier.fillMaxSize()) {
         Column {
             TitleBar(rightNavButtonIcon = R.drawable.bookmarks, rightNavButtonAction = {
                 navigateToBookmarks()
             })
             LazyColumn(modifier = Modifier.fillMaxSize()) {
-                itemsIndexed(state.data) { index, item ->
+                itemsIndexed(
+                    items = state.data,
+                    key = { _, item -> item.id } // Stable key for better performance
+                ) { index, item ->
                     if (index == 0) {
                         Spacer(modifier = Modifier.height(MaterialTheme.dimens.small))
                     }
                     LaunchInfoItem(
                         modifier = Modifier.animateItem(
                             fadeInSpec = tween(
-                                durationMillis = 500, easing = LinearOutSlowInEasing
+                                durationMillis = 250, easing = LinearOutSlowInEasing
                             )
-                        ), launchInfo = item, onClick = {
-                            navigateToDetails(it)
-                        }, onBookmark = {
-                            bookmark(it)
-                        })
+                        ),
+                        launchInfo = item,
+                        onClick = navigateToDetails,
+                        onBookmark = bookmark
+                    )
                 }
             }
         }

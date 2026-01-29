@@ -33,10 +33,15 @@ constructor(
      When a new value is sent to the channel, if the previous value has not been consumed yet,
      it will be discarded and replaced with the new value.
      This behavior can be useful in certain scenarios where one only care about the latest
-     value and don’t want to process outdated values.
+     value and don't want to process outdated values.
      */
     var eventFlow: Channel<UiEvent> = Channel(Channel.CONFLATED)
         private set
+
+    init {
+        // Fetch data when ViewModel is created
+        getListOfBookmarkedLaunches()
+    }
 
     @VisibleForTesting
     fun getListOfBookmarkedLaunches() = viewModelScope.launch(coroutineDispatcher) {
@@ -65,19 +70,12 @@ constructor(
 
     fun showError(message: String) = sendEvent(UiEvent.ShowSnackBar(message))
 
-    fun navigateBack() = sendEvent(UiEvent.NavigateBack)
-
-    fun navigateToDetails(launchId: String) = sendEvent(UiEvent.NavigateToDetails(launchId))
-
     private fun sendEvent(uiEvent: UiEvent) = viewModelScope.launch(coroutineDispatcher) {
         eventFlow.send(uiEvent)
     }
 
     sealed interface UiEvent {
         data class ShowSnackBar(val message: String) : UiEvent
-
-        data class NavigateToDetails(val launchId: String) : UiEvent
-        data object NavigateBack : UiEvent
     }
 
     data class UiState(

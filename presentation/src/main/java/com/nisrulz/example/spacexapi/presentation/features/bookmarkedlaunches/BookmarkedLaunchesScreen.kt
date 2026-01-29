@@ -1,7 +1,6 @@
 package com.nisrulz.example.spacexapi.presentation.features.bookmarkedlaunches
 
 import android.annotation.SuppressLint
-import androidx.activity.compose.BackHandler
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -26,32 +25,17 @@ fun BookmarkedLaunchesScreen(
     val snackbarHostState = remember { SnackbarHostState() }
     val state by viewModel.uiState.collectAsStateWithLifecycle()
 
-    LaunchedEffect(true) {
-        with(viewModel) {
-            // Analytics
-            getListOfBookmarkedLaunches()
+    LaunchedEffect(viewModel) {
 
-            // collectLatest() Consumes only the most recent value, cancelling any previous
-            // uncompleted processing.
-            eventFlow.receiveAsFlow().collectLatest { event ->
-                when (event) {
-                    BookmarkedLaunchesViewModel.UiEvent.NavigateBack -> onBackAction()
-                    is BookmarkedLaunchesViewModel.UiEvent.NavigateToDetails -> {
-                        navigateToDetails(event.launchId)
-                    }
-
-                    is BookmarkedLaunchesViewModel.UiEvent.ShowSnackBar -> {
-                        snackbarHostState.showSnackbar(
-                            message = event.message
-                        )
-                    }
+        viewModel.eventFlow.receiveAsFlow().collectLatest { event ->
+            when (event) {
+                is BookmarkedLaunchesViewModel.UiEvent.ShowSnackBar -> {
+                    snackbarHostState.showSnackbar(
+                        message = event.message
+                    )
                 }
             }
         }
-    }
-
-    BackHandler(true) {
-        viewModel.navigateBack()
     }
 
     with(state) {
@@ -60,21 +44,17 @@ fun BookmarkedLaunchesScreen(
             LoadingComponent()
         } else if (data.isEmpty()) {
             EmptyComponent(message = "No bookmarked launches") {
-                viewModel.navigateBack()
+                onBackAction()
             }
         } else {
             BookmarkedLaunchesListComponent(
                 state = state,
                 snackbarHostState = snackbarHostState,
-                navigateToDetails = {
-                    viewModel.navigateToDetails(it)
-                },
+                navigateToDetails = navigateToDetails,
                 bookmark = {
                     viewModel.bookmark(it)
                 },
-                navigateBack = {
-                    viewModel.navigateBack()
-                })
+                navigateBack = onBackAction)
         }
     }
 }

@@ -13,6 +13,7 @@ androidTools = "32.0.0"
 core-ktx = "1.17.0"
 lifecycleVer = "2.10.0"
 appcompat = "1.7.1"
+navigation3 = "1.0.0"
 #endregion
 
 # Logs
@@ -31,8 +32,6 @@ activity-compose = "1.12.3"
 compose-bom = "2026.01.01"
 #endregion
 
-# Navigation
-navigationCompose = "2.9.7"
 
 #region ---- Hilt
 hilt = "2.59"
@@ -83,6 +82,11 @@ timber = { module = "com.jakewharton.timber:timber", version.ref = "timber" }
 lifecycle-viewmodel-ktx = { group = "androidx.lifecycle", name = "lifecycle-viewmodel-ktx", version.ref = "lifecycleVer" }
 lifecycle-runtime-ktx = { group = "androidx.lifecycle", name = "lifecycle-runtime-ktx", version.ref = "lifecycleVer" }
 lifecycle-runtime-compose = { group = "androidx.lifecycle", name = "lifecycle-runtime-compose", version.ref = "lifecycleVer" }
+lifecycle-viewmodel-navigation3 = { group = "androidx.lifecycle", name = "lifecycle-viewmodel-navigation3", version.ref = "lifecycleVer" }
+
+# Navigation 3
+navigation3-runtime = { group = "androidx.navigation3", name = "navigation3-runtime", version.ref = "navigation3" }
+navigation3-ui = { group = "androidx.navigation3", name = "navigation3-ui", version.ref = "navigation3" }
 
 # Compose
 activity-compose = { group = "androidx.activity", name = "activity-compose", version.ref = "activity-compose" }
@@ -110,8 +114,6 @@ hilt-compiler = { group = "com.google.dagger", name = "hilt-android-compiler", v
 hilt-ext-compiler = { group = "androidx.hilt", name = "hilt-compiler", version.ref = "hiltExt" }
 hilt-navigation = { group = "androidx.hilt", name = "hilt-navigation-compose", version.ref = "hiltNavigation" }
 
-# Navigation
-navigation-compose = { group = "androidx.navigation", name = "navigation-compose", version.ref = "navigationCompose" }
 
 # Retrofit
 retrofit-bom = { group = "com.squareup.retrofit2", name = "retrofit-bom", version.ref = "retrofit-bom" }
@@ -164,7 +166,6 @@ spacexapi-android-application = { id = "spacexapi.android.application", version 
 spacexapi-android-library = { id = "spacexapi.android.library", version = "unspecified" }
 
 spacexapi-android-compose = { id = "spacexapi.android.compose", version = "unspecified" }
-spacexapi-android-compose-navigation = { id = "spacexapi.android.compose.navigation", version = "unspecified" }
 
 spacexapi-android-app-hilt = { id = "spacexapi.android.app.hilt", version = "unspecified" }
 spacexapi-android-lib-hilt = { id = "spacexapi.android.lib.hilt", version = "unspecified" }
@@ -173,11 +174,12 @@ spacexapi-android-testing = { id = "spacexapi.android.testing", version = "unspe
 spacexapi-android-jacoco = { id = "spacexapi.android.jacoco", version = "unspecified" }
 
 [bundles]
-lifecycle = ["lifecycle-runtime-ktx", "lifecycle-runtime-compose"]
+lifecycle = ["lifecycle-runtime-ktx", "lifecycle-runtime-compose", "lifecycle-viewmodel-navigation3"]
+navigation3 = ["navigation3-runtime", "navigation3-ui"]
 ktx = ["core-ktx", "androidx-junit-ktx"]
 material = ["material", "material3"]
 core = ["appcompat"]
-compose = ["activity-compose", "ui", "ui-graphics", "ui-tooling-preview", "material3", "navigation-compose"]
+compose = ["activity-compose", "ui", "ui-graphics", "ui-tooling-preview", "material3"]
 hilt = ["hilt-android", "hilt-navigation"]
 room = ["room-ktx", "room-runtime"]
 retrofit = ["retrofit-core", "kotlinx-serialization-json", "retrofit2-kotlinx-serialization-converter", "okhttp-logging"]

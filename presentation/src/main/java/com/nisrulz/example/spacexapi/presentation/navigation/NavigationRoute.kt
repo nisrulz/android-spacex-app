@@ -1,13 +1,15 @@
 package com.nisrulz.example.spacexapi.presentation.navigation
 
+import androidx.navigation3.runtime.NavKey
 import kotlinx.serialization.Serializable
 
 
 @Serializable
-object RouteHome
+data object Home : NavKey
 
 @Serializable
-object RouteBookmark
+data object Bookmarks : NavKey
 
 @Serializable
-data class RouteDetails(val launchId: String)
+data class Details(val launchId: String) : NavKey
+

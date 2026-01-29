@@ -27,25 +27,13 @@ fun ListOfLaunchesScreen(
     val snackbarHostState = remember { SnackbarHostState() }
     val state by viewModel.uiState.collectAsStateWithLifecycle()
 
-    LaunchedEffect(true) {
-        with(viewModel) {
-            // Analytics
-            trackScreenEntered()
-
-            getListOfLaunches()
-
-            // collectLatest() Consumes only the most recent value, cancelling any previous
-            // uncompleted processing.
-            eventFlow.receiveAsFlow().collectLatest { event ->
-                when (event) {
-                    is ShowSnackBar -> {
-                        snackbarHostState.showSnackbar(
-                            message = event.message
-                        )
-                    }
-
-                    is UiEvent.NavigateToDetails -> navigateToDetails(event.launchId)
-                    UiEvent.NavigateToBookmarks -> navigateToBookmarks()
+    LaunchedEffect(viewModel) {
+        viewModel.eventFlow.receiveAsFlow().collectLatest { event ->
+            when (event) {
+                is ShowSnackBar -> {
+                    snackbarHostState.showSnackbar(
+                        message = event.message
+                    )
                 }
             }
         }
@@ -61,15 +49,11 @@ fun ListOfLaunchesScreen(
             ListOfLaunchesSuccessComponent(
                 state = state,
                 snackbarHostState = snackbarHostState,
-                navigateToDetails = {
-                    viewModel.navigateToDetails(it)
-                },
+                navigateToDetails = navigateToDetails,
                 bookmark = {
                     viewModel.bookmark(it)
                 },
-                navigateToBookmarks = {
-                    viewModel.onClickBookmarkToolbarIcon()
-                }
+                navigateToBookmarks = navigateToBookmarks
             )
         }
     }

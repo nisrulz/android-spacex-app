@@ -42,13 +42,14 @@ fun LaunchInfoItem(
     onBookmark: SingleValueCallback<LaunchInfo>,
     onClick: SingleValueCallback<String>
 ) {
+    val context = LocalContext.current
+
     ElevatedCard(
         modifier = modifier
             .fillMaxWidth()
             .height(200.dp)
             .padding(MaterialTheme.dimens.small),
-        colors =
-        CardDefaults.cardColors(
+        colors = CardDefaults.cardColors(
             containerColor = MaterialTheme.colorScheme.surfaceVariant
         ),
         onClick = {
@@ -57,61 +58,52 @@ fun LaunchInfoItem(
     ) {
         Row {
             AsyncImage(
-                model =
-                ImageRequest.Builder(LocalContext.current)
+                model = ImageRequest.Builder(context)
                     .data(launchInfo.logo)
                     .crossfade(true)
+                    .size(400) // Limit image size for better performance
                     .build(),
                 placeholder = painterResource(R.drawable.placeholder),
                 contentDescription = stringResource(R.string.logo_description),
                 contentScale = ContentScale.Crop,
-                modifier =
-                Modifier
+                modifier = Modifier
                     .padding(MaterialTheme.dimens.medium)
                     .fillMaxWidth(0.4f)
             )
 
             Column(
-                modifier =
-                Modifier
+                modifier = Modifier
                     .padding(MaterialTheme.dimens.medium)
                     .fillMaxSize()
             ) {
                 Text(
                     text = "LAUNCH ${launchInfo.flight_number}",
-                    style =
-                    TextStyle(
-                        color = MaterialTheme.colorScheme.primary,
-                        fontSize = 16.sp,
-                        fontStyle = FontStyle.Italic,
-                        fontWeight = FontWeight.Bold
-                    )
+                    color = MaterialTheme.colorScheme.primary,
+                    fontSize = 16.sp,
+                    fontStyle = FontStyle.Italic,
+                    fontWeight = FontWeight.Bold
                 )
                 Text(
                     text = launchInfo.name,
-                    style =
-                    TextStyle(
-                        color = MaterialTheme.colorScheme.secondary,
-                        fontSize = 24.sp,
-                        fontWeight = FontWeight.Bold
-                    )
+                    color = MaterialTheme.colorScheme.secondary,
+                    fontSize = 24.sp,
+                    fontWeight = FontWeight.Bold
                 )
 
                 Text(text = launchInfo.getFormattedDate())
 
                 Spacer(modifier = Modifier.fillMaxHeight(0.7f))
 
-                val drawableIdForBookmark =
-                    if (launchInfo.isBookmarked) {
-                        R.drawable.bookmark
-                    } else {
-                        R.drawable.not_bookmarked
-                    }
                 Image(
-                    painter = painterResource(id = drawableIdForBookmark),
+                    painter = painterResource(
+                        id = if (launchInfo.isBookmarked) {
+                            R.drawable.bookmark
+                        } else {
+                            R.drawable.not_bookmarked
+                        }
+                    ),
                     contentDescription = stringResource(id = R.string.bookmark),
-                    modifier =
-                    Modifier
+                    modifier = Modifier
                         .align(Alignment.End)
                         .clickable {
                             onBookmark(launchInfo)

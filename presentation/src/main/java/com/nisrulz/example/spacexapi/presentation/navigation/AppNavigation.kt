@@ -1,46 +1,61 @@
 package com.nisrulz.example.spacexapi.presentation.navigation
 
+import androidx.compose.animation.fadeIn
+import androidx.compose.animation.fadeOut
+import androidx.compose.animation.togetherWith
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.runtime.Composable
-import androidx.navigation.compose.NavHost
-import androidx.navigation.compose.composable
-import androidx.navigation.compose.rememberNavController
-import androidx.navigation.toRoute
+import androidx.compose.ui.Modifier
+import androidx.lifecycle.viewmodel.navigation3.rememberViewModelStoreNavEntryDecorator
+import androidx.navigation3.runtime.NavKey
+import androidx.navigation3.runtime.entryProvider
+import androidx.navigation3.runtime.rememberNavBackStack
+import androidx.navigation3.runtime.rememberSaveableStateHolderNavEntryDecorator
+import androidx.navigation3.ui.NavDisplay
 import com.nisrulz.example.spacexapi.presentation.features.bookmarkedlaunches.BookmarkedLaunchesScreen
 import com.nisrulz.example.spacexapi.presentation.features.launchdetail.LaunchDetailScreen
 import com.nisrulz.example.spacexapi.presentation.features.listoflaunches.ListOfLaunchesScreen
 
 @Composable
 fun AppNavigation() {
-    val navController = rememberNavController()
+    // back stack that persists across configuration changes and process death.
+    val backStack = rememberNavBackStack(Home)
 
-    NavHost(
-        navController = navController, startDestination = RouteHome
-    ) {
-        composable<RouteHome> {
-            ListOfLaunchesScreen(navigateToDetails = { launchId ->
-                navController.navigate(RouteDetails(launchId))
-            }, navigateToBookmarks = {
-                navController.navigate(RouteBookmark)
-            })
+    NavDisplay(
+        backStack = backStack,
+        onBack = { backStack.removeLastOrNull<NavKey>() },
+        // Essential decorators for state preservation and ViewModel scoping
+        entryDecorators = listOf(
+            rememberSaveableStateHolderNavEntryDecorator(),
+            rememberViewModelStoreNavEntryDecorator()
+        ),
+        // Entry provider using DSL
+        entryProvider = entryProvider {
+            entry<Home> {
+                ListOfLaunchesScreen(
+                    navigateToDetails = { id -> backStack.add(Details(id)) },
+                    navigateToBookmarks = { backStack.add(Bookmarks) }
+                )
+            }
 
-        }
+            entry<Bookmarks> {
+                BookmarkedLaunchesScreen(
+                    navigateToDetails = { id -> backStack.add(Details(id)) },
+                    onBackAction = { backStack.removeLastOrNull() }
+                )
+            }
 
-        composable<RouteBookmark> {
-            BookmarkedLaunchesScreen(navigateToDetails = { launchId ->
-                navController.navigate(RouteDetails(launchId))
-            }, onBackAction = {
-                navController.navigate(RouteHome)
-            })
-
-        }
-
-        composable<RouteDetails> { backStackEntry ->
-            val id = backStackEntry.toRoute<RouteDetails>().launchId
-
-            LaunchDetailScreen(launchId = id, onBackAction = {
-                navController.navigate(RouteHome)
-            })
-
-        }
-    }
+            entry<Details> { key ->
+                LaunchDetailScreen(
+                    launchId = key.launchId,
+                    onBackAction = { backStack.removeLastOrNull() }
+                )
+            }
+        },
+        // Smooth animations
+        transitionSpec = {
+            fadeIn() togetherWith fadeOut()
+        },
+        modifier = Modifier.fillMaxSize()
+    )
 }
