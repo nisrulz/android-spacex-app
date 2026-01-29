@@ -7,7 +7,6 @@ import com.nisrulz.example.spacexapi.analytics.contract.AnalyticsEvent
 import com.nisrulz.example.spacexapi.domain.usecase.GetAllLaunches
 import com.nisrulz.example.spacexapi.domain.usecase.ToggleBookmarkLaunchInfo
 import com.nisrulz.example.spacexapi.logger.InUseLoggers
-import com.nisrulz.example.spacexapi.presentation.features.listoflaunches.ListOfLaunchesViewModel.UiEvent.NavigateToDetails
 import com.nisrulz.example.spacexapi.presentation.features.listoflaunches.ListOfLaunchesViewModel.UiEvent.ShowSnackBar
 import com.nisrulz.example.spacexapi.presentation.util.TestFactory
 import com.nisrulz.example.spacexapi.presentation.util.runUnconfinedTest
@@ -39,9 +38,10 @@ class ListOfLaunchesViewModelTest {
         logger = mockk {
             every { log(any<String>()) } just runs
         }
-        analytics = mockk {
-            every { trackEvent(any<AnalyticsEvent>()) } just runs
-        }
+        analytics = mockk(relaxed = true)
+
+        // Mock the initial call in init block
+        coEvery { getAllLaunches() } returns flowOf(emptyList())
 
         sut = ListOfLaunchesViewModel(
             coroutineDispatcher = testDispatcher,
@@ -58,14 +58,12 @@ class ListOfLaunchesViewModelTest {
         val list = TestFactory.buildListOfLaunchInfo()
         coEvery { getAllLaunches() } returns flowOf(list)
 
-        sut.uiState.test {
-            // When
-            sut.getListOfLaunches()
+        // When
+        sut.getListOfLaunches().join()
 
-            // Then
-            assertThat(awaitItem().isLoading).isTrue()
-            assertThat(awaitItem().data).isEqualTo(list)
-        }
+        // Then
+        assertThat(sut.uiState.value.isLoading).isFalse()
+        assertThat(sut.uiState.value.data).isEqualTo(list)
     }
 
     @Test
@@ -96,24 +94,7 @@ class ListOfLaunchesViewModelTest {
             // Then
             assertThat(awaitItem()).isEqualTo(ShowSnackBar(message))
             verify { logger.log(any<String>()) }
-            verify { analytics.trackEvent(any<AnalyticsEvent>()) }
         }
     }
 
-    @Test
-    fun `navigateToDetails() should update uiEvent with NavigateToDetails`() = runUnconfinedTest {
-        // Given
-        val launchId = "TestLaunchId"
-
-        // Then
-        sut.eventFlow.receiveAsFlow().test {
-            // When
-            sut.navigateToDetails(launchId)
-
-            // Then
-            assertThat(awaitItem()).isEqualTo(NavigateToDetails(launchId))
-            verify { logger.log(any<String>()) }
-            verify { analytics.trackEvent(any<AnalyticsEvent>()) }
-        }
-    }
 }

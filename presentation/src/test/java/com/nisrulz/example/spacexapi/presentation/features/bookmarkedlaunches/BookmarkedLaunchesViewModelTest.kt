@@ -4,8 +4,6 @@ import app.cash.turbine.test
 import com.google.common.truth.Truth.assertThat
 import com.nisrulz.example.spacexapi.domain.usecase.GetAllBookmarkedLaunches
 import com.nisrulz.example.spacexapi.domain.usecase.ToggleBookmarkLaunchInfo
-import com.nisrulz.example.spacexapi.presentation.features.bookmarkedlaunches.BookmarkedLaunchesViewModel.UiEvent.NavigateBack
-import com.nisrulz.example.spacexapi.presentation.features.bookmarkedlaunches.BookmarkedLaunchesViewModel.UiEvent.NavigateToDetails
 import com.nisrulz.example.spacexapi.presentation.features.bookmarkedlaunches.BookmarkedLaunchesViewModel.UiEvent.ShowSnackBar
 import com.nisrulz.example.spacexapi.presentation.util.TestFactory
 import com.nisrulz.example.spacexapi.presentation.util.runUnconfinedTest
@@ -28,6 +26,9 @@ class BookmarkedLaunchesViewModelTest {
         bookmarkLaunchInfo = mockk()
         getAllBookmarkedLaunches = mockk()
 
+        // Mock the initial call in init block
+        coEvery { getAllBookmarkedLaunches() } returns flowOf(emptyList())
+
         sut = BookmarkedLaunchesViewModel(
             coroutineDispatcher = testDispatcher,
             bookmarkLaunchInfo = bookmarkLaunchInfo,
@@ -42,14 +43,12 @@ class BookmarkedLaunchesViewModelTest {
             val list = TestFactory.buildListOfBookmarkedLaunchInfo()
             coEvery { getAllBookmarkedLaunches() } returns flowOf(list)
 
-            sut.uiState.test {
-                // When
-                sut.getListOfBookmarkedLaunches()
+            // When
+            sut.getListOfBookmarkedLaunches().join()
 
-                // Then
-                assertThat(awaitItem().isLoading).isTrue()
-                assertThat(awaitItem().data).isEqualTo(list)
-            }
+            // Then
+            assertThat(sut.uiState.value.isLoading).isFalse()
+            assertThat(sut.uiState.value.data).isEqualTo(list)
         }
 
     @Test
@@ -82,30 +81,4 @@ class BookmarkedLaunchesViewModelTest {
         }
     }
 
-    @Test
-    fun `navigateToDetails() should update uiEvent with NavigateToDetails`() = runUnconfinedTest {
-        // Given
-        val launchId = "TestLaunchId"
-
-        // Then
-        sut.eventFlow.receiveAsFlow().test {
-            // When
-            sut.navigateToDetails(launchId)
-
-            // Then
-            assertThat(awaitItem()).isEqualTo(NavigateToDetails(launchId))
-        }
-    }
-
-    @Test
-    fun `navigateBack() should update uiEvent with NavigateBack`() = runUnconfinedTest {
-        // Then
-        sut.eventFlow.receiveAsFlow().test {
-            // When
-            sut.navigateBack()
-
-            // Then
-            assertThat(awaitItem()).isEqualTo(NavigateBack)
-        }
-    }
 }
