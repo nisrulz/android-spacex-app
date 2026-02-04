@@ -34,7 +34,7 @@ compose-bom = "2026.01.01"
 
 
 #region ---- Hilt
-hilt = "2.59"
+hilt = "2.59.1"
 hiltNavigation = "1.3.0"
 hiltExt = "1.3.0"
 #endregion
