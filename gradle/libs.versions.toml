@@ -13,7 +13,7 @@ androidTools = "32.0.0"
 core-ktx = "1.17.0"
 lifecycleVer = "2.10.0"
 appcompat = "1.7.1"
-navigation3 = "1.0.0"
+navigation3 = "1.0.1"
 #endregion
 
 # Logs
