@@ -29,7 +29,7 @@ kotlinxSerializationJson = "1.10.0"
 
 #region ---- Jetpack Compose
 activity-compose = "1.12.4"
-compose-bom = "2026.01.01"
+compose-bom = "2026.02.00"
 #endregion
 
 
