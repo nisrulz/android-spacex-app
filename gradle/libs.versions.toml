@@ -2,15 +2,15 @@
 
 #region ---- Kotlin version dependent
 # https://github.com/JetBrains/kotlin/releases
-kotlin = "2.3.10"
+kotlin = "2.3.20"
 # https://github.com/google/ksp/releases
 ksp = "2.3.6"
 #endregion
 
 #region ---- Android Core
-agp = "9.0.1"
-androidTools = "32.0.0"
-core-ktx = "1.17.0"
+agp = "9.1.0"
+androidTools = "32.1.0"
+core-ktx = "1.18.0"
 lifecycleVer = "2.10.0"
 appcompat = "1.7.1"
 navigation3 = "1.0.1"
@@ -28,8 +28,8 @@ kotlinxSerializationJson = "1.10.0"
 #endregion
 
 #region ---- Jetpack Compose
-activity-compose = "1.12.4"
-compose-bom = "2026.02.00"
+activity-compose = "1.13.0"
+compose-bom = "2026.03.01"
 #endregion
 
 
