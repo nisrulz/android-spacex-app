@@ -75,11 +75,5 @@ gradlePlugin {
             implementationClass =
                 "com.nisrulz.example.spacexapi.AndroidComposeConventionPlugin"
         }
-
-        register("androidComposeNav") {
-            id = "spacexapi.android.compose.navigation"
-            implementationClass =
-                "com.nisrulz.example.spacexapi.AndroidComposeNavigationConventionPlugin"
-        }
     }
 }
