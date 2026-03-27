@@ -2,9 +2,11 @@ package com.nisrulz.example.spacexapi.ktx
 
 
 import com.android.build.api.variant.AndroidComponentsExtension
+import com.android.build.gradle.internal.tasks.factory.dependsOn
 import org.gradle.api.Project
 import org.gradle.api.tasks.testing.Test
 import org.gradle.kotlin.dsl.configure
+import org.gradle.kotlin.dsl.register
 import org.gradle.kotlin.dsl.withType
 import org.gradle.testing.jacoco.plugins.JacocoPluginExtension
 import org.gradle.testing.jacoco.plugins.JacocoTaskExtension
@@ -61,7 +63,7 @@ internal fun Project.configureJacoco() {
     configure<JacocoPluginExtension> {
         toolVersion = catalogVersion("jacoco")
     }
-    val jacocoTestReport = tasks.create("jacocoTestReport") {
+    val jacocoTestReport = tasks.register<JacocoReport>("jacocoTestReport") {
         group = "reporting"
     }
 

@@ -15,7 +15,7 @@ android {
 
     sourceSets {
         named("test") {
-            resources.srcDirs("src/test/resources")
+            resources.directories.add("src/test/resources")
         }
     }
 }
