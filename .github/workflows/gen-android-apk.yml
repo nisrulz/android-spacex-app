@@ -43,7 +43,7 @@ jobs:
 
       - name: Create Github Release
         env:
-          GH_TOKEN: ${{ github.token }}
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           tag: ${{ github.ref_name }}
         run: |
           gh release create "$tag" \
@@ -53,7 +53,7 @@ jobs:
 
       - name: Upload Debug APK to Github Release
         env:
-          GH_TOKEN: ${{ github.token }}
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           tag: ${{ github.ref_name }}
         run: |
           gh release upload "$tag" ./app/build/outputs/apk/debug/app-debug.apk --clobber
