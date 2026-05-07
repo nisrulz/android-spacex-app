@@ -49,6 +49,9 @@ fun LaunchDetailScreen(
             LaunchDetailSuccessComponent(
                 state = state,
                 snackbarHostState = snackbarHostState,
+                bookmark = {
+                    viewModel.bookmark(data)
+                },
                 navigateBack = {
                     // Analytics
                     viewModel.trackOnBack()
