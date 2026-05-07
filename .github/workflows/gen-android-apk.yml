@@ -8,6 +8,7 @@ on:
   push:
     tags:
       - "v*"
+
 concurrency:
   # Limit concurrency to 1 for PRs. 'main' concurrency isn't limited.
   group: ${{ github.workflow }}-${{ github.head_ref || github.run_id }}
@@ -16,14 +17,15 @@ concurrency:
 jobs:
   build:
     runs-on: ubuntu-latest
+    permissions:
+      contents: write
 
     steps:
       - name: Checkout code at the latest commit in branch
         id: checkout-code
         uses: actions/checkout@v6
         with:
-          ref: ${{ github.head_ref }}
-          fetch-depth: 0
+          fetch-depth: 1
 
       - name: Setup and validate gradle wrapper
         # Will automatically perform wrapper validation on each execution.
@@ -36,39 +38,14 @@ jobs:
           java-version: "17"
           cache: "gradle"
 
-      - name: Cache Gradle and wrapper
-        uses: actions/cache@v5
-        with:
-          path: |
-            ~/.gradle/caches
-            ~/.gradle/wrapper
-          key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle*') }}
-
-      - name: Cache dependencies
-        uses: actions/cache@v5
-        with:
-          path: |
-            ~/.gradle/caches/modules-2
-            ~/.gradle/caches/jars-3
-          key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle*', '**/gradle-wrapper.properties') }}
-          restore-keys: |
-            ${{ runner.os }}-gradle-
-
-      - name: Run tests
-        run: ./gradlew test
-
-      - name: Build project
-        run: ./gradlew build
-
-      - name: Build Debug APK
-        run: ./gradlew assembleDebug
+      - name: Run tests and build Debug APK
+        run: ./gradlew test assembleDebug
 
       - name: Create Github Release
         env:
-          GH_PAT: ${{ secrets.GH_PAT }}
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           tag: ${{ github.ref_name }}
         run: |
-          gh auth login --with-token <<< "$GH_PAT"
           gh release create "$tag" \
           --repo="$GITHUB_REPOSITORY" \
           --title="$tag" \
@@ -76,8 +53,7 @@ jobs:
 
       - name: Upload Debug APK to Github Release
         env:
-          GH_PAT: ${{ secrets.GH_PAT }}
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           tag: ${{ github.ref_name }}
         run: |
-          gh auth login --with-token <<< "$GH_PAT"
           gh release upload "$tag" ./app/build/outputs/apk/debug/app-debug.apk --clobber
