@@ -19,16 +19,18 @@ class LaunchesRepositoryImpl(
 ) : LaunchesRepository {
     override suspend fun getListOfLaunches(): Flow<List<LaunchInfo>> {
         if (networkUtils.isInternetAvailable()) {
-            val localBookmarkedLaunches = getAllBookmarked().first()
+            runCatching {
+                val localBookmarkedLaunches = getAllBookmarked().first()
 
-            val apiResponse = remoteDataSource.getAllLaunches()
+                val apiResponse = remoteDataSource.getAllLaunches()
 
-            if (apiResponse.isNotEmpty()) {
-                localDataSource.deleteAll()
-                localDataSource.insertAll(apiResponse.toEntityList())
+                if (apiResponse.isNotEmpty()) {
+                    localDataSource.deleteAll()
+                    localDataSource.insertAll(apiResponse.toEntityList())
 
-                localBookmarkedLaunches.forEach { bookmarked ->
-                    setBookmark(bookmarked.id, bookmarked.isBookmarked)
+                    localBookmarkedLaunches.forEach { bookmarked ->
+                        setBookmark(bookmarked.id, bookmarked.isBookmarked)
+                    }
                 }
             }
         }

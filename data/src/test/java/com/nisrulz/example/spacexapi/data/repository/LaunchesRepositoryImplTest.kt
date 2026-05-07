@@ -11,6 +11,7 @@ import io.mockk.coEvery
 import io.mockk.coVerify
 import io.mockk.every
 import io.mockk.mockk
+import java.io.IOException
 import kotlinx.coroutines.flow.flowOf
 import org.junit.Before
 import org.junit.Test
@@ -152,5 +153,27 @@ class LaunchesRepositoryImplTest {
 
             coVerify(exactly = 0) { api.getAllLaunches() }
             coVerify(exactly = 1) { dao.getAll() }
+        }
+
+    @Test
+    fun `getListOfLaunches() falls back to local storage when refresh fails`() =
+        runUnconfinedTest {
+            // Given
+            coEvery { api.getAllLaunches() } throws IOException("network down")
+            coEvery { dao.getAllBookmarked() } returns flowOf(emptyList())
+            coEvery { dao.getAll() } returns flowOf(TestFactory.buildListOfLaunchInfoEntity())
+            val expected = TestFactory.buildListOfLaunchInfo()
+
+            // When
+            val resultFlow = sut.getListOfLaunches()
+
+            // Then
+            resultFlow.collect {
+                assertThat(it).isEqualTo(expected)
+            }
+
+            coVerify(exactly = 1) { api.getAllLaunches() }
+            coVerify(exactly = 1) { dao.getAll() }
+            coVerify(exactly = 0) { dao.deleteAll() }
         }
 }
