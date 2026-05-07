@@ -9,8 +9,10 @@ import com.nisrulz.example.spacexapi.domain.usecase.ToggleBookmarkLaunchInfo
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 import kotlinx.coroutines.CoroutineDispatcher
-import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.MutableSharedFlow
+import kotlinx.coroutines.flow.SharedFlow
+import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.onEach
@@ -28,15 +30,8 @@ constructor(
     var uiState: MutableStateFlow<UiState> = MutableStateFlow(UiState(isLoading = true))
         private set
 
-    /*
-     A CONFLATED channel is a type of channel that only preserves the latest value.
-     When a new value is sent to the channel, if the previous value has not been consumed yet,
-     it will be discarded and replaced with the new value.
-     This behavior can be useful in certain scenarios where one only care about the latest
-     value and don't want to process outdated values.
-     */
-    var eventFlow: Channel<UiEvent> = Channel(Channel.CONFLATED)
-        private set
+    private val _eventFlow = MutableSharedFlow<UiEvent>(extraBufferCapacity = 1)
+    val eventFlow: SharedFlow<UiEvent> = _eventFlow.asSharedFlow()
 
     init {
         // Fetch data when ViewModel is created
@@ -59,8 +54,8 @@ constructor(
 
     private fun stopLoading() = uiState.update { it.copy(isLoading = false) }
     private fun setError(message: String) {
-        uiState.update { it.copy(error = message) }
         stopLoading()
+        sendEvent(UiEvent.ShowSnackBar(message))
     }
 
     private fun handleListOfLaunches(list: List<LaunchInfo>) {
@@ -68,10 +63,8 @@ constructor(
         stopLoading()
     }
 
-    fun showError(message: String) = sendEvent(UiEvent.ShowSnackBar(message))
-
     private fun sendEvent(uiEvent: UiEvent) = viewModelScope.launch(coroutineDispatcher) {
-        eventFlow.send(uiEvent)
+        _eventFlow.emit(uiEvent)
     }
 
     sealed interface UiEvent {
@@ -80,7 +73,6 @@ constructor(
 
     data class UiState(
         val isLoading: Boolean = false,
-        val error: String = "",
         val data: List<LaunchInfo> = emptyList()
     )
 }

@@ -12,7 +12,6 @@ import io.mockk.coEvery
 import io.mockk.coVerify
 import io.mockk.mockk
 import kotlinx.coroutines.flow.flowOf
-import kotlinx.coroutines.flow.receiveAsFlow
 import org.junit.Before
 import org.junit.Test
 
@@ -72,9 +71,11 @@ class BookmarkedLaunchesViewModelTest {
         val message = "Test Error Message"
 
         // Then
-        sut.eventFlow.receiveAsFlow().test {
+        sut.eventFlow.test {
             // When
-            sut.showError(message)
+            val setError = BookmarkedLaunchesViewModel::class.java.getDeclaredMethod("setError", String::class.java)
+            setError.isAccessible = true
+            setError.invoke(sut, message)
 
             // Then
             assertThat(awaitItem()).isEqualTo(ShowSnackBar(message))

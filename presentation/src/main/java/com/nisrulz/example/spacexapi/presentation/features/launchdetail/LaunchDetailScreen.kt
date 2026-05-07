@@ -13,7 +13,6 @@ import com.nisrulz.example.spacexapi.presentation.features.components.EmptyCompo
 import com.nisrulz.example.spacexapi.presentation.features.components.LoadingComponent
 import com.nisrulz.example.spacexapi.presentation.features.launchdetail.LaunchDetailViewModel.UiEvent.ShowSnackBar
 import kotlinx.coroutines.flow.collectLatest
-import kotlinx.coroutines.flow.receiveAsFlow
 
 @Composable
 fun LaunchDetailScreen(
@@ -28,7 +27,7 @@ fun LaunchDetailScreen(
         // Fetch data for this specific launch
         viewModel.getLaunchInfoDetails(launchId)
 
-        viewModel.eventFlow.receiveAsFlow().collectLatest {
+        viewModel.eventFlow.collectLatest {
             when (it) {
                 is ShowSnackBar -> {
                     snackbarHostState.showSnackbar(message = it.message)
@@ -38,7 +37,6 @@ fun LaunchDetailScreen(
     }
 
     with(state) {
-        if (error.isNotEmpty()) viewModel.showError(error)
         if (isLoading) {
             LoadingComponent()
         } else if (data == null) {
