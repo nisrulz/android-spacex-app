@@ -9,7 +9,16 @@ export PATH="$PATH":"$HOME/.maestro/bin"
 
 export APP_ID="com.nisrulz.example.spacexapi"
 
+set +e
 maestro test -e APP_ID=$APP_ID .maestro/ --format junit
+test_exit_code=$?
+set -e
 
 # Process results
-python3 ./scripts/process_maestro_results.py
+if [[ -f report.xml ]]; then
+  python3 ./scripts/process_maestro_results.py
+else
+  echo "Maestro tests did not produce a report." > test_results.txt
+fi
+
+exit $test_exit_code

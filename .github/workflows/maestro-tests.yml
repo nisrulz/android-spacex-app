@@ -44,7 +44,6 @@ jobs:
       - name: Setup and validate gradle wrapper
         # Will automatically perform wrapper validation on each execution.
         uses: gradle/actions/setup-gradle@v6
-        continue-on-error: true
         timeout-minutes: 5
 
       - name: Set Up JDK
@@ -85,7 +84,7 @@ jobs:
 
       - name: Create comment with test results
         uses: actions/github-script@v9
-        if: always() && github.event_name == 'pull_request'
+        if: always() && github.event_name == 'pull_request' && hashFiles('test_results.txt') != ''
         with:
           script: |
             const fs = require('fs');
