@@ -15,6 +15,8 @@ import io.mockk.every
 import io.mockk.just
 import io.mockk.mockk
 import io.mockk.runs
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.flow.receiveAsFlow
 import org.junit.Before
 import org.junit.Test
@@ -44,7 +46,7 @@ class LaunchDetailViewModelTest {
         // Given
         val launchId = "TestLaunchId"
         val expected = TestFactory.buildLaunchInfo()
-        coEvery { getLaunchDetail(launchId) } returns expected
+        every { getLaunchDetail(launchId) } returns flowOf(expected)
 
         // When
         sut.getLaunchInfoDetails(launchId).join()
@@ -67,6 +69,22 @@ class LaunchDetailViewModelTest {
         coVerify {
             bookmarkLaunchInfo(launchInfo)
         }
+    }
+
+    @Test
+    fun `getLaunchInfoDetails() should reactively update uiState when launch changes`() = runUnconfinedTest {
+        // Given
+        val launchId = "TestLaunchId"
+        val launchFlow = MutableStateFlow(TestFactory.buildLaunchInfo())
+        every { getLaunchDetail(launchId) } returns launchFlow
+
+        // When
+        val job = sut.getLaunchInfoDetails(launchId)
+        launchFlow.value = launchFlow.value.copy(isBookmarked = true)
+
+        // Then
+        assertThat(sut.uiState.value.data?.isBookmarked).isTrue()
+        job.cancel()
     }
 
     @Test

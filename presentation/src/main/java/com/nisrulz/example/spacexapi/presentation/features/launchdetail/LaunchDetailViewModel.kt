@@ -14,6 +14,9 @@ import javax.inject.Inject
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.catch
+import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
@@ -33,17 +36,23 @@ constructor(
         private set
 
     fun getLaunchInfoDetails(launchId: String?) = viewModelScope.launch(coroutineDispatcher) {
-        stopLoading()
         if (launchId.isNullOrBlank()) {
             setError("No Data")
+            stopLoading()
         } else {
             trackScreenEntered()
-            update(getLaunchDetail(launchId))
+            getLaunchDetail(launchId)
+                .onEach {
+                    update(it)
+                    stopLoading()
+                }.catch {
+                    setError(it.message ?: "Error")
+                    stopLoading()
+                }.collect()
         }
     }
 
     fun bookmark(launchInfo: LaunchInfo) {
-        update(launchInfo)
         viewModelScope.launch(coroutineDispatcher) {
             bookmarkLaunchInfo(launchInfo)
         }
