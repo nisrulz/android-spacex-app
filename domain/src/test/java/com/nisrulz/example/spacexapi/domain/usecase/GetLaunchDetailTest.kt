@@ -4,8 +4,9 @@ import com.google.common.truth.Truth.assertThat
 import com.nisrulz.example.spacexapi.domain.repository.LaunchesRepository
 import com.nisrulz.example.spacexapi.domain.util.TestFactory
 import com.nisrulz.example.spacexapi.domain.util.runUnconfinedTest
-import io.mockk.coEvery
+import io.mockk.every
 import io.mockk.mockk
+import kotlinx.coroutines.flow.flowOf
 import org.junit.Before
 import org.junit.Test
 
@@ -24,12 +25,14 @@ class GetLaunchDetailTest {
         runUnconfinedTest {
             // Given
             val launchInfo = TestFactory.buildLaunchInfo()
-            coEvery { repository.getLaunchDetail(launchInfo.id) } returns launchInfo
+            every { repository.getLaunchDetail(launchInfo.id) } returns flowOf(launchInfo)
 
             // When
             val result = getLaunchDetail(launchInfo.id)
 
             // Then
-            assertThat(result).isEqualTo(launchInfo)
+            result.collect {
+                assertThat(it).isEqualTo(launchInfo)
+            }
         }
 }

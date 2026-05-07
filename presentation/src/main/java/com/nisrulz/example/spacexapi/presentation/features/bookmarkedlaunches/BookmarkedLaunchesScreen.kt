@@ -13,7 +13,6 @@ import com.nisrulz.example.spacexapi.common.contract.utils.SingleValueCallback
 import com.nisrulz.example.spacexapi.presentation.features.components.EmptyComponent
 import com.nisrulz.example.spacexapi.presentation.features.components.LoadingComponent
 import kotlinx.coroutines.flow.collectLatest
-import kotlinx.coroutines.flow.receiveAsFlow
 
 @SuppressLint("VisibleForTests")
 @Composable
@@ -26,8 +25,7 @@ fun BookmarkedLaunchesScreen(
     val state by viewModel.uiState.collectAsStateWithLifecycle()
 
     LaunchedEffect(viewModel) {
-
-        viewModel.eventFlow.receiveAsFlow().collectLatest { event ->
+        viewModel.eventFlow.collectLatest { event ->
             when (event) {
                 is BookmarkedLaunchesViewModel.UiEvent.ShowSnackBar -> {
                     snackbarHostState.showSnackbar(
@@ -39,7 +37,6 @@ fun BookmarkedLaunchesScreen(
     }
 
     with(state) {
-        if (error.isNotEmpty()) viewModel.showError(error)
         if (isLoading) {
             LoadingComponent()
         } else if (data.isEmpty()) {

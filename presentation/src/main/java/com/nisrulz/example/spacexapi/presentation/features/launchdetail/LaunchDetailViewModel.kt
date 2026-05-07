@@ -12,8 +12,13 @@ import com.nisrulz.example.spacexapi.presentation.features.launchdetail.LaunchDe
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 import kotlinx.coroutines.CoroutineDispatcher
-import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.MutableSharedFlow
+import kotlinx.coroutines.flow.SharedFlow
+import kotlinx.coroutines.flow.asSharedFlow
+import kotlinx.coroutines.flow.catch
+import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
@@ -29,42 +34,47 @@ constructor(
     var uiState: MutableStateFlow<UiState> = MutableStateFlow(UiState(isLoading = true))
         private set
 
-    var eventFlow: Channel<UiEvent> = Channel(Channel.CONFLATED)
-        private set
+    private val _eventFlow = MutableSharedFlow<UiEvent>(extraBufferCapacity = 1)
+    val eventFlow: SharedFlow<UiEvent> = _eventFlow.asSharedFlow()
 
     fun getLaunchInfoDetails(launchId: String?) = viewModelScope.launch(coroutineDispatcher) {
-        stopLoading()
         if (launchId.isNullOrBlank()) {
             setError("No Data")
+            stopLoading()
         } else {
             trackScreenEntered()
-            update(getLaunchDetail(launchId))
+            getLaunchDetail(launchId)
+                .onEach {
+                    update(it)
+                    stopLoading()
+                }.catch {
+                    setError(it.message ?: "Error")
+                    stopLoading()
+                }.collect()
         }
     }
 
     fun bookmark(launchInfo: LaunchInfo) {
-        update(launchInfo)
         viewModelScope.launch(coroutineDispatcher) {
             bookmarkLaunchInfo(launchInfo)
         }
     }
 
-    fun showError(message: String) = viewModelScope.launch(coroutineDispatcher) {
-        eventFlow.send(ShowSnackBar(message))
-    }
-
     private fun update(launchInfo: LaunchInfo?) = uiState.update { it.copy(data = launchInfo) }
 
-    private fun setError(message: String) = uiState.update { it.copy(error = message) }
+    private fun setError(message: String) = sendEvent(ShowSnackBar(message))
 
     private fun stopLoading() = uiState.update { it.copy(isLoading = false) }
+
+    private fun sendEvent(uiEvent: UiEvent) = viewModelScope.launch(coroutineDispatcher) {
+        _eventFlow.emit(uiEvent)
+    }
 
     fun trackScreenEntered() = analytics.trackScreenLaunchDetail()
     fun trackOnBack() = analytics.trackNavigateToListOfLaunches()
 
     data class UiState(
         val isLoading: Boolean = false,
-        val error: String = "",
         val data: LaunchInfo? = null
     )
 

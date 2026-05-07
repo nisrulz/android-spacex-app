@@ -15,7 +15,8 @@ import io.mockk.every
 import io.mockk.just
 import io.mockk.mockk
 import io.mockk.runs
-import kotlinx.coroutines.flow.receiveAsFlow
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.flowOf
 import org.junit.Before
 import org.junit.Test
 
@@ -44,7 +45,7 @@ class LaunchDetailViewModelTest {
         // Given
         val launchId = "TestLaunchId"
         val expected = TestFactory.buildLaunchInfo()
-        coEvery { getLaunchDetail(launchId) } returns expected
+        every { getLaunchDetail(launchId) } returns flowOf(expected)
 
         // When
         sut.getLaunchInfoDetails(launchId).join()
@@ -70,14 +71,32 @@ class LaunchDetailViewModelTest {
     }
 
     @Test
+    fun `getLaunchInfoDetails() should reactively update uiState when launch changes`() = runUnconfinedTest {
+        // Given
+        val launchId = "TestLaunchId"
+        val launchFlow = MutableStateFlow(TestFactory.buildLaunchInfo())
+        every { getLaunchDetail(launchId) } returns launchFlow
+
+        // When
+        val job = sut.getLaunchInfoDetails(launchId)
+        launchFlow.value = launchFlow.value.copy(isBookmarked = true)
+
+        // Then
+        assertThat(sut.uiState.value.data?.isBookmarked).isTrue()
+        job.cancel()
+    }
+
+    @Test
     fun `showError() should update uiEvent with ShowSnackBar`() = runUnconfinedTest {
         // Given
         val message = "Test Error Message"
 
         // Then
-        sut.eventFlow.receiveAsFlow().test {
+        sut.eventFlow.test {
             // When
-            sut.showError(message)
+            val setError = LaunchDetailViewModel::class.java.getDeclaredMethod("setError", String::class.java)
+            setError.isAccessible = true
+            setError.invoke(sut, message)
 
             // Then
             assertThat(awaitItem()).isEqualTo(ShowSnackBar(message))

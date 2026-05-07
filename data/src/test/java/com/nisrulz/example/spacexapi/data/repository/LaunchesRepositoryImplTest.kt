@@ -2,6 +2,7 @@ package com.nisrulz.example.spacexapi.data.repository
 
 import com.google.common.truth.Truth.assertThat
 import com.nisrulz.example.spacexapi.common.contract.utils.NetworkUtils
+import com.nisrulz.example.spacexapi.data.mapper.toEntityList
 import com.nisrulz.example.spacexapi.data.util.TestFactory
 import com.nisrulz.example.spacexapi.data.util.runUnconfinedTest
 import com.nisrulz.example.spacexapi.domain.repository.LaunchesRepository
@@ -11,6 +12,7 @@ import io.mockk.coEvery
 import io.mockk.coVerify
 import io.mockk.every
 import io.mockk.mockk
+import java.io.IOException
 import kotlinx.coroutines.flow.flowOf
 import org.junit.Before
 import org.junit.Test
@@ -36,9 +38,7 @@ class LaunchesRepositoryImplTest {
     fun `getListOfLaunches() returns a list of LaunchInfo on success`() = runUnconfinedTest {
         // Given
         coEvery { api.getAllLaunches() } returns TestFactory.buildListOfLaunchInfoResponse()
-        coEvery { dao.deleteAll() } returns Unit
-        coEvery { dao.getAllBookmarked() } returns flowOf(emptyList())
-        coEvery { dao.insertAll(any()) } returns Unit
+        coEvery { dao.replaceAllPreservingBookmarks(any()) } returns Unit
         coEvery { dao.getAll() } returns flowOf(TestFactory.buildListOfLaunchInfoEntity())
         val expected = TestFactory.buildListOfLaunchInfo()
 
@@ -56,9 +56,7 @@ class LaunchesRepositoryImplTest {
         runUnconfinedTest {
             // Given
             coEvery { api.getAllLaunches() } returns TestFactory.buildListOfLaunchInfoResponse()
-            coEvery { dao.deleteAll() } returns Unit
-            coEvery { dao.getAllBookmarked() } returns flowOf(emptyList())
-            coEvery { dao.insertAll(any()) } returns Unit
+            coEvery { dao.replaceAllPreservingBookmarks(any()) } returns Unit
             coEvery { dao.getAll() } returns flowOf(emptyList())
 
             // When
@@ -107,27 +105,31 @@ class LaunchesRepositoryImplTest {
     fun `getLaunchDetail() returns a valid LaunchInfo for id on success`() = runUnconfinedTest {
         // Given
         val id = TestFactory.buildLaunchInfoEntity().id
-        coEvery { dao.getById(any()) } returns TestFactory.buildLaunchInfoEntity()
+        every { dao.observeById(any()) } returns flowOf(TestFactory.buildLaunchInfoEntity())
         val expected = TestFactory.buildLaunchInfo()
 
         // When
-        val result = sut.getLaunchDetail(id)
+        val resultFlow = sut.getLaunchDetail(id)
 
         // Then
-        assertThat(result).isEqualTo(expected)
+        resultFlow.collect {
+            assertThat(it).isEqualTo(expected)
+        }
     }
 
     @Test
     fun `getLaunchDetail() returns null when item with id cannot be found`() = runUnconfinedTest {
         // Given
         val id = TestFactory.buildLaunchInfoEntity().id
-        coEvery { dao.getById(any()) } returns null
+        every { dao.observeById(any()) } returns flowOf(null)
 
         // When
-        val result = sut.getLaunchDetail(id)
+        val resultFlow = sut.getLaunchDetail(id)
 
         // Then
-        assertThat(result).isEqualTo(null)
+        resultFlow.collect {
+            assertThat(it).isNull()
+        }
     }
 
     @Test
@@ -148,5 +150,44 @@ class LaunchesRepositoryImplTest {
 
             coVerify(exactly = 0) { api.getAllLaunches() }
             coVerify(exactly = 1) { dao.getAll() }
+        }
+
+    @Test
+    fun `getListOfLaunches() falls back to local storage when refresh fails`() =
+        runUnconfinedTest {
+            // Given
+            coEvery { api.getAllLaunches() } throws IOException("network down")
+            coEvery { dao.getAll() } returns flowOf(TestFactory.buildListOfLaunchInfoEntity())
+            val expected = TestFactory.buildListOfLaunchInfo()
+
+            // When
+            val resultFlow = sut.getListOfLaunches()
+
+            // Then
+            resultFlow.collect {
+                assertThat(it).isEqualTo(expected)
+            }
+
+            coVerify(exactly = 1) { api.getAllLaunches() }
+            coVerify(exactly = 1) { dao.getAll() }
+            coVerify(exactly = 0) { dao.replaceAllPreservingBookmarks(any()) }
+        }
+
+    @Test
+    fun `getListOfLaunches() replaces local data while preserving bookmarks atomically`() =
+        runUnconfinedTest {
+            // Given
+            val apiResponse = TestFactory.buildListOfLaunchInfoResponse()
+            coEvery { api.getAllLaunches() } returns apiResponse
+            coEvery { dao.replaceAllPreservingBookmarks(any()) } returns Unit
+            coEvery { dao.getAll() } returns flowOf(TestFactory.buildListOfLaunchInfoEntity())
+
+            // When
+            sut.getListOfLaunches().collect { }
+
+            // Then
+            coVerify(exactly = 1) {
+                dao.replaceAllPreservingBookmarks(apiResponse.toEntityList())
+            }
         }
 }

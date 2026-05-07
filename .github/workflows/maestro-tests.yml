@@ -13,7 +13,7 @@ on:
 
 concurrency:
   # Limit concurrency to 1 for PRs. 'main' concurrency isn't limited.
-  group: ${{ github.head_ref || github.run_id }}
+  group: ${{ github.workflow }}-${{ github.head_ref || github.run_id }}
   cancel-in-progress: true
 
 jobs:
@@ -22,7 +22,6 @@ jobs:
     permissions: # Specify the required permissions
       issues: write # For writing comments on issues and pull requests
       pull-requests: write # For interacting with pull request data
-    if: github.actor == 'dependabot[bot]'
     steps:
       - name: Checkout code at the latest commit in branch
         id: checkout-code
@@ -85,7 +84,7 @@ jobs:
 
       - name: Create comment with test results
         uses: actions/github-script@v9
-        if: always()
+        if: always() && github.event_name == 'pull_request'
         with:
           script: |
             const fs = require('fs');

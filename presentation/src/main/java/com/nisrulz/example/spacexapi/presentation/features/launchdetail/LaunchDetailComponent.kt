@@ -40,6 +40,7 @@ fun LaunchDetailSuccessComponent(
     modifier: Modifier = Modifier,
     snackbarHostState: SnackbarHostState,
     state: LaunchDetailViewModel.UiState,
+    bookmark: EmptyCallback = {},
     navigateBack: EmptyCallback = {}
 ) {
     Box(
@@ -55,6 +56,10 @@ fun LaunchDetailSuccessComponent(
                     leftNavButtonIcon = R.drawable.back,
                     leftNavButtonAction = {
                         navigateBack()
+                    },
+                    rightNavButtonIcon = if (isBookmarked) R.drawable.bookmark else R.drawable.not_bookmarked,
+                    rightNavButtonAction = {
+                        bookmark()
                     }
                 )
 
