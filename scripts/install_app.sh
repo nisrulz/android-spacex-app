@@ -7,5 +7,5 @@ adb wait-for-device shell 'while [[ -z $(getprop sys.boot_completed) ]]; do slee
 
 echo "✅ Emulator active now"
 
-# Install APK
-./gradlew installDebug
+# Install prebuilt APK
+adb install -r app/build/outputs/apk/debug/app-debug.apk

@@ -28,7 +28,7 @@ jobs:
         uses: actions/checkout@v6
         with:
           ref: ${{ github.head_ref }}
-          fetch-depth: 0
+          fetch-depth: 1
 
       - name: Setup and validate gradle wrapper
         # Will automatically perform wrapper validation on each execution.
@@ -43,24 +43,8 @@ jobs:
           java-version: "17"
           cache: "gradle"
 
-      - name: Cache Gradle and wrapper
-        uses: actions/cache@v5
-        with:
-          path: |
-            ~/.gradle/caches
-            ~/.gradle/wrapper
-          key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle*') }}
-          restore-keys: |
-            ${{ runner.os }}-gradle-
-
-      - name: Cache dependencies
-        uses: actions/cache@v5
-        with:
-          path: |
-            ~/.m2
-          key: ${{ runner.os }}-m2-${{ hashFiles('**/pom.xml') }}
-          restore-keys: |
-            ${{ runner.os }}-m2
+      - name: Build debug APK before starting emulator
+        run: ./gradlew assembleDebug
 
       - name: Enable KVM group perms
         run: |
