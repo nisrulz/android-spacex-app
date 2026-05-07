@@ -16,6 +16,8 @@ interface LocalDataSource {
 
     suspend fun insertAll(listOfLaunchInfoEntities: List<LaunchInfoEntity>)
 
+    suspend fun replaceAllPreservingBookmarks(listOfLaunchInfoEntities: List<LaunchInfoEntity>)
+
     suspend fun update(launchInfoEntity: LaunchInfoEntity)
 
     suspend fun delete(launchInfoEntity: LaunchInfoEntity)

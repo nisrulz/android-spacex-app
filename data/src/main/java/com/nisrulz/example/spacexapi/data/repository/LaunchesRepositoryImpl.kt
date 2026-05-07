@@ -9,7 +9,6 @@ import com.nisrulz.example.spacexapi.domain.repository.LaunchesRepository
 import com.nisrulz.example.spacexapi.network.retrofit.RemoteDataSource
 import com.nisrulz.example.spacexapi.storage.roomdb.LocalDataSource
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.map
 
 class LaunchesRepositoryImpl(
@@ -20,17 +19,10 @@ class LaunchesRepositoryImpl(
     override suspend fun getListOfLaunches(): Flow<List<LaunchInfo>> {
         if (networkUtils.isInternetAvailable()) {
             runCatching {
-                val localBookmarkedLaunches = getAllBookmarked().first()
-
                 val apiResponse = remoteDataSource.getAllLaunches()
 
                 if (apiResponse.isNotEmpty()) {
-                    localDataSource.deleteAll()
-                    localDataSource.insertAll(apiResponse.toEntityList())
-
-                    localBookmarkedLaunches.forEach { bookmarked ->
-                        setBookmark(bookmarked.id, bookmarked.isBookmarked)
-                    }
+                    localDataSource.replaceAllPreservingBookmarks(apiResponse.toEntityList())
                 }
             }
         }
