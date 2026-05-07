@@ -8,5 +8,5 @@ class GetLaunchDetail
     constructor(
         private val repository: LaunchesRepository,
     ) {
-        suspend operator fun invoke(id: String) = repository.getLaunchDetail(id)
+        operator fun invoke(id: String) = repository.getLaunchDetail(id)
     }

@@ -107,27 +107,31 @@ class LaunchesRepositoryImplTest {
     fun `getLaunchDetail() returns a valid LaunchInfo for id on success`() = runUnconfinedTest {
         // Given
         val id = TestFactory.buildLaunchInfoEntity().id
-        coEvery { dao.getById(any()) } returns TestFactory.buildLaunchInfoEntity()
+        every { dao.observeById(any()) } returns flowOf(TestFactory.buildLaunchInfoEntity())
         val expected = TestFactory.buildLaunchInfo()
 
         // When
-        val result = sut.getLaunchDetail(id)
+        val resultFlow = sut.getLaunchDetail(id)
 
         // Then
-        assertThat(result).isEqualTo(expected)
+        resultFlow.collect {
+            assertThat(it).isEqualTo(expected)
+        }
     }
 
     @Test
     fun `getLaunchDetail() returns null when item with id cannot be found`() = runUnconfinedTest {
         // Given
         val id = TestFactory.buildLaunchInfoEntity().id
-        coEvery { dao.getById(any()) } returns null
+        every { dao.observeById(any()) } returns flowOf(null)
 
         // When
-        val result = sut.getLaunchDetail(id)
+        val resultFlow = sut.getLaunchDetail(id)
 
         // Then
-        assertThat(result).isEqualTo(null)
+        resultFlow.collect {
+            assertThat(it).isNull()
+        }
     }
 
     @Test

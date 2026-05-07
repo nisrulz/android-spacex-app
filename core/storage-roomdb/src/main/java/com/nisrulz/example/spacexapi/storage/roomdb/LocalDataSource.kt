@@ -8,6 +8,8 @@ interface LocalDataSource {
 
     fun getAllBookmarked(): Flow<List<LaunchInfoEntity>>
 
+    fun observeById(id: String): Flow<LaunchInfoEntity?>
+
     suspend fun getById(id: String): LaunchInfoEntity?
 
     suspend fun insert(launchInfoEntity: LaunchInfoEntity)

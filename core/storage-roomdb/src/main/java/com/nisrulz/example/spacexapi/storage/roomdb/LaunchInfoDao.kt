@@ -18,6 +18,9 @@ interface LaunchInfoDao : LocalDataSource {
     override fun getAllBookmarked(): Flow<List<LaunchInfoEntity>>
 
     @Query("SELECT * from LaunchInfoEntity where id = :id")
+    override fun observeById(id: String): Flow<LaunchInfoEntity?>
+
+    @Query("SELECT * from LaunchInfoEntity where id = :id")
     override suspend fun getById(id: String): LaunchInfoEntity?
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)

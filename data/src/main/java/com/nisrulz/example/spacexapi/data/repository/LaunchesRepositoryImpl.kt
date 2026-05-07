@@ -36,9 +36,8 @@ class LaunchesRepositoryImpl(
         return localDataSource.getAll().map { it.mapToDomainModelList() }
     }
 
-    override suspend fun getLaunchDetail(id: String): LaunchInfo? {
-        return localDataSource.getById(id)?.mapToDomainModel()
-    }
+    override fun getLaunchDetail(id: String): Flow<LaunchInfo?> =
+        localDataSource.observeById(id).map { it?.mapToDomainModel() }
 
     override suspend fun getAllBookmarked(): Flow<List<LaunchInfo>> {
         return localDataSource.getAllBookmarked().map { it.mapToDomainModelList() }

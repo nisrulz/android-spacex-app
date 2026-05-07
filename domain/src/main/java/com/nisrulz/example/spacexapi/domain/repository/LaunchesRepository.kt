@@ -8,7 +8,7 @@ interface LaunchesRepository {
 
     suspend fun getAllBookmarked(): Flow<List<LaunchInfo>>
 
-    suspend fun getLaunchDetail(id: String): LaunchInfo?
+    fun getLaunchDetail(id: String): Flow<LaunchInfo?>
 
     suspend fun setBookmark(
         id: String,
