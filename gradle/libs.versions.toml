@@ -23,7 +23,7 @@ timber = "5.0.1"
 material3 = "1.10.0"
 
 #region ---- Kotlin
-kotlinxCoroutines = "1.10.2"
+kotlinxCoroutines = "1.11.0"
 kotlinxSerializationJson = "1.11.0"
 #endregion
 
