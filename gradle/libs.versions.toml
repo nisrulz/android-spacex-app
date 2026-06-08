@@ -61,7 +61,7 @@ mockkVersion = "1.14.11"
 junitKtx = "1.3.0"
 coreTesting = "2.2.0"
 kotlinxCoroutinesTest = "1.11.0"
-jacoco = "0.8.14"
+jacoco = "0.8.15"
 
 [libraries]
 # build-logic
