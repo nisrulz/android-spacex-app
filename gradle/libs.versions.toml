@@ -11,7 +11,7 @@ ksp = "2.3.9"
 agp = "9.2.1"
 androidTools = "32.2.1"
 core-ktx = "1.18.0"
-lifecycleVer = "2.10.0"
+lifecycleVer = "2.11.0"
 appcompat = "1.7.1"
 navigation3 = "1.1.2"
 #endregion
