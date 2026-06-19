@@ -7,7 +7,7 @@ import okhttp3.ResponseBody.Companion.toResponseBody
 import org.json.JSONArray
 import org.json.JSONObject
 
-class JSONPrettyPrintHttpLoggingInterceptor : Interceptor {
+internal class JSONPrettyPrintHttpLoggingInterceptor : Interceptor {
 
     override fun intercept(chain: Interceptor.Chain): Response {
         val request = chain.request()

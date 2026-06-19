@@ -10,7 +10,6 @@ import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
 import kotlinx.serialization.json.Json
 import okhttp3.Cache
-import okhttp3.Interceptor
 import okhttp3.MediaType.Companion.toMediaType
 import okhttp3.OkHttpClient
 import retrofit2.Converter
@@ -18,7 +17,6 @@ import retrofit2.Retrofit
 import retrofit2.converter.kotlinx.serialization.asConverterFactory
 import java.io.File
 import java.util.concurrent.TimeUnit
-import javax.inject.Named
 import javax.inject.Singleton
 
 @Module
@@ -48,9 +46,9 @@ class NetworkModule {
 
     @Provides
     @Singleton
-    fun provideOkhttpClient(
-        @Named("cache") cacheLoggingInterceptor: Interceptor,
-        @Named("logging") httpLoggingInterceptor: Interceptor,
+    internal fun provideOkhttpClient(
+        cacheLoggingInterceptor: CacheLoggingInterceptor,
+        httpLoggingInterceptor: JSONPrettyPrintHttpLoggingInterceptor,
         cache: Cache
     ): OkHttpClient {
         val okhttpBuilder = OkHttpClient.Builder()
@@ -95,26 +93,13 @@ class NetworkModule {
 
     @Provides
     @Singleton
-    @Named("cache")
-    fun provideCacheLoggingInterceptor(): Interceptor = Interceptor { chain ->
-        val request = chain.request()
-        val response = chain.proceed(request)
-        if (response.cacheResponse != null) {
-            println(
-                "🧠 Successful Response from MEMORY_CACHE\n" + "\t${request.method} ${request.url}"
-            )
-        } else if (response.networkResponse != null) {
-            println(
-                "☁️ Successful Response from NETWORK\n" + "\t${request.method} ${request.url}"
-            )
-        }
-        return@Interceptor response
+    internal fun provideCacheLoggingInterceptor(): CacheLoggingInterceptor {
+        return CacheLoggingInterceptor()
     }
 
     @Provides
     @Singleton
-    @Named("logging")
-    fun provideLoggingInterceptor(): Interceptor {
+    internal fun provideLoggingInterceptor(): JSONPrettyPrintHttpLoggingInterceptor {
         return JSONPrettyPrintHttpLoggingInterceptor()
     }
 }
