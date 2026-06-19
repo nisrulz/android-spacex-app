@@ -17,4 +17,7 @@ dependencies {
     androidTestImplementation(libs.bundles.app.testing)
     debugImplementation(libs.ui.test.manifest)
     kspAndroidTest(libs.hilt.ext.compiler)
+
+    // Keep Hilt's processor aligned with Kotlin 2.4.0 metadata.
+    ksp(libs.kotlin.metadata.jvm)
 }
