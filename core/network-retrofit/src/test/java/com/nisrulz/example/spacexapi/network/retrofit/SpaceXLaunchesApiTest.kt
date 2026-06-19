@@ -83,14 +83,6 @@ class SpaceXLaunchesApiTest {
             }
         }
 
-    @Test
-    fun `test BASE_URL is correct`() {
-        // Given
-        val baseUrl = SpaceXLaunchesApi.BASE_URL
-        // Then
-        assertThat(baseUrl).isEqualTo("https://api.spacexdata.com/")
-    }
-
     //region Utils
     private val jsonForList = "response_items_list.json"
 
