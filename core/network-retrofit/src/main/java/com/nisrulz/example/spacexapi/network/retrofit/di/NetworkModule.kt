@@ -1,6 +1,8 @@
 package com.nisrulz.example.spacexapi.network.retrofit.di
 
 import android.app.Application
+import android.os.StrictMode
+import com.nisrulz.example.spacexapi.network.retrofit.BuildConfig
 import com.nisrulz.example.spacexapi.network.retrofit.SpaceXLaunchesApi
 import dagger.Module
 import dagger.Provides
@@ -8,10 +10,8 @@ import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
 import kotlinx.serialization.json.Json
 import okhttp3.Cache
-import okhttp3.Interceptor
 import okhttp3.MediaType.Companion.toMediaType
 import okhttp3.OkHttpClient
-import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Converter
 import retrofit2.Retrofit
 import retrofit2.converter.kotlinx.serialization.asConverterFactory
@@ -31,7 +31,7 @@ class NetworkModule {
     @Provides
     @Singleton
     fun provideRetrofit(okHttpClient: OkHttpClient, jsonConverter: Converter.Factory): Retrofit {
-        return Retrofit.Builder().baseUrl(SpaceXLaunchesApi.BASE_URL)
+        return Retrofit.Builder().baseUrl(BuildConfig.API_BASE_URL)
             .addConverterFactory(jsonConverter).client(okHttpClient).build()
     }
 
@@ -46,9 +46,9 @@ class NetworkModule {
 
     @Provides
     @Singleton
-    fun provideOkhttpClient(
-        cacheLoggingInterceptor: Interceptor,
-        httpLoggingInterceptor: HttpLoggingInterceptor,
+    internal fun provideOkhttpClient(
+        cacheLoggingInterceptor: CacheLoggingInterceptor,
+        httpLoggingInterceptor: JSONPrettyPrintHttpLoggingInterceptor,
         cache: Cache
     ): OkHttpClient {
         val okhttpBuilder = OkHttpClient.Builder()
@@ -68,37 +68,38 @@ class NetworkModule {
             addInterceptor(httpLoggingInterceptor)
         }
 
-        return okhttpBuilder.build()
+        val policy = StrictMode.getThreadPolicy()
+        StrictMode.setThreadPolicy(StrictMode.ThreadPolicy.Builder().permitAll().build())
+        try {
+            return okhttpBuilder.build()
+        } finally {
+            StrictMode.setThreadPolicy(policy)
+        }
     }
 
     @Provides
     @Singleton
     fun provideNetworkCache(application: Application): Cache {
-        val cacheDirectory = File(application.cacheDir, "http_cache")
-        val cacheSize = 10 * 1024 * 1024 // 10 MB
-        return Cache(cacheDirectory, cacheSize.toLong())
-    }
-
-    @Provides
-    @Singleton
-    fun provideCacheLoggingInterceptor(): Interceptor = Interceptor { chain ->
-        val request = chain.request()
-        val response = chain.proceed(request)
-        if (response.cacheResponse != null) {
-            println(
-                "🧠 Successful Response from MEMORY_CACHE\n" + "\t${request.method} ${request.url}"
-            )
-        } else if (response.networkResponse != null) {
-            println(
-                "☁️ Successful Response from NETWORK\n" + "\t${request.method} ${request.url}"
-            )
+        val policy = StrictMode.getThreadPolicy()
+        StrictMode.setThreadPolicy(StrictMode.ThreadPolicy.Builder().permitAll().build())
+        try {
+            val cacheDirectory = File(application.cacheDir, "http_cache")
+            cacheDirectory.mkdirs()
+            return Cache(cacheDirectory, 10L * 1024 * 1024)
+        } finally {
+            StrictMode.setThreadPolicy(policy)
         }
-        return@Interceptor response
     }
 
     @Provides
     @Singleton
-    fun provideLoggingInterceptor() = HttpLoggingInterceptor().apply {
-        setLevel(HttpLoggingInterceptor.Level.BODY)
+    internal fun provideCacheLoggingInterceptor(): CacheLoggingInterceptor {
+        return CacheLoggingInterceptor()
+    }
+
+    @Provides
+    @Singleton
+    internal fun provideLoggingInterceptor(): JSONPrettyPrintHttpLoggingInterceptor {
+        return JSONPrettyPrintHttpLoggingInterceptor()
     }
 }

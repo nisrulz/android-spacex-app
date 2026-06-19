@@ -12,6 +12,15 @@ plugins {
 
 android {
     namespace = "${ApplicationInfo.BASE_NAMESPACE}.network.retrofit"
+
+    buildFeatures {
+        buildConfig = true
+    }
+
+    defaultConfig {
+        buildConfigField("String", "API_BASE_URL",
+            "\"${project.findProperty("API_BASE_URL") ?: "https://localhost:8443/"}\"")
+    }
 }
 
 dependencies {

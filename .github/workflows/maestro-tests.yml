@@ -1,6 +1,16 @@
 name: Maestro Android Tests
 
 on:
+  pull_request:
+    branches:
+      - main
+    paths-ignore:
+      - "**/*.md"
+      - "docs/**"
+      - "repo_assets/**"
+      - "LICENSE"
+      - ".gitignore"
+  # Allows to run this workflow manually from the Actions tab
   workflow_dispatch:
 
 concurrency:
@@ -40,8 +50,30 @@ jobs:
           path: ~/.maestro
           key: ${{ runner.os }}-maestro-${{ hashFiles('scripts/setup_maestro.sh') }}
 
+      - name: Set up Go
+        uses: actions/setup-go@v5
+        with:
+          go-version: '1.22'
+          cache: true
+          cache-dependency-path: api-server/go.sum
+
+      - name: Build and start API server
+        run: |
+          cd api-server
+          go build -o spacex-api-server .
+          ./spacex-api-server &
+          echo "Waiting for API server to be ready..."
+          for i in $(seq 1 15); do
+            if curl -skf https://localhost:8443/healthz > /dev/null 2>&1; then
+              echo "API server ready"
+              break
+            fi
+            echo "  attempt $i/15..."
+            sleep 1
+          done
+
       - name: Build debug APK before starting emulator
-        run: ./gradlew assembleDebug
+        run: ./gradlew assembleDebug -PAPI_BASE_URL=https://localhost:8443/
 
       - name: Enable KVM group perms
         run: |
