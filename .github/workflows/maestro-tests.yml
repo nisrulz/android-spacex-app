@@ -40,8 +40,30 @@ jobs:
           path: ~/.maestro
           key: ${{ runner.os }}-maestro-${{ hashFiles('scripts/setup_maestro.sh') }}
 
+      - name: Set up Go
+        uses: actions/setup-go@v5
+        with:
+          go-version: '1.22'
+          cache: true
+          cache-dependency-path: api-server/go.sum
+
+      - name: Build and start API server
+        run: |
+          cd api-server
+          go build -o spacex-api-server .
+          ./spacex-api-server &
+          echo "Waiting for API server to be ready..."
+          for i in $(seq 1 15); do
+            if curl -sf http://localhost:8080/healthz > /dev/null 2>&1; then
+              echo "API server ready"
+              break
+            fi
+            echo "  attempt $i/15..."
+            sleep 1
+          done
+
       - name: Build debug APK before starting emulator
-        run: ./gradlew assembleDebug
+        run: ./gradlew assembleDebug -PAPI_BASE_URL=http://10.0.2.2:8080/
 
       - name: Enable KVM group perms
         run: |
