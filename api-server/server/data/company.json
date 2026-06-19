@@ -1,0 +1,25 @@
+{
+  "name": "SpaceX",
+  "founded": 2002,
+  "employees": 13000,
+  "vehicles": 5,
+  "launch_sites": 4,
+  "test_sites": 2,
+  "ceo": "Elon Musk",
+  "cto": "Elon Musk",
+  "coo": "Gwynne Shotwell",
+  "cto_propulsion": "Tom Mueller",
+  "valuation": 210000000000,
+  "headquarters": {
+    "address": "Rocket Road",
+    "city": "Hawthorne",
+    "state": "California"
+  },
+  "links": {
+    "elon_twitter": "https://x.com/elonmusk",
+    "flickr": "https://www.flickr.com/spacex/",
+    "twitter": "https://x.com/SpaceX",
+    "website": "https://www.spacex.com/"
+  },
+  "summary": "SpaceX designs, manufactures and launches advanced rockets and spacecraft. The company was founded in 2002 to revolutionize space technology, with the ultimate goal of enabling people to live on other planets."
+}

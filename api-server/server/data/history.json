@@ -1,0 +1,102 @@
+[
+  {
+    "id": "5f6fb2cfdcfdf403dd54caa1",
+    "title": "Falcon 1 first flight",
+    "event_date_utc": "2006-03-24T22:30:00.000Z",
+    "event_date_unix": 1143239400,
+    "details": "The first Falcon 1 rocket launched from Omelek Island but failed due to a fuel leak and fire about 25 seconds after liftoff.",
+    "links": {
+      "article": "https://en.wikipedia.org/wiki/Falcon_1_flight_1"
+    }
+  },
+  {
+    "id": "5f6fb2cfdcfdf403dd54caa2",
+    "title": "Falcon 1 first successful launch",
+    "event_date_utc": "2008-09-28T23:15:00.000Z",
+    "event_date_unix": 1222643700,
+    "details": "Falcon 1 became the first privately developed liquid fuel rocket to reach orbit, carrying a mass simulator.",
+    "links": {
+      "article": "https://en.wikipedia.org/wiki/Falcon_1_flight_4"
+    }
+  },
+  {
+    "id": "5f6fb2cfdcfdf403dd54caa3",
+    "title": "First Dragon capsule reaches ISS",
+    "event_date_utc": "2012-05-25T14:02:00.000Z",
+    "event_date_unix": 1337968920,
+    "details": "SpaceX's Dragon became the first commercial spacecraft to visit the International Space Station, delivering 400 kg of cargo.",
+    "links": {
+      "article": "https://en.wikipedia.org/wiki/SpaceX_CRS-1"
+    }
+  },
+  {
+    "id": "5f6fb2cfdcfdf403dd54caa4",
+    "title": "First booster landing on ground",
+    "event_date_utc": "2015-12-21T21:29:00.000Z",
+    "event_date_unix": 1450733340,
+    "details": "Falcon 9 first stage landed at Landing Zone 1 at Cape Canaveral, the first successful orbital rocket booster landing.",
+    "links": {
+      "article": "https://en.wikipedia.org/wiki/Falcon_9_flight_20"
+    }
+  },
+  {
+    "id": "5f6fb2cfdcfdf403dd54caa5",
+    "title": "First drone ship landing",
+    "event_date_utc": "2016-04-08T20:43:00.000Z",
+    "event_date_unix": 1460148180,
+    "details": "Falcon 9 first stage successfully landed on the Autonomous Spaceport Drone Ship 'Of Course I Still Love You' for the first time.",
+    "links": {
+      "article": "https://en.wikipedia.org/wiki/Falcon_9_flight_23"
+    }
+  },
+  {
+    "id": "5f6fb2cfdcfdf403dd54caa6",
+    "title": "First reused booster launch",
+    "event_date_utc": "2017-03-30T22:27:00.000Z",
+    "event_date_unix": 1490912820,
+    "details": "Falcon 9 launched with a previously flown first stage (B1021), marking the first reflight of an orbital class rocket.",
+    "links": {
+      "article": "https://en.wikipedia.org/wiki/SES-10"
+    }
+  },
+  {
+    "id": "5f6fb2cfdcfdf403dd54caa7",
+    "title": "Falcon Heavy maiden flight",
+    "event_date_utc": "2018-02-06T20:45:00.000Z",
+    "event_date_unix": 1517949900,
+    "details": "Falcon Heavy launched successfully on its maiden flight, carrying Elon Musk's Tesla Roadster into heliocentric orbit.",
+    "links": {
+      "article": "https://en.wikipedia.org/wiki/Falcon_Heavy_test_flight"
+    }
+  },
+  {
+    "id": "5f6fb2cfdcfdf403dd54caa8",
+    "title": "First Crew Dragon launch (Demo-1)",
+    "event_date_utc": "2019-03-02T07:49:00.000Z",
+    "event_date_unix": 1551512940,
+    "details": "SpaceX's Crew Dragon spacecraft launched on an uncrewed test flight to the International Space Station.",
+    "links": {
+      "article": "https://en.wikipedia.org/wiki/Crew_Dragon_Demo-1"
+    }
+  },
+  {
+    "id": "5f6fb2cfdcfdf403dd54caa9",
+    "title": "First crewed Crew Dragon launch (Demo-2)",
+    "event_date_utc": "2020-05-30T19:22:00.000Z",
+    "event_date_unix": 1590866520,
+    "details": "SpaceX launched NASA astronauts Bob Behnken and Doug Hurley to the ISS, the first crewed orbital launch from US soil since 2011.",
+    "links": {
+      "article": "https://en.wikipedia.org/wiki/Crew_Dragon_Demo-2"
+    }
+  },
+  {
+    "id": "5f6fb2cfdcfdf403dd54caaa",
+    "title": "Starship first integrated flight test",
+    "event_date_utc": "2023-04-20T13:33:00.000Z",
+    "event_date_unix": 1681997580,
+    "details": "SpaceX's Starship launched on its first integrated flight test, reaching an altitude of 39 km before undergoing a rapid unscheduled disassembly.",
+    "links": {
+      "article": "https://en.wikipedia.org/wiki/Starship_flight_test_1"
+    }
+  }
+]

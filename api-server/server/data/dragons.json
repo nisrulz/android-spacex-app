@@ -1,0 +1,302 @@
+[
+  {
+    "id": "5e9d058759b1ff74a7ad5f34",
+    "name": "Dragon 1",
+    "type": "capsule",
+    "active": false,
+    "crew_capacity": 0,
+    "sidewall_angle_deg": 15,
+    "orbit_duration_yr": 2,
+    "dry_mass_kg": 4200,
+    "dry_mass_lb": 9300,
+    "first_flight": "2010-12-08",
+    "heat_shield": {
+      "material": "PICA-X",
+      "size_meters": 3.6,
+      "temp_degrees": 1927,
+      "dev_partner": "NASA"
+    },
+    "thrusters": [
+      {
+        "type": "Draco",
+        "amount": 18,
+        "pods": 4,
+        "fuel_1": "N2O4",
+        "fuel_2": "MMH",
+        "isp": 300,
+        "thrust": {
+          "kN": 0.4,
+          "lbf": 90
+        }
+      }
+    ],
+    "launch_payload_mass": {
+      "kg": 6000,
+      "lb": 13228
+    },
+    "launch_payload_vol": {
+      "cubic_meters": 10,
+      "cubic_feet": 353
+    },
+    "return_payload_mass": {
+      "kg": 3000,
+      "lb": 6614
+    },
+    "return_payload_vol": {
+      "cubic_meters": 7,
+      "cubic_feet": 247
+    },
+    "cargo": {
+      "solar_array": 2,
+      "unpressurized_cargo": true
+    },
+    "trunk": {
+      "trunk_volume": {
+        "cubic_meters": 14,
+        "cubic_feet": 494
+      },
+      "cargo": {
+        "solar_array": 2,
+        "unpressurized_cargo": true
+      }
+    },
+    "height_w_trunk": {
+      "meters": 7.2,
+      "feet": 23.6
+    },
+    "diameter": {
+      "meters": 3.7,
+      "feet": 12.1
+    },
+    "wikipedia": "https://en.wikipedia.org/wiki/SpaceX_Dragon",
+    "description": "Dragon 1 is a reusable cargo spacecraft developed by SpaceX. It was used to deliver cargo to the International Space Station under NASA's Commercial Resupply Services program."
+  },
+  {
+    "id": "5e9d058759b1ff74a7ad5f35",
+    "name": "Dragon 2 Crew",
+    "type": "capsule",
+    "active": true,
+    "crew_capacity": 7,
+    "sidewall_angle_deg": 15,
+    "orbit_duration_yr": 0.5,
+    "dry_mass_kg": 6350,
+    "dry_mass_lb": 14000,
+    "first_flight": "2019-03-02",
+    "heat_shield": {
+      "material": "PICA-X",
+      "size_meters": 3.6,
+      "temp_degrees": 1927,
+      "dev_partner": "NASA"
+    },
+    "thrusters": [
+      {
+        "type": "Draco",
+        "amount": 16,
+        "pods": 4,
+        "fuel_1": "N2O4",
+        "fuel_2": "MMH",
+        "isp": 300,
+        "thrust": {
+          "kN": 0.4,
+          "lbf": 90
+        }
+      },
+      {
+        "type": "SuperDraco",
+        "amount": 8,
+        "pods": 4,
+        "fuel_1": "N2O4",
+        "fuel_2": "MMH",
+        "isp": 235,
+        "thrust": {
+          "kN": 71,
+          "lbf": 16000
+        }
+      }
+    ],
+    "launch_payload_mass": {
+      "kg": 6000,
+      "lb": 13228
+    },
+    "launch_payload_vol": {
+      "cubic_meters": 10,
+      "cubic_feet": 353
+    },
+    "return_payload_mass": {
+      "kg": 3000,
+      "lb": 6614
+    },
+    "return_payload_vol": {
+      "cubic_meters": 7,
+      "cubic_feet": 247
+    },
+    "cargo": {
+      "solar_array": 2,
+      "unpressurized_cargo": true
+    },
+    "trunk": {
+      "trunk_volume": {
+        "cubic_meters": 14,
+        "cubic_feet": 494
+      },
+      "cargo": {
+        "solar_array": 2,
+        "unpressurized_cargo": true
+      }
+    },
+    "height_w_trunk": {
+      "meters": 8.1,
+      "feet": 26.6
+    },
+    "diameter": {
+      "meters": 3.7,
+      "feet": 12.1
+    },
+    "wikipedia": "https://en.wikipedia.org/wiki/SpaceX_Dragon_2",
+    "description": "Dragon 2 Crew is SpaceX's crewed spacecraft, capable of carrying up to 7 astronauts to the International Space Station and other destinations."
+  },
+  {
+    "id": "5e9d058759b1ff74a7ad5f36",
+    "name": "Dragon 2 Cargo",
+    "type": "capsule",
+    "active": true,
+    "crew_capacity": 0,
+    "sidewall_angle_deg": 15,
+    "orbit_duration_yr": 0.5,
+    "dry_mass_kg": 6350,
+    "dry_mass_lb": 14000,
+    "first_flight": "2020-12-06",
+    "heat_shield": {
+      "material": "PICA-X",
+      "size_meters": 3.6,
+      "temp_degrees": 1927,
+      "dev_partner": "NASA"
+    },
+    "thrusters": [
+      {
+        "type": "Draco",
+        "amount": 16,
+        "pods": 4,
+        "fuel_1": "N2O4",
+        "fuel_2": "MMH",
+        "isp": 300,
+        "thrust": {
+          "kN": 0.4,
+          "lbf": 90
+        }
+      }
+    ],
+    "launch_payload_mass": {
+      "kg": 6000,
+      "lb": 13228
+    },
+    "launch_payload_vol": {
+      "cubic_meters": 10,
+      "cubic_feet": 353
+    },
+    "return_payload_mass": {
+      "kg": 3000,
+      "lb": 6614
+    },
+    "return_payload_vol": {
+      "cubic_meters": 7,
+      "cubic_feet": 247
+    },
+    "cargo": {
+      "solar_array": 2,
+      "unpressurized_cargo": true
+    },
+    "trunk": {
+      "trunk_volume": {
+        "cubic_meters": 14,
+        "cubic_feet": 494
+      },
+      "cargo": {
+        "solar_array": 2,
+        "unpressurized_cargo": true
+      }
+    },
+    "height_w_trunk": {
+      "meters": 8.1,
+      "feet": 26.6
+    },
+    "diameter": {
+      "meters": 3.7,
+      "feet": 12.1
+    },
+    "wikipedia": "https://en.wikipedia.org/wiki/SpaceX_Dragon_2",
+    "description": "Dragon 2 Cargo is the cargo variant of SpaceX's Dragon 2 spacecraft, used to deliver supplies to the International Space Station under NASA's CRS-2 contract."
+  },
+  {
+    "id": "5e9d058759b1ff74a7ad5f37",
+    "name": "Dragon XL",
+    "type": "capsule",
+    "active": false,
+    "crew_capacity": 0,
+    "sidewall_angle_deg": 15,
+    "orbit_duration_yr": 2,
+    "dry_mass_kg": 15000,
+    "dry_mass_lb": 33069,
+    "first_flight": null,
+    "heat_shield": {
+      "material": "PICA-X",
+      "size_meters": 4.0,
+      "temp_degrees": 1927,
+      "dev_partner": "NASA"
+    },
+    "thrusters": [
+      {
+        "type": "Draco",
+        "amount": 24,
+        "pods": 6,
+        "fuel_1": "N2O4",
+        "fuel_2": "MMH",
+        "isp": 300,
+        "thrust": {
+          "kN": 0.4,
+          "lbf": 90
+        }
+      }
+    ],
+    "launch_payload_mass": {
+      "kg": 10000,
+      "lb": 22046
+    },
+    "launch_payload_vol": {
+      "cubic_meters": 30,
+      "cubic_feet": 1059
+    },
+    "return_payload_mass": {
+      "kg": 5000,
+      "lb": 11023
+    },
+    "return_payload_vol": {
+      "cubic_meters": 15,
+      "cubic_feet": 530
+    },
+    "cargo": {
+      "solar_array": 2,
+      "unpressurized_cargo": true
+    },
+    "trunk": {
+      "trunk_volume": {
+        "cubic_meters": 20,
+        "cubic_feet": 706
+      },
+      "cargo": {
+        "solar_array": 2,
+        "unpressurized_cargo": true
+      }
+    },
+    "height_w_trunk": {
+      "meters": 9.0,
+      "feet": 29.5
+    },
+    "diameter": {
+      "meters": 3.7,
+      "feet": 12.1
+    },
+    "wikipedia": "https://en.wikipedia.org/wiki/SpaceX_Dragon_XL",
+    "description": "Dragon XL is a proposed SpaceX spacecraft intended to deliver cargo to the Gateway space station in lunar orbit under NASA's Gateway Logistics Services contract."
+  }
+]

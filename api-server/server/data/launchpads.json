@@ -1,0 +1,62 @@
+[
+  {
+    "id": "5e9e4502f5090947855666f0",
+    "name": "KSLC 39A",
+    "full_name": "Kennedy Space Center Historic Launch Complex 39A",
+    "status": "active",
+    "locality": "Cape Canaveral",
+    "region": "Florida",
+    "latitude": 28.608056,
+    "longitude": -80.603889,
+    "launch_attempts": 100,
+    "launch_successes": 98,
+    "wikipedia": "https://en.wikipedia.org/wiki/Kennedy_Space_Center_Launch_Complex_39A",
+    "details": "NASA's historic launch complex, leased by SpaceX in 2014. Used for Falcon 9 and Falcon Heavy launches.",
+    "launches": ["5eb87ce3ffd86e000604b33a"]
+  },
+  {
+    "id": "5e9e4502f5090947855666f1",
+    "name": "CCSFS SLC-40",
+    "full_name": "Cape Canaveral Space Force Station Space Launch Complex 40",
+    "status": "active",
+    "locality": "Cape Canaveral",
+    "region": "Florida",
+    "latitude": 28.561857,
+    "longitude": -80.577366,
+    "launch_attempts": 80,
+    "launch_successes": 79,
+    "wikipedia": "https://en.wikipedia.org/wiki/Cape_Canaveral_Space_Launch_Complex_40",
+    "details": "SpaceX's primary East Coast launch pad for Falcon 9 missions.",
+    "launches": ["5eb87ce3ffd86e000604b33a"]
+  },
+  {
+    "id": "5e9e4502f5090947855666f2",
+    "name": "VSFB SLC-4E",
+    "full_name": "Vandenberg Space Force Base Space Launch Complex 4 East",
+    "status": "active",
+    "locality": "Vandenberg",
+    "region": "California",
+    "latitude": 34.632,
+    "longitude": -120.61,
+    "launch_attempts": 30,
+    "launch_successes": 30,
+    "wikipedia": "https://en.wikipedia.org/wiki/Vandenberg_Space_Launch_Complex_4",
+    "details": "SpaceX's West Coast launch pad for polar and sun-synchronous orbit missions.",
+    "launches": ["5eb87ce3ffd86e000604b33a"]
+  },
+  {
+    "id": "5e9e4502f5090947855666f3",
+    "name": "STLS",
+    "full_name": "SpaceX Starbase Launch Site",
+    "status": "active",
+    "locality": "Boca Chica",
+    "region": "Texas",
+    "latitude": 25.997,
+    "longitude": -97.155,
+    "launch_attempts": 3,
+    "launch_successes": 2,
+    "wikipedia": "https://en.wikipedia.org/wiki/SpaceX_Starbase",
+    "details": "SpaceX's private launch facility in South Texas, used for Starship development and testing.",
+    "launches": ["5eb87ce3ffd86e000604b33a"]
+  }
+]
