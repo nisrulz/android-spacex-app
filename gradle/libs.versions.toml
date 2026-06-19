@@ -2,7 +2,7 @@
 
 #region ---- Kotlin version dependent
 # https://github.com/JetBrains/kotlin/releases
-kotlin = "2.3.21"
+kotlin = "2.4.0"
 # https://github.com/google/ksp/releases
 ksp = "2.3.9"
 #endregion
@@ -10,10 +10,10 @@ ksp = "2.3.9"
 #region ---- Android Core
 agp = "9.2.1"
 androidTools = "32.2.1"
-core-ktx = "1.18.0"
-lifecycleVer = "2.10.0"
+core-ktx = "1.19.0"
+lifecycleVer = "2.11.0"
 appcompat = "1.7.1"
-navigation3 = "1.1.2"
+navigation3 = "1.1.3"
 #endregion
 
 # Logs
@@ -29,7 +29,7 @@ kotlinxSerializationJson = "1.11.0"
 
 #region ---- Jetpack Compose
 activity-compose = "1.13.0"
-compose-bom = "2026.05.01"
+compose-bom = "2026.06.00"
 #endregion
 
 
@@ -40,7 +40,7 @@ hiltExt = "1.3.0"
 #endregion
 
 #region ---- Retrofit
-okhttp = "5.3.2"
+okhttp = "5.4.0"
 retrofit-bom = "3.0.0"
 #endregion
 
@@ -61,7 +61,7 @@ mockkVersion = "1.14.11"
 junitKtx = "1.3.0"
 coreTesting = "2.2.0"
 kotlinxCoroutinesTest = "1.11.0"
-jacoco = "0.8.14"
+jacoco = "0.8.15"
 
 [libraries]
 # build-logic
@@ -113,6 +113,8 @@ hilt-android-testing = { group = "com.google.dagger", name = "hilt-android-testi
 hilt-compiler = { group = "com.google.dagger", name = "hilt-android-compiler", version.ref = "hilt" }
 hilt-ext-compiler = { group = "androidx.hilt", name = "hilt-compiler", version.ref = "hiltExt" }
 hilt-navigation = { group = "androidx.hilt", name = "hilt-navigation-compose", version.ref = "hiltNavigation" }
+# Kotlin metadata reader used on the Hilt/KSP processor classpath so Kotlin 2.4.0 metadata can be read.
+kotlin-metadata-jvm = { group = "org.jetbrains.kotlin", name = "kotlin-metadata-jvm", version.ref = "kotlin" }
 
 
 # Retrofit
@@ -184,7 +186,7 @@ hilt = ["hilt-android", "hilt-navigation"]
 room = ["room-ktx", "room-runtime"]
 retrofit = ["retrofit-core", "kotlinx-serialization-json", "retrofit2-kotlinx-serialization-converter", "okhttp-logging"]
 coil = ["coil-kt", "coil-kt-compose"]
-compose-debug = ["ui-tooling", "ui-test-manifest"]
+app-testing = ["androidx-test-ext-junit", "espresso-core", "truth-assertions", "kotlinx-coroutines-test", "turbine", "hilt-android-testing", "ui-test-junit4"]
 mockk = ["mockk-android", "mockk-agent"]
 testing = ["junit", "testing-core", "truth-assertions", "kotlinx-coroutines-test", "turbine"]
 android-testing = ["androidx-test-ext-junit", "espresso-core", "truth-assertions", "kotlinx-coroutines-test", "turbine"]
