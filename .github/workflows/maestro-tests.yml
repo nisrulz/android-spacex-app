@@ -73,9 +73,7 @@ jobs:
           done
 
       - name: Build debug APK before starting emulator
-        run: |
-          adb reverse tcp:8443 tcp:8443
-          ./gradlew assembleDebug -PAPI_BASE_URL=https://localhost:8443/
+        run: ./gradlew assembleDebug -PAPI_BASE_URL=https://localhost:8443/
 
       - name: Enable KVM group perms
         run: |
