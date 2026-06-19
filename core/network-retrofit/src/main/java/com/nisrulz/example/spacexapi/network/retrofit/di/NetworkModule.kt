@@ -18,6 +18,7 @@ import retrofit2.Retrofit
 import retrofit2.converter.kotlinx.serialization.asConverterFactory
 import java.io.File
 import java.util.concurrent.TimeUnit
+import javax.inject.Named
 import javax.inject.Singleton
 
 @Module
@@ -48,8 +49,8 @@ class NetworkModule {
     @Provides
     @Singleton
     fun provideOkhttpClient(
-        cacheLoggingInterceptor: Interceptor,
-        httpLoggingInterceptor: Interceptor,
+        @Named("cache") cacheLoggingInterceptor: Interceptor,
+        @Named("logging") httpLoggingInterceptor: Interceptor,
         cache: Cache
     ): OkHttpClient {
         val okhttpBuilder = OkHttpClient.Builder()
@@ -94,6 +95,7 @@ class NetworkModule {
 
     @Provides
     @Singleton
+    @Named("cache")
     fun provideCacheLoggingInterceptor(): Interceptor = Interceptor { chain ->
         val request = chain.request()
         val response = chain.proceed(request)
@@ -111,6 +113,7 @@ class NetworkModule {
 
     @Provides
     @Singleton
+    @Named("logging")
     fun provideLoggingInterceptor(): Interceptor {
         return JSONPrettyPrintHttpLoggingInterceptor()
     }
