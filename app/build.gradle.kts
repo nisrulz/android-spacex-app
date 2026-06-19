@@ -12,4 +12,9 @@ android {
 dependencies {
     // Module Dependency
     implementation(projects.presentation)
+
+    // App tests
+    androidTestImplementation(libs.bundles.app.testing)
+    debugImplementation(libs.ui.test.manifest)
+    kspAndroidTest(libs.hilt.ext.compiler)
 }
