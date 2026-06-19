@@ -33,7 +33,7 @@ test:
 	@echo "Running Android unit tests..."
 	@./gradlew testDebugUnitTest -q
 	@echo "Running Go server tests..."
-	@cd api-server && go test ./... -q
+	@cd api-server && go test ./...
 
 lint:
 	@echo "Running Android lint..."
