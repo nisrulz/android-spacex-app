@@ -17,6 +17,7 @@ internal fun Project.configureAndroidCompose() = configure<LibraryExtension> {
         val bom = catalogLibrary("compose-bom")
         add("implementation", platform(bom))
         add("androidTestImplementation", platform(bom))
+        add("debugImplementation", platform(bom))
         add("implementation", catalogLibrary("ui-tooling-preview"))
         add("debugImplementation", catalogLibrary("ui-tooling"))
     }

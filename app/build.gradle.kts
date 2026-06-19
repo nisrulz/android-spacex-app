@@ -13,6 +13,11 @@ dependencies {
     // Module Dependency
     implementation(projects.presentation)
 
+    // Compose BOM (for versionless compose dependencies in test configs)
+    implementation(platform(libs.compose.bom))
+    androidTestImplementation(platform(libs.compose.bom))
+    debugImplementation(platform(libs.compose.bom))
+
     // App tests
     androidTestImplementation(libs.bundles.app.testing)
     debugImplementation(libs.ui.test.manifest)
