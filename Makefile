@@ -34,6 +34,12 @@ test:
 	@./gradlew testDebugUnitTest -q
 	@echo "Running Go server tests..."
 	@cd api-server && go test -count=1 ./...
+	@if adb devices | grep -q "device$$"; then \
+		echo "Running Maestro UI tests..."; \
+		scripts/run_maestro.sh; \
+	else \
+		echo "Skipping Maestro tests (no device connected)"; \
+	fi
 
 lint:
 	@echo "Running Android lint..."
