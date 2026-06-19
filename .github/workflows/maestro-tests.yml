@@ -54,7 +54,7 @@ jobs:
           ./spacex-api-server &
           echo "Waiting for API server to be ready..."
           for i in $(seq 1 15); do
-            if curl -sf http://localhost:8080/healthz > /dev/null 2>&1; then
+            if curl -skf https://localhost:8443/healthz > /dev/null 2>&1; then
               echo "API server ready"
               break
             fi
@@ -63,7 +63,9 @@ jobs:
           done
 
       - name: Build debug APK before starting emulator
-        run: ./gradlew assembleDebug -PAPI_BASE_URL=http://10.0.2.2:8080/
+        run: |
+          adb reverse tcp:8443 tcp:8443
+          ./gradlew assembleDebug -PAPI_BASE_URL=https://localhost:8443/
 
       - name: Enable KVM group perms
         run: |
