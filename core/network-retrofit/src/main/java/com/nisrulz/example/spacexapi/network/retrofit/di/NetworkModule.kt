@@ -1,6 +1,7 @@
 package com.nisrulz.example.spacexapi.network.retrofit.di
 
 import android.app.Application
+import com.nisrulz.example.spacexapi.network.retrofit.BuildConfig
 import com.nisrulz.example.spacexapi.network.retrofit.SpaceXLaunchesApi
 import dagger.Module
 import dagger.Provides
@@ -31,7 +32,7 @@ class NetworkModule {
     @Provides
     @Singleton
     fun provideRetrofit(okHttpClient: OkHttpClient, jsonConverter: Converter.Factory): Retrofit {
-        return Retrofit.Builder().baseUrl(SpaceXLaunchesApi.BASE_URL)
+        return Retrofit.Builder().baseUrl(BuildConfig.API_BASE_URL)
             .addConverterFactory(jsonConverter).client(okHttpClient).build()
     }
 
