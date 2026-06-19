@@ -1,24 +1,15 @@
 name: Maestro Android Tests
 
 on:
-  # Allows to run this workflow when a Pull Request is made with the set target branches
   pull_request:
     branches:
       - main
-    paths:
-      - ".github/workflows/maestro-tests.yml"
-      - ".maestro/**"
-      - "app/**"
-      - "presentation/**"
-      - "data/**"
-      - "domain/**"
-      - "core/**"
-      - "scripts/**"
-      - "build.gradle.kts"
-      - "settings.gradle.kts"
-      - "gradle.properties"
-      - "gradle/**"
-      - "build-logic/**"
+    paths-ignore:
+      - "**/*.md"
+      - "docs/**"
+      - "repo_assets/**"
+      - "LICENSE"
+      - ".gitignore"
   # Allows to run this workflow manually from the Actions tab
   workflow_dispatch:
 
