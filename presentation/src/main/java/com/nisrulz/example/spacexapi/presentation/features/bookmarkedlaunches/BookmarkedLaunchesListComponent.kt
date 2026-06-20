@@ -32,7 +32,7 @@ import com.nisrulz.example.spacexapi.presentation.theme.dimens
 fun BookmarkedLaunchesListComponent(
     modifier: Modifier = Modifier,
     snackbarHostState: SnackbarHostState,
-    state: BookmarkedLaunchesViewModel.UiState,
+    state: BookmarkedLaunchesViewModel.BookmarkedUiState,
     navigateToDetails: SingleValueCallback<String> = {},
     bookmark: SingleValueCallback<LaunchInfo> = {},
     navigateBack: EmptyCallback = {}
@@ -92,7 +92,7 @@ private fun Preview() {
     )
     SpacexAPITheme {
         BookmarkedLaunchesListComponent(
-            state = BookmarkedLaunchesViewModel.UiState(
+            state = BookmarkedLaunchesViewModel.BookmarkedUiState(
                 data = listOf(
                     testLaunchInfo, testLaunchInfo.copy(name = "Name 2")
                 )
