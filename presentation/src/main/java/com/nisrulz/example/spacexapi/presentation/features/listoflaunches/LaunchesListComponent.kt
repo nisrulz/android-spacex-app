@@ -1,11 +1,8 @@
 package com.nisrulz.example.spacexapi.presentation.features.listoflaunches
 
 import androidx.compose.animation.core.LinearOutSlowInEasing
-import androidx.compose.animation.core.animateDpAsState
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.ExperimentalFoundationApi
-import androidx.compose.foundation.interaction.MutableInteractionSource
-import androidx.compose.foundation.interaction.collectIsPressedAsState
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
@@ -38,7 +35,7 @@ import com.nisrulz.example.spacexapi.presentation.theme.dimens
 fun ListOfLaunchesSuccessComponent(
     modifier: Modifier = Modifier,
     snackbarHostState: SnackbarHostState,
-    state: ListOfLaunchesViewModel.UiState,
+    state: ListOfLaunchesViewModel.ListUiState,
     navigateToDetails: SingleValueCallback<String>,
     bookmark: SingleValueCallback<LaunchInfo>,
     navigateToBookmarks: EmptyCallback
@@ -95,7 +92,7 @@ private fun Preview() {
     )
     SpacexAPITheme {
         ListOfLaunchesSuccessComponent(
-            state = ListOfLaunchesViewModel.UiState(
+            state = ListOfLaunchesViewModel.ListUiState(
                 data = listOf(
                     testLaunchInfo, testLaunchInfo.copy(name = "Name 2")
                 )

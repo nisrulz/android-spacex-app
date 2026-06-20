@@ -28,5 +28,6 @@ dependencies {
     implementation(platform(libs.okhttp.bom))
     implementation(platform(libs.retrofit.bom))
     implementation(libs.bundles.retrofit)
+    implementation(libs.timber)
     testImplementation(libs.okhttp.mockwebserver)
 }

@@ -2,6 +2,7 @@ package com.nisrulz.example.spacexapi.network.retrofit.di
 
 import okhttp3.Interceptor
 import okhttp3.Response
+import timber.log.Timber
 
 internal class CacheLoggingInterceptor : Interceptor {
 
@@ -9,9 +10,9 @@ internal class CacheLoggingInterceptor : Interceptor {
         val request = chain.request()
         val response = chain.proceed(request)
         if (response.cacheResponse != null) {
-            println("🧠 Successful Response from MEMORY_CACHE\n" + "\t${request.method} ${request.url}")
+            Timber.d("Successful Response from MEMORY_CACHE: ${request.method} ${request.url}")
         } else if (response.networkResponse != null) {
-            println("☁️ Successful Response from NETWORK\n" + "\t${request.method} ${request.url}")
+            Timber.d("Successful Response from NETWORK: ${request.method} ${request.url}")
         }
         return response
     }

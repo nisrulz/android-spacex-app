@@ -32,7 +32,7 @@ import com.nisrulz.example.spacexapi.presentation.theme.dimens
 fun BookmarkedLaunchesListComponent(
     modifier: Modifier = Modifier,
     snackbarHostState: SnackbarHostState,
-    state: BookmarkedLaunchesViewModel.UiState,
+    state: BookmarkedLaunchesViewModel.BookmarkedUiState,
     navigateToDetails: SingleValueCallback<String> = {},
     bookmark: SingleValueCallback<LaunchInfo> = {},
     navigateBack: EmptyCallback = {}
@@ -41,9 +41,12 @@ fun BookmarkedLaunchesListComponent(
         modifier = modifier.fillMaxSize()
     ) {
         Column {
-            TitleBar(rightNavButtonIcon = R.drawable.list_all, rightNavButtonAction = {
-                navigateBack()
-            })
+            TitleBar(
+                leftNavButtonIcon = R.drawable.back,
+                leftNavButtonAction = {
+                    navigateBack()
+                }
+            )
 
             LazyColumn(modifier = Modifier.fillMaxSize()) {
                 itemsIndexed(
@@ -92,7 +95,7 @@ private fun Preview() {
     )
     SpacexAPITheme {
         BookmarkedLaunchesListComponent(
-            state = BookmarkedLaunchesViewModel.UiState(
+            state = BookmarkedLaunchesViewModel.BookmarkedUiState(
                 data = listOf(
                     testLaunchInfo, testLaunchInfo.copy(name = "Name 2")
                 )

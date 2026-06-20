@@ -1,6 +1,5 @@
 package com.nisrulz.example.spacexapi.presentation.features.listoflaunches
 
-import android.annotation.SuppressLint
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -12,10 +11,9 @@ import com.nisrulz.example.spacexapi.common.contract.utils.EmptyCallback
 import com.nisrulz.example.spacexapi.common.contract.utils.SingleValueCallback
 import com.nisrulz.example.spacexapi.presentation.features.components.EmptyComponent
 import com.nisrulz.example.spacexapi.presentation.features.components.LoadingComponent
-import com.nisrulz.example.spacexapi.presentation.features.listoflaunches.ListOfLaunchesViewModel.UiEvent.ShowSnackBar
+import com.nisrulz.example.spacexapi.presentation.common.UiEvent
 import kotlinx.coroutines.flow.collectLatest
 
-@SuppressLint("VisibleForTests")
 @Composable
 fun ListOfLaunchesScreen(
     viewModel: ListOfLaunchesViewModel = hiltViewModel(),
@@ -28,7 +26,7 @@ fun ListOfLaunchesScreen(
     LaunchedEffect(viewModel) {
         viewModel.eventFlow.collectLatest { event ->
             when (event) {
-                is ShowSnackBar -> {
+                is UiEvent.ShowSnackBar -> {
                     snackbarHostState.showSnackbar(
                         message = event.message
                     )
