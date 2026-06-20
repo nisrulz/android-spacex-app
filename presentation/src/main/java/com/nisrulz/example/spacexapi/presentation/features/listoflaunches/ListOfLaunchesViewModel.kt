@@ -1,6 +1,5 @@
 package com.nisrulz.example.spacexapi.presentation.features.listoflaunches
 
-import androidx.annotation.VisibleForTesting
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.nisrulz.example.spacexapi.analytics.InUseAnalytics
@@ -45,7 +44,6 @@ class ListOfLaunchesViewModel
         getListOfLaunches()
     }
 
-    @VisibleForTesting
     fun getListOfLaunches() = viewModelScope.launch(coroutineDispatcher) {
         getAllLaunches().onEach { list ->
             uiState.update { it.copy(data = list, isLoading = false) }

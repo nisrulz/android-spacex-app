@@ -1,6 +1,5 @@
 package com.nisrulz.example.spacexapi.presentation.features.bookmarkedlaunches
 
-import androidx.annotation.VisibleForTesting
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.nisrulz.example.spacexapi.domain.model.LaunchInfo
@@ -40,7 +39,6 @@ constructor(
         getListOfBookmarkedLaunches()
     }
 
-    @VisibleForTesting
     fun getListOfBookmarkedLaunches() = viewModelScope.launch(coroutineDispatcher) {
         getAllBookmarkedLaunches().onEach { list ->
             uiState.update { it.copy(data = list, isLoading = false) }
