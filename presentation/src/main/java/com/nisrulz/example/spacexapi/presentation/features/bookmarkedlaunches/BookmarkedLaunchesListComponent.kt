@@ -41,9 +41,12 @@ fun BookmarkedLaunchesListComponent(
         modifier = modifier.fillMaxSize()
     ) {
         Column {
-            TitleBar(rightNavButtonIcon = R.drawable.list_all, rightNavButtonAction = {
-                navigateBack()
-            })
+            TitleBar(
+                leftNavButtonIcon = R.drawable.back,
+                leftNavButtonAction = {
+                    navigateBack()
+                }
+            )
 
             LazyColumn(modifier = Modifier.fillMaxSize()) {
                 itemsIndexed(
