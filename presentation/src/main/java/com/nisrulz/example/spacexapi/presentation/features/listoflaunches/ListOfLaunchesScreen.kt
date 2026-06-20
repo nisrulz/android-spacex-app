@@ -1,6 +1,5 @@
 package com.nisrulz.example.spacexapi.presentation.features.listoflaunches
 
-import android.annotation.SuppressLint
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -15,7 +14,6 @@ import com.nisrulz.example.spacexapi.presentation.features.components.LoadingCom
 import com.nisrulz.example.spacexapi.presentation.common.UiEvent
 import kotlinx.coroutines.flow.collectLatest
 
-@SuppressLint("VisibleForTests")
 @Composable
 fun ListOfLaunchesScreen(
     viewModel: ListOfLaunchesViewModel = hiltViewModel(),
