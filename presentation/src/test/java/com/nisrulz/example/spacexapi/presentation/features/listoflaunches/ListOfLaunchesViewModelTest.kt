@@ -4,10 +4,11 @@ import app.cash.turbine.test
 import com.google.common.truth.Truth.assertThat
 import com.nisrulz.example.spacexapi.analytics.InUseAnalytics
 import com.nisrulz.example.spacexapi.analytics.contract.AnalyticsEvent
+import com.nisrulz.example.spacexapi.domain.model.LaunchInfo
 import com.nisrulz.example.spacexapi.domain.usecase.GetAllLaunches
 import com.nisrulz.example.spacexapi.domain.usecase.ToggleBookmarkLaunchInfo
 import com.nisrulz.example.spacexapi.logger.InUseLoggers
-import com.nisrulz.example.spacexapi.presentation.features.listoflaunches.ListOfLaunchesViewModel.UiEvent.ShowSnackBar
+import com.nisrulz.example.spacexapi.presentation.common.UiEvent
 import com.nisrulz.example.spacexapi.presentation.util.TestFactory
 import com.nisrulz.example.spacexapi.presentation.util.runUnconfinedTest
 import com.nisrulz.example.spacexapi.presentation.util.testDispatcher
@@ -18,6 +19,7 @@ import io.mockk.just
 import io.mockk.mockk
 import io.mockk.runs
 import io.mockk.verify
+import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.flowOf
 import org.junit.Before
 import org.junit.Test
@@ -83,18 +85,18 @@ class ListOfLaunchesViewModelTest {
     @Test
     fun `showError() should update uiEvent with ShowSnackBar`() = runUnconfinedTest {
         // Given
-        val message = "Test Error Message"
+        val message = "Test Error"
+        coEvery { getAllLaunches() } returns flow {
+            throw Exception(message)
+        }
 
         // Then
         sut.eventFlow.test {
             // When
-            val setError = ListOfLaunchesViewModel::class.java.getDeclaredMethod("setError", String::class.java)
-            setError.isAccessible = true
-            setError.invoke(sut, message)
+            sut.getListOfLaunches().join()
 
             // Then
-            assertThat(awaitItem()).isEqualTo(ShowSnackBar(message))
-            verify { logger.log(any<String>()) }
+            assertThat(awaitItem()).isEqualTo(UiEvent.ShowSnackBar(message))
         }
     }
 

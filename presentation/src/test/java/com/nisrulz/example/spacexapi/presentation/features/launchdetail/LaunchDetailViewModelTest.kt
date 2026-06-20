@@ -5,7 +5,7 @@ import com.google.common.truth.Truth.assertThat
 import com.nisrulz.example.spacexapi.analytics.InUseAnalytics
 import com.nisrulz.example.spacexapi.domain.usecase.GetLaunchDetail
 import com.nisrulz.example.spacexapi.domain.usecase.ToggleBookmarkLaunchInfo
-import com.nisrulz.example.spacexapi.presentation.features.launchdetail.LaunchDetailViewModel.UiEvent.ShowSnackBar
+import com.nisrulz.example.spacexapi.presentation.common.UiEvent
 import com.nisrulz.example.spacexapi.presentation.util.TestFactory
 import com.nisrulz.example.spacexapi.presentation.util.runUnconfinedTest
 import com.nisrulz.example.spacexapi.presentation.util.testDispatcher
@@ -89,17 +89,15 @@ class LaunchDetailViewModelTest {
     @Test
     fun `showError() should update uiEvent with ShowSnackBar`() = runUnconfinedTest {
         // Given
-        val message = "Test Error Message"
+        val message = "No Data"
 
         // Then
         sut.eventFlow.test {
-            // When
-            val setError = LaunchDetailViewModel::class.java.getDeclaredMethod("setError", String::class.java)
-            setError.isAccessible = true
-            setError.invoke(sut, message)
+            // When - calling with null launchId triggers error
+            sut.getLaunchInfoDetails(null).join()
 
             // Then
-            assertThat(awaitItem()).isEqualTo(ShowSnackBar(message))
+            assertThat(awaitItem()).isEqualTo(UiEvent.ShowSnackBar(message))
         }
     }
 

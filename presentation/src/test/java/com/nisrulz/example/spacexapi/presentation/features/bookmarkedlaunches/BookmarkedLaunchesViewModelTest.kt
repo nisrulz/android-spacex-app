@@ -4,13 +4,14 @@ import app.cash.turbine.test
 import com.google.common.truth.Truth.assertThat
 import com.nisrulz.example.spacexapi.domain.usecase.GetAllBookmarkedLaunches
 import com.nisrulz.example.spacexapi.domain.usecase.ToggleBookmarkLaunchInfo
-import com.nisrulz.example.spacexapi.presentation.features.bookmarkedlaunches.BookmarkedLaunchesViewModel.UiEvent.ShowSnackBar
+import com.nisrulz.example.spacexapi.presentation.common.UiEvent
 import com.nisrulz.example.spacexapi.presentation.util.TestFactory
 import com.nisrulz.example.spacexapi.presentation.util.runUnconfinedTest
 import com.nisrulz.example.spacexapi.presentation.util.testDispatcher
 import io.mockk.coEvery
 import io.mockk.coVerify
 import io.mockk.mockk
+import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.flowOf
 import org.junit.Before
 import org.junit.Test
@@ -68,17 +69,18 @@ class BookmarkedLaunchesViewModelTest {
     @Test
     fun `showError() should update uiEvent with ShowSnackBar`() = runUnconfinedTest {
         // Given
-        val message = "Test Error Message"
+        val message = "Test Error"
+        coEvery { getAllBookmarkedLaunches() } returns flow {
+            throw Exception(message)
+        }
 
         // Then
         sut.eventFlow.test {
             // When
-            val setError = BookmarkedLaunchesViewModel::class.java.getDeclaredMethod("setError", String::class.java)
-            setError.isAccessible = true
-            setError.invoke(sut, message)
+            sut.getListOfBookmarkedLaunches().join()
 
             // Then
-            assertThat(awaitItem()).isEqualTo(ShowSnackBar(message))
+            assertThat(awaitItem()).isEqualTo(UiEvent.ShowSnackBar(message))
         }
     }
 
