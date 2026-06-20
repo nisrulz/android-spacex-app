@@ -1,7 +1,7 @@
 package com.nisrulz.example.spacexapi.presentation.navigation
 
-import androidx.compose.animation.fadeIn
-import androidx.compose.animation.fadeOut
+import androidx.compose.animation.slideInHorizontally
+import androidx.compose.animation.slideOutHorizontally
 import androidx.compose.animation.togetherWith
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.runtime.Composable
@@ -52,7 +52,16 @@ fun AppNavigation() {
             }
         },
         transitionSpec = {
-            fadeIn() togetherWith fadeOut()
+            slideInHorizontally(initialOffsetX = { it }) togetherWith
+                slideOutHorizontally(targetOffsetX = { -it })
+        },
+        popTransitionSpec = {
+            slideInHorizontally(initialOffsetX = { -it }) togetherWith
+                slideOutHorizontally(targetOffsetX = { it })
+        },
+        predictivePopTransitionSpec = {
+            slideInHorizontally(initialOffsetX = { -it }) togetherWith
+                slideOutHorizontally(targetOffsetX = { it })
         },
         modifier = Modifier.fillMaxSize()
     )
