@@ -11,7 +11,7 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.nisrulz.example.spacexapi.common.contract.utils.EmptyCallback
 import com.nisrulz.example.spacexapi.presentation.features.components.EmptyComponent
 import com.nisrulz.example.spacexapi.presentation.features.components.LoadingComponent
-import com.nisrulz.example.spacexapi.presentation.features.launchdetail.LaunchDetailViewModel.UiEvent.ShowSnackBar
+import com.nisrulz.example.spacexapi.presentation.common.UiEvent
 import kotlinx.coroutines.flow.collectLatest
 
 @Composable
@@ -29,7 +29,7 @@ fun LaunchDetailScreen(
 
         viewModel.eventFlow.collectLatest {
             when (it) {
-                is ShowSnackBar -> {
+                is UiEvent.ShowSnackBar -> {
                     snackbarHostState.showSnackbar(message = it.message)
                 }
             }

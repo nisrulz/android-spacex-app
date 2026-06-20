@@ -39,7 +39,7 @@ import com.nisrulz.example.spacexapi.presentation.theme.SpacexAPITheme
 fun LaunchDetailSuccessComponent(
     modifier: Modifier = Modifier,
     snackbarHostState: SnackbarHostState,
-    state: LaunchDetailViewModel.UiState,
+    state: LaunchDetailViewModel.DetailUiState,
     bookmark: EmptyCallback = {},
     navigateBack: EmptyCallback = {}
 ) {
@@ -163,7 +163,7 @@ private fun Preview() {
     SpacexAPITheme {
         LaunchDetailSuccessComponent(
             state =
-                LaunchDetailViewModel.UiState(
+                LaunchDetailViewModel.DetailUiState(
                     data =
                         LaunchInfo(
                             date_local = "2023-1-19",
