@@ -12,7 +12,7 @@ import com.nisrulz.example.spacexapi.common.contract.utils.EmptyCallback
 import com.nisrulz.example.spacexapi.common.contract.utils.SingleValueCallback
 import com.nisrulz.example.spacexapi.presentation.features.components.EmptyComponent
 import com.nisrulz.example.spacexapi.presentation.features.components.LoadingComponent
-import com.nisrulz.example.spacexapi.presentation.features.listoflaunches.ListOfLaunchesViewModel.UiEvent.ShowSnackBar
+import com.nisrulz.example.spacexapi.presentation.common.UiEvent
 import kotlinx.coroutines.flow.collectLatest
 
 @SuppressLint("VisibleForTests")
@@ -28,7 +28,7 @@ fun ListOfLaunchesScreen(
     LaunchedEffect(viewModel) {
         viewModel.eventFlow.collectLatest { event ->
             when (event) {
-                is ShowSnackBar -> {
+                is UiEvent.ShowSnackBar -> {
                     snackbarHostState.showSnackbar(
                         message = event.message
                     )

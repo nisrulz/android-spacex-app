@@ -38,7 +38,7 @@ import com.nisrulz.example.spacexapi.presentation.theme.dimens
 fun ListOfLaunchesSuccessComponent(
     modifier: Modifier = Modifier,
     snackbarHostState: SnackbarHostState,
-    state: ListOfLaunchesViewModel.UiState,
+    state: ListOfLaunchesViewModel.ListUiState,
     navigateToDetails: SingleValueCallback<String>,
     bookmark: SingleValueCallback<LaunchInfo>,
     navigateToBookmarks: EmptyCallback
@@ -95,7 +95,7 @@ private fun Preview() {
     )
     SpacexAPITheme {
         ListOfLaunchesSuccessComponent(
-            state = ListOfLaunchesViewModel.UiState(
+            state = ListOfLaunchesViewModel.ListUiState(
                 data = listOf(
                     testLaunchInfo, testLaunchInfo.copy(name = "Name 2")
                 )
