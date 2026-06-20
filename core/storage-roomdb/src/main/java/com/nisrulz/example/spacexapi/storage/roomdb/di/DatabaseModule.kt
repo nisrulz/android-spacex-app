@@ -19,6 +19,6 @@ class DatabaseModule {
             application,
             klass = SpaceXLaunchesDatabase::class.java,
             name = SpaceXLaunchesDatabase.DATABASE_NAME
-        ).build()
+        ).fallbackToDestructiveMigration().build()
     }
 }
