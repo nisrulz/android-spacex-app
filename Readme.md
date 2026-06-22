@@ -53,6 +53,10 @@ The app connects to the Go server via `adb reverse` on `https://localhost:8443/`
 | `make start-app` | Launch app on connected device |
 | `make stop-server` | Stop Go API server |
 | `make run` | Full flow: stop → start-server → install → start-app |
+| `make run-retrofit-room` | Run with Retrofit + Room (default) |
+| `make run-retrofit-sqldelight` | Run with Retrofit + SQLDelight |
+| `make run-ktor-room` | Run with Ktor + Room |
+| `make run-ktor-sqldelight` | Run with Ktor + SQLDelight |
 | `make test` | Run Android unit tests + Go server tests |
 | `make lint` | Run Android lint checks |
 | `make cleanup` | Delete all build artifacts |
