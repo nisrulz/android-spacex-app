@@ -13,6 +13,9 @@ android {
 }
 
 dependencies {
+    // Shared storage interface
+    api(projects.core.storage)
+
     // Room
     api(libs.bundles.room)
     ksp(libs.room.compiler)
