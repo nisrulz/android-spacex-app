@@ -1,6 +1,7 @@
 package com.nisrulz.example.spacexapi
 
 import android.app.Application
+import android.util.Log
 import com.nisrulz.example.spacexapi.utils.AnrDetector
 import com.nisrulz.example.spacexapi.utils.CoilCache
 import com.nisrulz.example.spacexapi.utils.DefaultAnrDetector
@@ -16,5 +17,12 @@ class MainApp :
         super.onCreate()
         setupAnrDetector()
         setupCoilCache(this)
+
+        Log.i(TAG, "Network implementation: ${BuildConfig.NETWORK_IMPL}")
+        Log.i(TAG, "Storage implementation: ${BuildConfig.STORAGE_IMPL}")
+    }
+
+    companion object {
+        private const val TAG = "MainApp"
     }
 }
