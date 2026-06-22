@@ -12,9 +12,7 @@ import com.nisrulz.example.spacexapi.presentation.util.testDispatcher
 import io.mockk.coEvery
 import io.mockk.coVerify
 import io.mockk.every
-import io.mockk.just
 import io.mockk.mockk
-import io.mockk.runs
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.flowOf
 import org.junit.Before
@@ -31,74 +29,46 @@ class LaunchDetailViewModelTest {
         getLaunchDetail = mockk()
         bookmarkLaunchInfo = mockk()
         analytics = mockk(relaxed = true)
-        sut =
-            LaunchDetailViewModel(
-                coroutineDispatcher = testDispatcher,
-                getLaunchDetail = getLaunchDetail,
-                bookmarkLaunchInfo = bookmarkLaunchInfo,
-                analytics = analytics
-            )
+        sut = LaunchDetailViewModel(
+            coroutineDispatcher = testDispatcher,
+            getLaunchDetail = getLaunchDetail,
+            bookmarkLaunchInfo = bookmarkLaunchInfo,
+            analytics = analytics
+        )
     }
 
     @Test
     fun `getLaunchInfoDetails() should update uiState with launch details`() = runUnconfinedTest {
-        // Given
-        val launchId = "TestLaunchId"
         val expected = TestFactory.buildLaunchInfo()
-        every { getLaunchDetail(launchId) } returns flowOf(expected)
-
-        // When
-        sut.getLaunchInfoDetails(launchId).join()
-
-        // Then
+        every { getLaunchDetail("test-id") } returns flowOf(expected)
+        sut.getLaunchInfoDetails("test-id").join()
         assertThat(sut.uiState.value.isLoading).isFalse()
         assertThat(sut.uiState.value.data).isEqualTo(expected)
     }
 
     @Test
     fun `bookmark() should call bookmarkLaunchInfo()`() = runUnconfinedTest {
-        // Given
         val launchInfo = TestFactory.buildLaunchInfo()
         coEvery { bookmarkLaunchInfo(any()) } returns Unit
-
-        // When
         sut.bookmark(launchInfo)
-
-        // Then
-        coVerify {
-            bookmarkLaunchInfo(launchInfo)
-        }
+        coVerify { bookmarkLaunchInfo(launchInfo) }
     }
 
     @Test
     fun `getLaunchInfoDetails() should reactively update uiState when launch changes`() = runUnconfinedTest {
-        // Given
-        val launchId = "TestLaunchId"
         val launchFlow = MutableStateFlow(TestFactory.buildLaunchInfo())
-        every { getLaunchDetail(launchId) } returns launchFlow
-
-        // When
-        val job = sut.getLaunchInfoDetails(launchId)
+        every { getLaunchDetail("test-id") } returns launchFlow
+        val job = sut.getLaunchInfoDetails("test-id")
         launchFlow.value = launchFlow.value.copy(isBookmarked = true)
-
-        // Then
         assertThat(sut.uiState.value.data?.isBookmarked).isTrue()
         job.cancel()
     }
 
     @Test
     fun `showError() should update uiEvent with ShowSnackBar`() = runUnconfinedTest {
-        // Given
-        val message = "No Data"
-
-        // Then
         sut.eventFlow.test {
-            // When - calling with null launchId triggers error
             sut.getLaunchInfoDetails(null).join()
-
-            // Then
-            assertThat(awaitItem()).isEqualTo(UiEvent.ShowSnackBar(message))
+            assertThat(awaitItem()).isEqualTo(UiEvent.ShowSnackBar("No Data"))
         }
     }
-
 }
