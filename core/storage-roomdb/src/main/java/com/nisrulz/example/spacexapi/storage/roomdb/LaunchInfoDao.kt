@@ -11,24 +11,24 @@ import com.nisrulz.example.spacexapi.storage.roomdb.entity.LaunchInfoEntity
 import kotlinx.coroutines.flow.Flow
 
 @Dao
-interface LaunchInfoDao : LocalDataSource {
+interface LaunchInfoDao {
     @Query("SELECT * from LaunchInfoEntity")
-    override fun getAll(): Flow<List<LaunchInfoEntity>>
+    fun getAll(): Flow<List<LaunchInfoEntity>>
 
     @Query("SELECT * from LaunchInfoEntity where isBookmarked = 1")
-    override fun getAllBookmarked(): Flow<List<LaunchInfoEntity>>
+    fun getAllBookmarked(): Flow<List<LaunchInfoEntity>>
 
     @Query("SELECT * from LaunchInfoEntity where id = :id")
-    override fun observeById(id: String): Flow<LaunchInfoEntity?>
+    fun observeById(id: String): Flow<LaunchInfoEntity?>
 
     @Query("SELECT * from LaunchInfoEntity where id = :id")
-    override suspend fun getById(id: String): LaunchInfoEntity?
+    suspend fun getById(id: String): LaunchInfoEntity?
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    override suspend fun insertAll(listOfLaunchInfoEntities: List<LaunchInfoEntity>)
+    suspend fun insertAll(listOfLaunchInfoEntities: List<LaunchInfoEntity>)
 
     @Transaction
-    override suspend fun replaceAllPreservingBookmarks(listOfLaunchInfoEntities: List<LaunchInfoEntity>) {
+    suspend fun replaceAllPreservingBookmarks(listOfLaunchInfoEntities: List<LaunchInfoEntity>) {
         val bookmarkedIds = getBookmarkedIds().toSet()
         deleteAll()
         insertAll(
@@ -39,17 +39,17 @@ interface LaunchInfoDao : LocalDataSource {
     }
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    override suspend fun insert(launchInfoEntity: LaunchInfoEntity)
+    suspend fun insert(launchInfoEntity: LaunchInfoEntity)
 
     @Update
-    override suspend fun update(launchInfoEntity: LaunchInfoEntity)
+    suspend fun update(launchInfoEntity: LaunchInfoEntity)
 
     @Delete
-    override suspend fun delete(launchInfoEntity: LaunchInfoEntity)
+    suspend fun delete(launchInfoEntity: LaunchInfoEntity)
 
     @Query("SELECT id from LaunchInfoEntity where isBookmarked = 1")
     suspend fun getBookmarkedIds(): List<String>
 
     @Query("DELETE FROM LaunchInfoEntity")
-    override suspend fun deleteAll()
+    suspend fun deleteAll()
 }

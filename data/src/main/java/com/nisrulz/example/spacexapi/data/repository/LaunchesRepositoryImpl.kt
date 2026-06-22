@@ -1,15 +1,12 @@
 package com.nisrulz.example.spacexapi.data.repository
 
 import com.nisrulz.example.spacexapi.common.contract.utils.NetworkUtils
-import com.nisrulz.example.spacexapi.data.mapper.mapToDomainModel
-import com.nisrulz.example.spacexapi.data.mapper.mapToDomainModelList
-import com.nisrulz.example.spacexapi.data.mapper.toEntityList
+import com.nisrulz.example.spacexapi.data.mapper.toDomainModelList
 import com.nisrulz.example.spacexapi.domain.model.LaunchInfo
 import com.nisrulz.example.spacexapi.domain.repository.LaunchesRepository
-import com.nisrulz.example.spacexapi.network.retrofit.RemoteDataSource
-import com.nisrulz.example.spacexapi.storage.roomdb.LocalDataSource
+import com.nisrulz.example.spacexapi.network.RemoteDataSource
+import com.nisrulz.example.spacexapi.storage.LocalDataSource
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.map
 
 class LaunchesRepositoryImpl(
     private val localDataSource: LocalDataSource,
@@ -22,19 +19,19 @@ class LaunchesRepositoryImpl(
                 val apiResponse = remoteDataSource.getAllLaunches()
 
                 if (apiResponse.isNotEmpty()) {
-                    localDataSource.replaceAllPreservingBookmarks(apiResponse.toEntityList())
+                    localDataSource.replaceAllPreservingBookmarks(apiResponse.toDomainModelList())
                 }
             }
         }
 
-        return localDataSource.getAll().map { it.mapToDomainModelList() }
+        return localDataSource.getAll()
     }
 
     override fun getLaunchDetail(id: String): Flow<LaunchInfo?> =
-        localDataSource.observeById(id).map { it?.mapToDomainModel() }
+        localDataSource.observeById(id)
 
     override suspend fun getAllBookmarked(): Flow<List<LaunchInfo>> {
-        return localDataSource.getAllBookmarked().map { it.mapToDomainModelList() }
+        return localDataSource.getAllBookmarked()
     }
 
     override suspend fun setBookmark(id: String, value: Boolean) {

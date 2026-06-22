@@ -1,7 +1,7 @@
 package com.nisrulz.example.spacexapi.network.retrofit
 
 import com.google.common.truth.Truth.assertThat
-import com.nisrulz.example.spacexapi.network.retrofit.dto.LaunchInfoResponse
+import com.nisrulz.example.spacexapi.network.dto.LaunchInfoResponse
 import com.nisrulz.example.spacexapi.network.retrofit.util.MockWebServerHelper.generateRetrofit
 import com.nisrulz.example.spacexapi.network.retrofit.util.MockWebServerHelper.setResponse
 import com.nisrulz.example.spacexapi.network.retrofit.util.MockWebServerHelper.throwHttpException

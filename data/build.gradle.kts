@@ -23,8 +23,8 @@ android {
 dependencies {
     // Module Dependency
     api(projects.domain)
-    implementation(projects.core.networkRetrofit)
-    implementation(projects.core.storageRoomdb)
+    implementation(projects.core.network)
+    implementation(projects.core.storage)
     implementation(projects.core.common)
 
     // Lifecycle

@@ -25,8 +25,6 @@ class BookmarkedLaunchesViewModelTest {
     fun setup() {
         bookmarkLaunchInfo = mockk()
         getAllBookmarkedLaunches = mockk()
-
-        // Mock the initial call in init block
         coEvery { getAllBookmarkedLaunches() } returns flowOf(emptyList())
 
         sut = BookmarkedLaunchesViewModel(
@@ -39,49 +37,28 @@ class BookmarkedLaunchesViewModelTest {
     @Test
     fun `getListOfBookmarkedLaunches() should update uiState with list of bookmarked launches`() =
         runUnconfinedTest {
-            // Given
             val list = TestFactory.buildListOfBookmarkedLaunchInfo()
             coEvery { getAllBookmarkedLaunches() } returns flowOf(list)
-
-            // When
             sut.getListOfBookmarkedLaunches().join()
-
-            // Then
             assertThat(sut.uiState.value.isLoading).isFalse()
             assertThat(sut.uiState.value.data).isEqualTo(list)
         }
 
     @Test
     fun `bookmark() should call bookmarkLaunchInfo()`() = runUnconfinedTest {
-        // Given
         val launchInfo = TestFactory.buildLaunchInfo()
         coEvery { bookmarkLaunchInfo(any()) } returns Unit
-
-        // When
         sut.bookmark(launchInfo)
-
-        // Then
-        coVerify {
-            bookmarkLaunchInfo(launchInfo)
-        }
+        coVerify { bookmarkLaunchInfo(launchInfo) }
     }
 
     @Test
     fun `showError() should update uiEvent with ShowSnackBar`() = runUnconfinedTest {
-        // Given
         val message = "Test Error"
-        coEvery { getAllBookmarkedLaunches() } returns flow {
-            throw Exception(message)
-        }
-
-        // Then
+        coEvery { getAllBookmarkedLaunches() } returns flow { throw Exception(message) }
         sut.eventFlow.test {
-            // When
             sut.getListOfBookmarkedLaunches().join()
-
-            // Then
             assertThat(awaitItem()).isEqualTo(UiEvent.ShowSnackBar(message))
         }
     }
-
 }

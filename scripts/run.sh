@@ -17,7 +17,7 @@ SERVER_PID=$!
 sleep 3
 
 echo "Building and installing debug APK..."
-cd "$ROOT" && ./gradlew installDebug -q -PAPI_BASE_URL=https://localhost:8443/
+cd "$ROOT" && ./gradlew installDebug -q -PAPI_BASE_URL=https://localhost:8443/ "$@"
 
 echo "Launching app on connected device..."
 SERIAL=$(adb devices | awk 'NR>1 && $1!="" {print $1; exit}')

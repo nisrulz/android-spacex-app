@@ -44,8 +44,16 @@ okhttp = "5.4.0"
 retrofit-bom = "3.0.0"
 #endregion
 
+#region ---- Ktor
+ktor = "3.1.3"
+#endregion
+
 #region ---- Room
 room = "2.8.4"
+#endregion
+
+#region ---- SQLDelight
+sqldelight = "2.3.2"
 #endregion
 
 # Coil
@@ -131,10 +139,23 @@ okhttp-bom = { group = "com.squareup.okhttp3", name = "okhttp-bom", version.ref 
 okhttp-logging = { group = "com.squareup.okhttp3", name = "logging-interceptor" }
 okhttp-mockwebserver = { group = "com.squareup.okhttp3", name = "mockwebserver" }
 
+# Ktor
+ktor-client-core = { group = "io.ktor", name = "ktor-client-core", version.ref = "ktor" }
+ktor-client-okhttp = { group = "io.ktor", name = "ktor-client-okhttp", version.ref = "ktor" }
+ktor-client-content-negotiation = { group = "io.ktor", name = "ktor-client-content-negotiation", version.ref = "ktor" }
+ktor-client-logging = { group = "io.ktor", name = "ktor-client-logging", version.ref = "ktor" }
+ktor-client-mock = { group = "io.ktor", name = "ktor-client-mock", version.ref = "ktor" }
+ktor-serialization-json = { group = "io.ktor", name = "ktor-serialization-kotlinx-json", version.ref = "ktor" }
+
 # Room
 room-compiler = { group = "androidx.room", name = "room-compiler", version.ref = "room" }
 room-ktx = { group = "androidx.room", name = "room-ktx", version.ref = "room" }
 room-runtime = { group = "androidx.room", name = "room-runtime", version.ref = "room" }
+
+# SQLDelight
+sqldelight-android-driver = { group = "app.cash.sqldelight", name = "android-driver", version.ref = "sqldelight" }
+sqldelight-coroutines = { group = "app.cash.sqldelight", name = "coroutines-extensions", version.ref = "sqldelight" }
+sqldelight-gradle-plugin = { group = "app.cash.sqldelight", name = "gradle-plugin", version.ref = "sqldelight" }
 
 # Testing
 junit = { group = "junit", name = "junit", version.ref = "junit" }
@@ -174,6 +195,9 @@ spacexapi-android-lib-hilt = { id = "spacexapi.android.lib.hilt", version = "uns
 
 spacexapi-android-testing = { id = "spacexapi.android.testing", version = "unspecified" }
 spacexapi-android-jacoco = { id = "spacexapi.android.jacoco", version = "unspecified" }
+
+# SQLDelight
+sqldelight = { id = "app.cash.sqldelight", version = "2.3.2" }
 
 [bundles]
 lifecycle = ["lifecycle-runtime-ktx", "lifecycle-runtime-compose", "lifecycle-viewmodel-navigation3"]
