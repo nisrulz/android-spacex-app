@@ -1,0 +1,52 @@
+-- LaunchInfo table
+CREATE TABLE LaunchInfoEntity (
+    id TEXT NOT NULL PRIMARY KEY,
+    date_local TEXT NOT NULL,
+    details TEXT,
+    flight_number INTEGER NOT NULL,
+    logo TEXT,
+    name TEXT NOT NULL,
+    success INTEGER NOT NULL,
+    isBookmarked INTEGER NOT NULL DEFAULT 0
+);
+
+-- Get all launches
+selectAll:
+SELECT * FROM LaunchInfoEntity;
+
+-- Get all bookmarked launches
+selectBookmarked:
+SELECT * FROM LaunchInfoEntity WHERE isBookmarked = 1;
+
+-- Get launch by ID
+selectById:
+SELECT * FROM LaunchInfoEntity WHERE id = ?;
+
+-- Get bookmarked IDs
+selectBookmarkedIds:
+SELECT id FROM LaunchInfoEntity WHERE isBookmarked = 1;
+
+-- Insert or replace a launch
+insertOrReplace:
+INSERT OR REPLACE INTO LaunchInfoEntity (id, date_local, details, flight_number, logo, name, success, isBookmarked)
+VALUES (?, ?, ?, ?, ?, ?, ?, ?);
+
+-- Update a launch
+updateLaunch:
+UPDATE LaunchInfoEntity
+SET date_local = ?,
+    details = ?,
+    flight_number = ?,
+    logo = ?,
+    name = ?,
+    success = ?,
+    isBookmarked = ?
+WHERE id = ?;
+
+-- Delete a launch
+deleteLaunch:
+DELETE FROM LaunchInfoEntity WHERE id = ?;
+
+-- Delete all launches
+deleteAll:
+DELETE FROM LaunchInfoEntity;
