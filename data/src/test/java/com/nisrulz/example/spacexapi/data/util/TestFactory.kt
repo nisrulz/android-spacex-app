@@ -1,13 +1,12 @@
 package com.nisrulz.example.spacexapi.data.util
 
 import com.nisrulz.example.spacexapi.domain.model.LaunchInfo
-import com.nisrulz.example.spacexapi.network.retrofit.dto.Fairings
-import com.nisrulz.example.spacexapi.network.retrofit.dto.Flickr
-import com.nisrulz.example.spacexapi.network.retrofit.dto.LaunchInfoResponse
-import com.nisrulz.example.spacexapi.network.retrofit.dto.Links
-import com.nisrulz.example.spacexapi.network.retrofit.dto.Patch
-import com.nisrulz.example.spacexapi.network.retrofit.dto.Reddit
-import com.nisrulz.example.spacexapi.storage.roomdb.entity.LaunchInfoEntity
+import com.nisrulz.example.spacexapi.network.dto.Fairings
+import com.nisrulz.example.spacexapi.network.dto.Flickr
+import com.nisrulz.example.spacexapi.network.dto.LaunchInfoResponse
+import com.nisrulz.example.spacexapi.network.dto.Links
+import com.nisrulz.example.spacexapi.network.dto.Patch
+import com.nisrulz.example.spacexapi.network.dto.Reddit
 
 object TestFactory {
     //region LaunchInfoResponse
@@ -70,30 +69,6 @@ object TestFactory {
         buildLaunchInfoResponse().copy(id = "000001", name = "Flight 1"),
         buildLaunchInfoResponse().copy(id = "000002", name = "Flight 2"),
         buildLaunchInfoResponse().copy(id = "000003", name = "Flight 3")
-    )
-    //endregion
-
-    //region LaunchInfoEntity
-    fun buildLaunchInfoEntity() = LaunchInfoEntity(
-        date_local = "",
-        details = "",
-        flight_number = 0,
-        id = "",
-        logo = "",
-        name = "",
-        success = false,
-        isBookmarked = false
-    )
-
-    fun buildListOfLaunchInfoEntity() = listOf(
-        buildLaunchInfoEntity().copy(isBookmarked = true, id = "000001", name = "Flight 1"),
-        buildLaunchInfoEntity().copy(isBookmarked = false, id = "000002", name = "Flight 2"),
-        buildLaunchInfoEntity().copy(isBookmarked = true, id = "000003", name = "Flight 3")
-    )
-
-    fun buildListOfBookmarkedLaunchInfoEntity() = listOf(
-        buildLaunchInfoEntity().copy(isBookmarked = true, id = "000001", name = "Flight 1"),
-        buildLaunchInfoEntity().copy(isBookmarked = true, id = "000003", name = "Flight 3")
     )
     //endregion
 

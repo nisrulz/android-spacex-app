@@ -4,8 +4,8 @@ import android.content.Context
 import com.nisrulz.example.spacexapi.common.contract.utils.NetworkUtils
 import com.nisrulz.example.spacexapi.data.repository.LaunchesRepositoryImpl
 import com.nisrulz.example.spacexapi.domain.repository.LaunchesRepository
-import com.nisrulz.example.spacexapi.network.retrofit.SpaceXLaunchesApi
-import com.nisrulz.example.spacexapi.storage.roomdb.SpaceXLaunchesDatabase
+import com.nisrulz.example.spacexapi.network.RemoteDataSource
+import com.nisrulz.example.spacexapi.storage.LocalDataSource
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -19,13 +19,13 @@ class RepositoryModule {
     @Provides
     @ViewModelScoped
     fun provideRepository(
-        database: SpaceXLaunchesDatabase,
-        api: SpaceXLaunchesApi,
+        localDataSource: LocalDataSource,
+        remoteDataSource: RemoteDataSource,
         networkUtils: NetworkUtils
     ): LaunchesRepository {
         return LaunchesRepositoryImpl(
-            localDataSource = database.dao,
-            remoteDataSource = api,
+            localDataSource = localDataSource,
+            remoteDataSource = remoteDataSource,
             networkUtils = networkUtils
         )
     }
