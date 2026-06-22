@@ -1,6 +1,7 @@
 package com.nisrulz.example.spacexapi.network.retrofit
 
-import com.nisrulz.example.spacexapi.network.retrofit.dto.LaunchInfoResponse
+import com.nisrulz.example.spacexapi.network.RemoteDataSource
+import com.nisrulz.example.spacexapi.network.dto.LaunchInfoResponse
 import retrofit2.http.GET
 
 interface SpaceXLaunchesApi : RemoteDataSource {

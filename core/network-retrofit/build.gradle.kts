@@ -24,6 +24,9 @@ android {
 }
 
 dependencies {
+    // Shared network interface and DTOs
+    api(projects.core.network)
+
     // Retrofit
     implementation(platform(libs.okhttp.bom))
     implementation(platform(libs.retrofit.bom))
