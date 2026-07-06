@@ -45,7 +45,7 @@ jobs:
           cache: "gradle"
 
       - name: Cache Maestro CLI
-        uses: actions/cache@v5
+        uses: actions/cache@v6
         with:
           path: ~/.maestro
           key: ${{ runner.os }}-maestro-${{ hashFiles('scripts/setup_maestro.sh') }}
