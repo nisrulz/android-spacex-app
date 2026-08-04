@@ -45,7 +45,7 @@ retrofit-bom = "3.0.0"
 #endregion
 
 #region ---- Ktor
-ktor = "3.5.1"
+ktor = "3.5.2"
 #endregion
 
 #region ---- Room
