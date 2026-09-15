@@ -49,7 +49,7 @@ ktor = "3.5.2"
 #endregion
 
 #region ---- Room
-room = "2.8.4"
+room = "2.8.5"
 #endregion
 
 #region ---- SQLDelight
