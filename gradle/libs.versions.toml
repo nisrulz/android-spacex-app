@@ -197,7 +197,7 @@ spacexapi-android-testing = { id = "spacexapi.android.testing", version = "unspe
 spacexapi-android-jacoco = { id = "spacexapi.android.jacoco", version = "unspecified" }
 
 # SQLDelight
-sqldelight = { id = "app.cash.sqldelight", version = "2.3.2" }
+sqldelight = { id = "app.cash.sqldelight", version = "2.4.0" }
 
 [bundles]
 lifecycle = ["lifecycle-runtime-ktx", "lifecycle-runtime-compose", "lifecycle-viewmodel-navigation3"]
