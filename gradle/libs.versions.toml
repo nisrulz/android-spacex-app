@@ -53,7 +53,7 @@ room = "2.8.5"
 #endregion
 
 #region ---- SQLDelight
-sqldelight = "2.3.2"
+sqldelight = "2.4.0"
 #endregion
 
 # Coil
