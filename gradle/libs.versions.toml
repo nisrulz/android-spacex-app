@@ -10,7 +10,7 @@ ksp = "2.3.12"
 #region ---- Android Core
 agp = "9.4.1"
 androidTools = "32.3.1"
-core-ktx = "1.19.0"
+core-ktx = "1.19.1"
 lifecycleVer = "2.11.0"
 appcompat = "1.8.0"
 navigation3 = "1.1.5"
